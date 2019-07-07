@@ -21,12 +21,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "Taranto\\ListMaker\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Taranto\\ListMaker\\Tests\\": "tests/"
         }
     },
     "replace": {
