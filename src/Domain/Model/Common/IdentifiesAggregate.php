@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Domain\Aggregate;
+namespace Taranto\ListMaker\Domain\Model\Common;
 
 /**
  * Interface IdentifiesAggregate
- * @package Taranto\ListMaker\Domain\Aggregate
+ * @package Taranto\ListMaker\Domain\Model\Common
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 interface IdentifiesAggregate

@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Domain\Model\Board;
 
-use Taranto\ListMaker\Domain\Aggregate\AggregateRoot;
+use Taranto\ListMaker\Domain\Model\Common\AggregateRoot;
 use Taranto\ListMaker\Domain\Model\Board\Event\BoardTitleWasChanged;
 use Taranto\ListMaker\Domain\Model\Board\Event\BoardWasClosed;
 use Taranto\ListMaker\Domain\Model\Board\Event\BoardWasCreated;

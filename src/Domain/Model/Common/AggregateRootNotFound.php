@@ -9,17 +9,14 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Domain\Aggregate;
+namespace Taranto\ListMaker\Domain\Model\Common;
 
 /**
- * Class CorruptAggregateHistory
- * @package Taranto\ListMaker\Domain\Aggregate
+ * Class AggregateRootNotFound
+ * @package Taranto\ListMaker\Domain\Model\Common
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class CorruptAggregateHistory extends \Exception
+abstract class AggregateRootNotFound extends \Exception
 {
-    public function __construct()
-    {
-        parent::__construct("Aggregate history is corrupted.");
-    }
+
 }

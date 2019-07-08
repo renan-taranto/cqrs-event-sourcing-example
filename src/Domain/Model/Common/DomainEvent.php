@@ -9,22 +9,27 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Domain\Aggregate;
+namespace Taranto\ListMaker\Domain\Model\Common;
 
 /**
- * Class Command
- * @package Taranto\ListMaker\Domain\Aggregate
+ * Class DomainEvent
+ * @package Taranto\ListMaker\Domain\Model\Common
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-abstract class Command extends DomainMessage
+abstract class DomainEvent extends DomainMessage
 {
     /**
      * @param string $aggregateId
      * @param array $payload
-     * @return Command
+     * @return DomainEvent
      */
-    public static function request(string $aggregateId, array $payload = []): self
+    public static function occur(string $aggregateId, array $payload = []): self
     {
         return new static($aggregateId, $payload);
     }
+
+    /**
+     * @return string
+     */
+    abstract public function eventType(): string;
 }

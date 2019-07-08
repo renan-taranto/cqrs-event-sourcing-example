@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Domain\Model\Board\Event;
 
-use Taranto\ListMaker\Domain\Aggregate\DomainEvent;
-use Taranto\ListMaker\Domain\Aggregate\IdentifiesAggregate;
+use Taranto\ListMaker\Domain\Model\Common\DomainEvent;
+use Taranto\ListMaker\Domain\Model\Common\IdentifiesAggregate;
 use Taranto\ListMaker\Domain\Model\Board\BoardId;
 use Taranto\ListMaker\Domain\Model\Common\ValueObject\Title;
 

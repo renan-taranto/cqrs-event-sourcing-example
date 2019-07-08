@@ -9,17 +9,17 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Domain\Aggregate;
+namespace Taranto\ListMaker\Domain\Model\Common;
 
 /**
- * Class ArrayIsImmutable
- * @package Taranto\ListMaker\Domain\Aggregate
+ * Class CorruptAggregateHistory
+ * @package Taranto\ListMaker\Domain\Model\Common
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class ArrayIsImmutable extends \BadMethodCallException
+final class CorruptAggregateHistory extends \Exception
 {
     public function __construct()
     {
-        parent::__construct("Unable to change an immutable array.");
+        parent::__construct("Aggregate history is corrupted.");
     }
 }

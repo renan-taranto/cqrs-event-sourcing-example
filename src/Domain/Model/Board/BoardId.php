@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Domain\Model\Board;
 
 use Ramsey\Uuid\Uuid;
-use Taranto\ListMaker\Domain\Aggregate\IdentifiesAggregate;
+use Taranto\ListMaker\Domain\Model\Common\IdentifiesAggregate;
 
 /**
  * Class BoardId
