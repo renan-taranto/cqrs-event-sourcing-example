@@ -37,7 +37,7 @@ class BoardTest extends TestCase
      */
     private $title;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->boardId = BoardId::generate();
         $this->title = Title::fromString("To-Dos");
