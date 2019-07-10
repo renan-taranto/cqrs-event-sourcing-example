@@ -30,4 +30,8 @@
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
+
+    <extensions>
+        <extension class="Taranto\ListMaker\Tests\BypassFinalHook" />
+    </extensions>
 </phpunit>

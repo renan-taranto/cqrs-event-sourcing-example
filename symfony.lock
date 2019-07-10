@@ -1,4 +1,7 @@
 {
+    "dg/bypass-finals": {
+        "version": "v1.1.2"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
