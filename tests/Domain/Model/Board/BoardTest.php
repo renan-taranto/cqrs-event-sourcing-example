@@ -37,7 +37,7 @@ class BoardTest extends TestCase
      */
     private $title;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->boardId = BoardId::generate();
         $this->title = Title::fromString("To-Dos");
@@ -46,7 +46,7 @@ class BoardTest extends TestCase
     /**
      * @test
      */
-    public function it_is_created()
+    public function it_is_created(): void
     {
         $board = Board::create($this->boardId, $this->title);
 
@@ -63,7 +63,7 @@ class BoardTest extends TestCase
     /**
      * @test
      */
-    public function it_changes_its_title()
+    public function it_changes_its_title(): void
     {
         $board = Board::create($this->boardId, $this->title);
 
@@ -83,7 +83,7 @@ class BoardTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_closed()
+    public function it_can_be_closed(): void
     {
         $board = Board::create($this->boardId, $this->title);
 
@@ -101,7 +101,7 @@ class BoardTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_record_an_event_when_closing_if_already_closed()
+    public function it_does_not_record_an_event_when_closing_if_already_closed(): void
     {
         $board = Board::create($this->boardId, $this->title);
 
@@ -117,7 +117,7 @@ class BoardTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_reopened()
+    public function it_can_be_reopened(): void
     {
         $board = Board::create($this->boardId, $this->title);
 
@@ -137,7 +137,7 @@ class BoardTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_record_an_event_when_reopening_if_already_opened()
+    public function it_does_not_record_an_event_when_reopening_if_already_opened(): void
     {
         $board = Board::create($this->boardId, $this->title);
 

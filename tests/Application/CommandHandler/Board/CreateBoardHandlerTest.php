@@ -28,7 +28,7 @@ class CreateBoardHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_new_board_to_the_repository()
+    public function it_adds_a_new_board_to_the_repository(): void
     {
         $command = CreateBoard::request((string) BoardId::generate(), ['title' => 'To-Dos']);
         $board = Board::create($command->aggregateId(), $command->title());
