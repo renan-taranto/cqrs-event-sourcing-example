@@ -17,6 +17,7 @@ use Taranto\ListMaker\Domain\Model\Board\Board;
 use Taranto\ListMaker\Domain\Model\Board\BoardId;
 use Taranto\ListMaker\Domain\Model\Board\BoardRepository;
 use Taranto\ListMaker\Domain\Model\Board\Command\CreateBoard;
+use Taranto\ListMaker\Domain\Model\Common\ValueObject\Title;
 
 /**
  * Class CreateBoardHandlerTest
@@ -26,17 +27,51 @@ use Taranto\ListMaker\Domain\Model\Board\Command\CreateBoard;
 class CreateBoardHandlerTest extends TestCase
 {
     /**
+     * @var BoardId
+     */
+    private $boardId;
+
+    /**
+     * @var Title
+     */
+    private $boardTitle;
+
+    /**
+     * @var Board
+     */
+    private $board;
+
+    /**
+     * @var BoardRepository
+     */
+    private $boardRepository;
+
+    /**
+     * @var CreateBoardHandler
+     */
+    private $createBoardHandler;
+
+    protected function setUp(): void
+    {
+        $this->boardId = BoardId::generate();
+        $this->boardTitle = Title::fromString('Board Title');
+        $this->board = Board::create($this->boardId, $this->boardTitle);
+        $this->boardRepository = $this->prophesize(BoardRepository::class);
+        $this->createBoardHandler = new CreateBoardHandler($this->boardRepository->reveal());
+    }
+
+    /**
      * @test
      */
     public function it_adds_a_new_board_to_the_repository(): void
     {
-        $command = CreateBoard::request((string) BoardId::generate(), ['title' => 'To-Dos']);
-        $board = Board::create($command->aggregateId(), $command->title());
+        $command = CreateBoard::request(
+            (string) $this->boardId,
+            ['title' => (string) $this->boardTitle]
+        );
 
-        $repository = $this->prophesize(BoardRepository::class);
-        $repository->save($board)->shouldBeCalled();
+        ($this->createBoardHandler)($command);
 
-        $handler = new CreateBoardHandler($repository->reveal());
-        $handler($command);
+        $this->boardRepository->save($this->board)->shouldHaveBeenCalled();
     }
 }
