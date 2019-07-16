@@ -1,0 +1,9 @@
+Taranto\ListMaker\Domain\Model\Common\DomainEvent:
+    discriminator_map:
+        type_property: event_type
+        mapping:
+            # Board
+            board-was-created: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardWasCreated'
+            board-title-was-changed: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardTitleWasChanged'
+            board-was-closed: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardWasClosed'
+            board-was-reopened: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardWasReopened'
