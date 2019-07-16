@@ -13,6 +13,7 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="8.0" />
+        <env name="DATABASE_URL" value="mysql://root:12345678@mysql:3306/appdb-test"/>
     </php>
 
     <testsuites>

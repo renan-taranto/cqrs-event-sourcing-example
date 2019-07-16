@@ -19,3 +19,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # Testing
+    Taranto\ListMaker\Tests\CommandRunner: ~
+
+    testing.database.write_model:
+        class: 'Taranto\ListMaker\Tests\WriteModelDataBase'
+        public: true
