@@ -14,16 +14,15 @@ namespace Taranto\ListMaker\Domain\Model\Board\Event;
 use Taranto\ListMaker\Domain\Model\Common\DomainEvent;
 use Taranto\ListMaker\Domain\Model\Common\IdentifiesAggregate;
 use Taranto\ListMaker\Domain\Model\Board\BoardId;
-use Taranto\ListMaker\Domain\Model\Common\ValueObject\Title;
 
 /**
- * Class BoardTitleWasChanged
+ * Class BoardReopened
  * @package Taranto\ListMaker\Domain\Model\Board\Event
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class BoardTitleWasChanged extends DomainEvent
+final class BoardReopened extends DomainEvent
 {
-    private const EVENT_TYPE = 'board-title-was-changed';
+    private const EVENT_TYPE = 'board-reopened';
 
     /**
      * @return string
@@ -39,13 +38,5 @@ final class BoardTitleWasChanged extends DomainEvent
     public function aggregateId(): IdentifiesAggregate
     {
         return BoardId::fromString($this->aggregateId);
-    }
-
-    /**
-     * @return Title
-     */
-    public function title(): Title
-    {
-        return Title::fromString($this->payload['title']);
     }
 }

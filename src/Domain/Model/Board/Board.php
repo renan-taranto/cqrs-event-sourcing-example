@@ -12,10 +12,10 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Domain\Model\Board;
 
 use Taranto\ListMaker\Domain\Model\Common\AggregateRoot;
-use Taranto\ListMaker\Domain\Model\Board\Event\BoardTitleWasChanged;
-use Taranto\ListMaker\Domain\Model\Board\Event\BoardWasClosed;
-use Taranto\ListMaker\Domain\Model\Board\Event\BoardWasCreated;
-use Taranto\ListMaker\Domain\Model\Board\Event\BoardWasReopened;
+use Taranto\ListMaker\Domain\Model\Board\Event\BoardTitleChanged;
+use Taranto\ListMaker\Domain\Model\Board\Event\BoardClosed;
+use Taranto\ListMaker\Domain\Model\Board\Event\BoardCreated;
+use Taranto\ListMaker\Domain\Model\Board\Event\BoardReopened;
 use Taranto\ListMaker\Domain\Model\Common\ValueObject\Title;
 
 /**
@@ -45,16 +45,16 @@ final class Board extends AggregateRoot
         $instance = new self();
 
         $instance->recordThat(
-            BoardWasCreated::occur((string) $boardId, ['title' => (string) $title])
+            BoardCreated::occur((string) $boardId, ['title' => (string) $title])
         );
 
         return $instance;
     }
 
     /**
-     * @param BoardWasCreated $event
+     * @param BoardCreated $event
      */
-    protected function whenBoardWasCreated(BoardWasCreated $event): void
+    protected function whenBoardCreated(BoardCreated $event): void
     {
         $this->boardId = $event->aggregateId();
         $this->isOpen = true;
@@ -66,14 +66,14 @@ final class Board extends AggregateRoot
     public function changeTitle(Title $title): void
     {
         $this->recordThat(
-            BoardTitleWasChanged::occur((string) $this->boardId, ['title' => (string) $title])
+            BoardTitleChanged::occur((string) $this->boardId, ['title' => (string) $title])
         );
     }
 
     /**
-     * @param BoardTitleWasChanged $event
+     * @param BoardTitleChanged $event
      */
-    protected function whenBoardTitleWasChanged(BoardTitleWasChanged $event): void
+    protected function whenBoardTitleChanged(BoardTitleChanged $event): void
     {
     }
 
@@ -83,13 +83,13 @@ final class Board extends AggregateRoot
            return;
        }
 
-       $this->recordThat(BoardWasClosed::occur((string) $this->boardId));
+       $this->recordThat(BoardClosed::occur((string) $this->boardId));
     }
 
     /**
-     * @param BoardWasClosed $event
+     * @param BoardClosed $event
      */
-    protected function whenBoardWasClosed(BoardWasClosed $event): void
+    protected function whenBoardClosed(BoardClosed $event): void
     {
         $this->isOpen = false;
     }
@@ -100,13 +100,13 @@ final class Board extends AggregateRoot
             return;
         }
 
-        $this->recordThat(BoardWasReopened::occur((string) $this->boardId));
+        $this->recordThat(BoardReopened::occur((string) $this->boardId));
     }
 
     /**
-     * @param BoardWasReopened $event
+     * @param BoardReopened $event
      */
-    protected function whenBoardWasReopened(BoardWasReopened $event): void
+    protected function whenBoardReopened(BoardReopened $event): void
     {
         $this->isOpen = true;
     }

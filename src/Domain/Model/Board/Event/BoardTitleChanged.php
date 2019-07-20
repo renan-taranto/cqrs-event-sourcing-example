@@ -17,13 +17,13 @@ use Taranto\ListMaker\Domain\Model\Board\BoardId;
 use Taranto\ListMaker\Domain\Model\Common\ValueObject\Title;
 
 /**
- * Class BoardWasCreated
+ * Class BoardTitleChanged
  * @package Taranto\ListMaker\Domain\Model\Board\Event
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class BoardWasCreated extends DomainEvent
+final class BoardTitleChanged extends DomainEvent
 {
-    private const EVENT_TYPE = 'board-was-created';
+    private const EVENT_TYPE = 'board-title-changed';
 
     /**
      * @return string

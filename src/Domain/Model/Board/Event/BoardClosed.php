@@ -16,13 +16,13 @@ use Taranto\ListMaker\Domain\Model\Common\IdentifiesAggregate;
 use Taranto\ListMaker\Domain\Model\Board\BoardId;
 
 /**
- * Class BoardWasReopened
+ * Class BoardClosed
  * @package Taranto\ListMaker\Domain\Model\Board\Event
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class BoardWasReopened extends DomainEvent
+final class BoardClosed extends DomainEvent
 {
-    private const EVENT_TYPE = 'board-was-reopened';
+    private const EVENT_TYPE = 'board-closed';
 
     /**
      * @return string

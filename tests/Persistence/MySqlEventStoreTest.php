@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Tests\Persistence;
 
 use Taranto\ListMaker\Domain\Model\Board\BoardId;
-use Taranto\ListMaker\Domain\Model\Board\Event\BoardTitleWasChanged;
-use Taranto\ListMaker\Domain\Model\Board\Event\BoardWasClosed;
-use Taranto\ListMaker\Domain\Model\Board\Event\BoardWasCreated;
+use Taranto\ListMaker\Domain\Model\Board\Event\BoardTitleChanged;
+use Taranto\ListMaker\Domain\Model\Board\Event\BoardClosed;
+use Taranto\ListMaker\Domain\Model\Board\Event\BoardCreated;
 use Taranto\ListMaker\Domain\Model\Common\AggregateHistory;
 use Taranto\ListMaker\Domain\Model\Common\AggregateVersion;
 use Taranto\ListMaker\Domain\Model\Common\DomainEvent;
@@ -54,9 +54,9 @@ class MySqlEventStoreTest extends IntegrationTestCase
         $this->mySqlEventStore = self::$container->get('Taranto\ListMaker\Infrastructure\Persistence\EventStore\MySqlEventStore');
         $this->aggregateId = BoardId::generate();
         $this->events = [
-            BoardWasCreated::occur((string) $this->aggregateId),
-            BoardTitleWasChanged::occur((string) $this->aggregateId, ['title' => 'Changed Title']),
-            BoardWasClosed::occur((string) $this->aggregateId)
+            BoardCreated::occur((string) $this->aggregateId),
+            BoardTitleChanged::occur((string) $this->aggregateId, ['title' => 'Changed Title']),
+            BoardClosed::occur((string) $this->aggregateId)
         ];
     }
 

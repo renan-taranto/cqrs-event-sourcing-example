@@ -3,7 +3,7 @@ Taranto\ListMaker\Domain\Model\Common\DomainEvent:
         type_property: event_type
         mapping:
             # Board
-            board-was-created: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardWasCreated'
-            board-title-was-changed: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardTitleWasChanged'
-            board-was-closed: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardWasClosed'
-            board-was-reopened: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardWasReopened'
+            board-created: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardCreated'
+            board-title-changed: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardTitleChanged'
+            board-closed: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardClosed'
+            board-reopened: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardReopened'
