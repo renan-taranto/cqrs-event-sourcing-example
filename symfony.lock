@@ -154,6 +154,18 @@
     "symfony/http-kernel": {
         "version": "v4.3.2"
     },
+    "symfony/messenger": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "29716c100e8aef803ad72670deb3dc09bb052a64"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
+    },
     "symfony/mime": {
         "version": "v4.3.2"
     },
