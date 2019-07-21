@@ -13,6 +13,8 @@ start: ## starts the application
 ##Composer
 vendor: composer.json composer.lock ## installs composer dependencies
 	$(COMPOSER) install
+require: ## install a new composer dependency
+	$(COMPOSER) require $(pkg)
 
 ##
 ##Symfony
