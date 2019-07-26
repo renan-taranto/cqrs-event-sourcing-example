@@ -9,6 +9,9 @@ COVERAGE_PATH = .docker/php/code-coverage
 start: ## starts the application
 	$(DOCKER_COMPOSE) up -d
 
+logs: ## shows the application logs
+	$(DOCKER_COMPOSE) logs -f
+
 ##
 ##Composer
 vendor: composer.json composer.lock ## installs composer dependencies
