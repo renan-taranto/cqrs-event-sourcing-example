@@ -17,6 +17,12 @@ services:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    Taranto\ListMaker\Ui\Web\Controller\:
+        resource: '../src/Ui/Web/Controller'
+        tags: ['controller.service_arguments']
+
     # Request Listeners
     Taranto\ListMaker\Ui\Web\EventListener\JsonRequestValidation:
         tags:
