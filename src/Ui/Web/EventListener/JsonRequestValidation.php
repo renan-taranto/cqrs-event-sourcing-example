@@ -22,7 +22,10 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
  */
 final class JsonRequestValidation
 {
-    public function onKernelRequest(RequestEvent $event)
+    /**
+     * @param RequestEvent $event
+     */
+    public function onKernelRequest(RequestEvent $event): void
     {
         if ($event->getRequest()->getMethod() !== Request::METHOD_POST) {
             return;

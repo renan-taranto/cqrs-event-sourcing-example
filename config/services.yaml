@@ -28,6 +28,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
+    # Response Listeners
+    Taranto\ListMaker\Ui\Web\EventListener\ResponseOnValidationException:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
     # Testing
     Taranto\ListMaker\Tests\CommandRunner: ~
 
