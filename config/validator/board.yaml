@@ -1,0 +1,41 @@
+Taranto\ListMaker\Domain\Model\Board\Command\CreateBoard:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Uuid:
+                  versions: [4]
+        payload:
+            - Collection:
+                  fields:
+                      title:
+                          - NotBlank: ~
+                          - Length:
+                                max: 50
+
+Taranto\ListMaker\Domain\Model\Board\Command\ChangeBoardTitle:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Uuid:
+                  versions: [4]
+        payload:
+            - Collection:
+                  fields:
+                      title:
+                          - NotBlank: ~
+                          - Length:
+                                max: 50
+
+Taranto\ListMaker\Domain\Model\Board\Command\CloseBoard:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Uuid:
+                  versions: [4]
+
+Taranto\ListMaker\Domain\Model\Board\Command\ReopenBoard:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Uuid:
+                  versions: [4]
