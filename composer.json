@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "doctrine/doctrine-bundle": "^1.11",
+        "mongodb/mongodb": "^1.4",
         "ramsey/uuid": "^3.8",
         "symfony/console": "4.3.*",
         "symfony/dotenv": "4.3.*",

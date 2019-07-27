@@ -59,6 +59,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "mongodb/mongodb": {
+        "version": "1.4.3"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
