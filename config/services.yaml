@@ -33,6 +33,19 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
+    # Message Handlers
+    command_handlers:
+        namespace: Taranto\ListMaker\Application\CommandHandler\
+        resource: '%kernel.project_dir%/src/Application/CommandHandler/*'
+        tags: [{ name: messenger.message_handler, bus: command.bus }]
+        autoconfigure: false
+
+    event_handlers:
+        namespace: Taranto\ListMaker\Infrastructure\Persistence\Projection\
+        resource: '%kernel.project_dir%/src/Infrastructure/Persistence/Projection/*/*Projector.php'
+        tags: [{ name: messenger.message_handler, bus: event.bus }]
+        autoconfigure: false
+
     # Testing
     Taranto\ListMaker\Tests\CommandRunner: ~
 

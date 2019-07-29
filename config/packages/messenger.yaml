@@ -12,3 +12,11 @@ framework:
         routing:
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
+
+        buses:
+            command.bus:
+                middleware:
+                    - validation
+            event.bus:
+                default_middleware: allow_no_handlers
+        default_bus: command.bus
