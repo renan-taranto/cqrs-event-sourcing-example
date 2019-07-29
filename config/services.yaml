@@ -39,3 +39,10 @@ services:
     testing.database.write_model:
         class: 'Taranto\ListMaker\Tests\WriteModelDataBase'
         public: true
+
+    testing.database.read_model:
+        class: 'Taranto\ListMaker\Tests\ReadModelDataBase'
+        arguments:
+            - '%env(MONGO_URL)%'
+            - '%env(MONGO_DATABASE)%'
+        public: true

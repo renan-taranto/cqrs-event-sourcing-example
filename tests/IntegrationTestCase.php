@@ -26,6 +26,11 @@ abstract class IntegrationTestCase extends KernelTestCase
     private $writeModelDataBase;
 
     /**
+     * @var ReadModelDataBase
+     */
+    private $readModelDataBase;
+
+    /**
      * @throws \Exception
      */
     protected function setUp(): void
@@ -33,6 +38,7 @@ abstract class IntegrationTestCase extends KernelTestCase
         self::bootKernel();
 
         $this->setUpWriteModelDataBase();
+        $this->setUpReadModelDataBase();
     }
 
     /**
@@ -43,6 +49,12 @@ abstract class IntegrationTestCase extends KernelTestCase
         $this->writeModelDataBase = self::$kernel->getContainer()->get('testing.database.write_model');
         $this->writeModelDataBase->dropDataBase(self::$kernel);
         $this->writeModelDataBase->createDataBase(self::$kernel);
+    }
+
+    private function setUpReadModelDataBase(): void
+    {
+        $this->readModelDataBase = self::$kernel->getContainer()->get('testing.database.read_model');
+        $this->readModelDataBase->dropDataBase();
     }
 
     /**
