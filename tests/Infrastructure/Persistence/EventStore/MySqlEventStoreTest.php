@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\Persistence;
+namespace Taranto\ListMaker\Tests\Infrastructure\Persistence\EventStore;
 
 use Taranto\ListMaker\Domain\Model\Board\BoardId;
 use Taranto\ListMaker\Domain\Model\Board\Event\BoardTitleChanged;
@@ -24,7 +24,7 @@ use Taranto\ListMaker\Tests\IntegrationTestCase;
 
 /**
  * Class MySqlEventStoreTest
- * @package Taranto\ListMaker\Tests\Persistence
+ * @package Taranto\ListMaker\Tests\Infrastructure\Persistence\EventStore
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 class MySqlEventStoreTest extends IntegrationTestCase
