@@ -11,6 +11,7 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
+            $eventStore: '@Taranto\ListMaker\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore'
             $boardCollection: '@mongo.collection.boards'
 
     # makes classes in src/ available to be used as services
@@ -47,6 +48,12 @@ services:
         resource: '%kernel.project_dir%/src/Infrastructure/Persistence/Projection/*/*Projector.php'
         tags: [{ name: messenger.message_handler, bus: event.bus }]
         autoconfigure: false
+
+    #Event Store
+    Taranto\ListMaker\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore:
+        arguments:
+            $eventStore: '@Taranto\ListMaker\Infrastructure\Persistence\EventStore\MySqlEventStore'
+            $eventBus: '@event.bus'
 
     # Mongo Collections
     mongo.collection.boards:
