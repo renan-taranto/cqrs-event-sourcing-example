@@ -1,3 +1,8 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+# Board
+command::create-board:
+    path: /boards/create
+    defaults:
+        _controller: Taranto\ListMaker\Ui\Web\Controller\CommandController
+        method: POST
+        _format: json
+        command_class: Taranto\ListMaker\Domain\Model\Board\Command\CreateBoard
