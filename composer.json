@@ -19,8 +19,7 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
-        "dg/bypass-finals": "^1.1",
-        "symfony/phpunit-bridge": "^4.3"
+        "dg/bypass-finals": "^1.1"
     },
     "config": {
         "preferred-install": {
