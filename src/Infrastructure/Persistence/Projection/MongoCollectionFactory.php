@@ -21,8 +21,33 @@ use MongoDB\Collection;
  */
 final class MongoCollectionFactory
 {
-    public static function createCollection(string $mongoUrl, string $mongoDatabase, string $collection): Collection
+    /**
+     * @var string
+     */
+    private $mongoUrl;
+
+    /**
+     * @var string
+     */
+    private $mongoDatabase;
+
+    /**
+     * MongoCollectionFactory constructor.
+     * @param string $mongoUrl
+     * @param string $mongoDatabase
+     */
+    public function __construct(string $mongoUrl, string $mongoDatabase)
     {
-        return (new Client($mongoUrl))->$mongoDatabase->$collection;
+        $this->mongoUrl = $mongoUrl;
+        $this->mongoDatabase = $mongoDatabase;
+    }
+
+    /**
+     * @param string $collectionName
+     * @return Collection
+     */
+    public function createCollection(string $collectionName): Collection
+    {
+        return (new Client($this->mongoUrl))->{$this->mongoDatabase}->$collectionName;
     }
 }

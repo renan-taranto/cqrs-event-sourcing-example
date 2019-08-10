@@ -13,6 +13,8 @@ services:
         bind:
             $eventStore: '@Taranto\ListMaker\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore'
             $boardCollection: '@mongo.collection.boards'
+            $mongoUrl: '%env(MONGO_URL)%'
+            $mongoDatabase: '%env(MONGO_DATABASE)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -58,8 +60,5 @@ services:
     # Mongo Collections
     mongo.collection.boards:
         class: Taranto\ListMaker\Infrastructure\Persistence\Projection\MongoCollectionFactory
-        factory: Taranto\ListMaker\Infrastructure\Persistence\Projection\MongoCollectionFactory:createCollection
-        arguments:
-            - '%env(MONGO_URL)%'
-            - '%env(MONGO_DATABASE)%'
-            - 'boards'
+        factory: ['@Taranto\ListMaker\Infrastructure\Persistence\Projection\MongoCollectionFactory', 'createCollection']
+        arguments: ['boards']
