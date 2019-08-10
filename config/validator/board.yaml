@@ -4,6 +4,9 @@ Taranto\ListMaker\Domain\Model\Board\Command\CreateBoard:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
+            - Taranto\ListMaker\Infrastructure\Validation\Constraints\AggregateDoesNotExist:
+                  idField: boardId
+                  collectionName: boards
         payload:
             - Collection:
                   fields:
