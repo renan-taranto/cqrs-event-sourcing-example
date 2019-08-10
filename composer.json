@@ -19,6 +19,10 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
+        "codeception/codeception": "^3.0",
+        "codeception/mockery-module": "^0.3.0",
+        "codeception/specify": "^1.2",
+        "codeception/verify": "^1.1",
         "dg/bypass-finals": "^1.1"
     },
     "config": {

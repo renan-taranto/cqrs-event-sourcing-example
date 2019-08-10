@@ -9,12 +9,17 @@
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
+
 ###> docker ###
-.docker/php/code-coverage
 .docker/mysql/data
 .docker/mongo/data
-###< code coverage ###
+###< docker ###
 
 ###> IDE ###
 .idea
 ###< IDE ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###

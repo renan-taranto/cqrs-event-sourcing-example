@@ -1,0 +1,26 @@
+namespace: Taranto\ListMaker\Tests
+paths:
+    tests: tests
+    output: tests/_output
+    data: tests/_data
+    support: tests/_support
+    envs: tests/_envs
+actor_suffix: Tester
+modules:
+    - MongoDB:
+        dsn: mongodb://mongo:27017/appdb
+        dump_type: mongodump
+        cleanup: true
+        populate: true
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+params:
+    - .env
+    - .env.test
+coverage:
+    enabled: true
+    include:
+        - src/*
+    exclude:
+        - src/Ui/Cli/CreateEventStream.php

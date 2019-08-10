@@ -1,5 +1,6 @@
 DOCKER_COMPOSE = docker-compose
 EXEC_PHP = $(DOCKER_COMPOSE) exec php
+EXEC_MYSQL = $(DOCKER_COMPOSE) exec mysql
 COMPOSER = $(EXEC_PHP) composer
 SYMFONY = $(EXEC_PHP) bin/console
 COVERAGE_PATH = .docker/php/code-coverage
@@ -32,11 +33,17 @@ event-stream: ## creates the event stream
 
 ##
 ##Testing
-test: ## runs tests
-	$(EXEC_PHP) bin/phpunit
+create-test-db: ## creates the testing database
+	$(EXEC_MYSQL) mysql -u root -p12345678 -e 'create database `appdb-test`; GRANT ALL PRIVILEGES ON `appdb-test`.* TO `dbuser`@`%`'
 
-test-coverage: ## runs tests and creates a code coverage report
-	$(EXEC_PHP) bin/phpunit --coverage-html $(COVERAGE_PATH) --stop-on-failure
+test-unit: ## runs unit tests
+	$(EXEC_PHP) php vendor/bin/codecept run unit
+
+test-integration: ## runs integration tests
+	$(EXEC_PHP) php vendor/bin/codecept run integration
+
+test-coverage: ## runs tests
+	$(EXEC_PHP) php vendor/bin/codecept run unit,integration --coverage-html
 
 .DEFAULT_GOAL := help
 help:

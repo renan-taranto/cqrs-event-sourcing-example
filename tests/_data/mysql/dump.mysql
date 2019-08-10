@@ -1,0 +1,56 @@
+-- MySQL dump 10.13  Distrib 5.7.27, for Linux (x86_64)
+--
+-- Host: 127.0.0.1    Database: appdb
+-- ------------------------------------------------------
+-- Server version	8.0.16
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `event_stream`
+--
+
+DROP TABLE IF EXISTS `event_stream`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `event_stream` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `aggregate_id` char(36) COLLATE utf8mb4_bin NOT NULL,
+  `aggregate_version` int(11) unsigned NOT NULL,
+  `event_type` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `payload` json NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_aggregate_version` (`aggregate_id`,`aggregate_version`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `event_stream`
+--
+
+LOCK TABLES `event_stream` WRITE;
+/*!40000 ALTER TABLE `event_stream` DISABLE KEYS */;
+INSERT INTO `event_stream` VALUES (8,'00cb8019-9ad9-442f-8908-6c90ba5cb827',1,'board-created','{\"title\": \"My First Board!\"}','2019-08-01 04:21:07'),(9,'efa1da3d-5308-48c3-88de-731c27abf2f9',1,'board-created','{\"title\": \"To-Dos\"}','2019-08-02 00:05:17'),(10,'e50f3b3d-1e6c-4315-b46f-583333ccf5ca',1,'board-created','{\"title\": \"Jobs\"}','2019-08-02 00:06:56');
+/*!40000 ALTER TABLE `event_stream` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2019-08-01 22:43:41

@@ -1,0 +1,23 @@
+actor: IntegrationTester
+modules:
+    enabled:
+        - Asserts
+        - Symfony:
+              app_path: src/Infrastructure
+              environment: test
+              kernel_class: Taranto\ListMaker\Infrastructure\Kernel
+        - Db:
+              dsn: "mysql:host=mysql;dbname=%MYSQL_DATABASE%"
+              user: "%MYSQL_USER%"
+              password: "%MYSQL_PASSWORD%"
+              dump: tests/_data/mysql/dump.mysql
+              cleanup: true
+              populate: true
+        - MongoDb:
+              dsn: "%MONGO_URL%/%MONGO_DATABASE%"
+              dump_type: mongodump
+              dump: tests/_data/mongo
+              cleanup: true
+              populate: true
+              quiet: true
+        - \Taranto\ListMaker\Tests\Helper\Integration
