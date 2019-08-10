@@ -21,6 +21,9 @@ Taranto\ListMaker\Domain\Model\Board\Command\ChangeBoardTitle:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
+            - Taranto\ListMaker\Infrastructure\Validation\Constraints\AggregateExists:
+                  idField: boardId
+                  collectionName: boards
         payload:
             - Collection:
                   fields:
@@ -35,6 +38,9 @@ Taranto\ListMaker\Domain\Model\Board\Command\CloseBoard:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
+            -   Taranto\ListMaker\Infrastructure\Validation\Constraints\AggregateExists:
+                  idField: boardId
+                  collectionName: boards
 
 Taranto\ListMaker\Domain\Model\Board\Command\ReopenBoard:
     properties:
@@ -42,3 +48,6 @@ Taranto\ListMaker\Domain\Model\Board\Command\ReopenBoard:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
+            -   Taranto\ListMaker\Infrastructure\Validation\Constraints\AggregateExists:
+                    idField: boardId
+                    collectionName: boards

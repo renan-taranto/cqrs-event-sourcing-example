@@ -52,12 +52,7 @@ final class CommandController
     public function __invoke(Request $request): JsonResponse
     {
         $command = $this->commandFactory->fromHttpRequest($request);
-
-        try {
-            $this->commandBus->dispatch($command);
-        } catch (AggregateRootNotFound $ex) {
-            return JsonResponse::create(['errors' => [$ex->getMessage()]], JsonResponse::HTTP_NOT_FOUND);
-        }
+        $this->commandBus->dispatch($command);
 
         return JsonResponse::create(null, JsonResponse::HTTP_ACCEPTED);
     }
