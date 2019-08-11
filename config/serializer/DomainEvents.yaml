@@ -1,9 +1,9 @@
-Taranto\ListMaker\Domain\Model\Common\DomainEvent:
+Taranto\ListMaker\Shared\Domain\Message\DomainEvent:
     discriminator_map:
         type_property: event_type
         mapping:
             # Board
-            board-created: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardCreated'
-            board-title-changed: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardTitleChanged'
-            board-closed: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardClosed'
-            board-reopened: 'Taranto\ListMaker\Domain\Model\Board\Event\BoardReopened'
+            board-created: 'Taranto\ListMaker\Board\Domain\Event\BoardCreated'
+            board-title-changed: 'Taranto\ListMaker\Board\Domain\Event\BoardTitleChanged'
+            board-closed: 'Taranto\ListMaker\Board\Domain\Event\BoardClosed'
+            board-reopened: 'Taranto\ListMaker\Board\Domain\Event\BoardReopened'

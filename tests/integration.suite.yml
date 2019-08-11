@@ -3,9 +3,9 @@ modules:
     enabled:
         - Asserts
         - Symfony:
-              app_path: src/Infrastructure
+              app_path: src/Shared/Infrastructure
               environment: test
-              kernel_class: Taranto\ListMaker\Infrastructure\Kernel
+              kernel_class: Taranto\ListMaker\Shared\Infrastructure\Kernel
         - Db:
               dsn: "mysql:host=mysql;dbname=%MYSQL_DATABASE%"
               user: "%MYSQL_USER%"

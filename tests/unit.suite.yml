@@ -10,4 +10,4 @@ modules:
         - \Taranto\ListMaker\Tests\Helper\Unit
 extensions:
     enabled:
-        - Taranto\ListMaker\Tests\_support\Extension\ByPassFinals
+        - Taranto\ListMaker\Tests\Extension\ByPassFinals

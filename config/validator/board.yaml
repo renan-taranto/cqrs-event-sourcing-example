@@ -1,10 +1,10 @@
-Taranto\ListMaker\Domain\Model\Board\Command\CreateBoard:
+Taranto\ListMaker\Board\Domain\Command\CreateBoard:
     properties:
         aggregateId:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
-            - Taranto\ListMaker\Infrastructure\Validation\Constraints\AggregateDoesNotExist:
+            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateDoesNotExist:
                   idField: boardId
                   collectionName: boards
         payload:
@@ -15,13 +15,13 @@ Taranto\ListMaker\Domain\Model\Board\Command\CreateBoard:
                           - Length:
                                 max: 50
 
-Taranto\ListMaker\Domain\Model\Board\Command\ChangeBoardTitle:
+Taranto\ListMaker\Board\Domain\Command\ChangeBoardTitle:
     properties:
         aggregateId:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
-            - Taranto\ListMaker\Infrastructure\Validation\Constraints\AggregateExists:
+            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
                   idField: boardId
                   collectionName: boards
         payload:
@@ -32,22 +32,22 @@ Taranto\ListMaker\Domain\Model\Board\Command\ChangeBoardTitle:
                           - Length:
                                 max: 50
 
-Taranto\ListMaker\Domain\Model\Board\Command\CloseBoard:
+Taranto\ListMaker\Board\Domain\Command\CloseBoard:
     properties:
         aggregateId:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
-            -   Taranto\ListMaker\Infrastructure\Validation\Constraints\AggregateExists:
+            -   Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
                   idField: boardId
                   collectionName: boards
 
-Taranto\ListMaker\Domain\Model\Board\Command\ReopenBoard:
+Taranto\ListMaker\Board\Domain\Command\ReopenBoard:
     properties:
         aggregateId:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
-            -   Taranto\ListMaker\Infrastructure\Validation\Constraints\AggregateExists:
+            -   Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
                     idField: boardId
                     collectionName: boards

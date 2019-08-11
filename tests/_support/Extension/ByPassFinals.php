@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\_support\Extension;
+namespace Taranto\ListMaker\Tests\Extension;
 
 use Codeception\Event\TestEvent;
 use Codeception\Events;
@@ -17,7 +17,7 @@ use Codeception\Extension;
 
 /**
  * Class ByPassFinals
- * @package Taranto\ListMaker\Tests\_support\Extension
+ * @package Taranto\ListMaker\Tests\Extension
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 final class ByPassFinals extends Extension

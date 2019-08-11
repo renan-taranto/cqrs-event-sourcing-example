@@ -11,7 +11,7 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
-            $eventStore: '@Taranto\ListMaker\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore'
+            $eventStore: '@Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore'
             $boardCollection: '@mongo.collection.boards'
             $mongoUrl: '%env(MONGO_URL)%'
             $mongoDatabase: '%env(MONGO_DATABASE)%'
@@ -24,41 +24,39 @@ services:
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    Taranto\ListMaker\Ui\Web\Controller\:
-        resource: '../src/Ui/Web/Controller'
+    Taranto\ListMaker\Shared\Ui\Web\Controller\:
+        resource: '../src/Shared/Ui/Web/Controller'
         tags: ['controller.service_arguments']
 
     # Request Listeners
-    Taranto\ListMaker\Ui\Web\EventListener\JsonRequestValidation:
+    Taranto\ListMaker\Shared\Ui\Web\EventListener\JsonRequestValidation:
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
     # Response Listeners
-    Taranto\ListMaker\Ui\Web\EventListener\ResponseOnValidationException:
+    Taranto\ListMaker\Shared\Ui\Web\EventListener\ResponseOnValidationException:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
     # Message Handlers
-    command_handlers:
-        namespace: Taranto\ListMaker\Application\CommandHandler\
-        resource: '%kernel.project_dir%/src/Application/CommandHandler/*'
+    board.command_handlers:
+        namespace: Taranto\ListMaker\Board\Application\CommandHandler\
+        resource: '%kernel.project_dir%/src/Board/Application/CommandHandler/*'
         tags: [{ name: messenger.message_handler, bus: command.bus }]
         autoconfigure: false
 
-    event_handlers:
-        namespace: Taranto\ListMaker\Infrastructure\Persistence\Projection\
-        resource: '%kernel.project_dir%/src/Infrastructure/Persistence/Projection/*/*Projector.php'
+    Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\BoardProjector:
         tags: [{ name: messenger.message_handler, bus: event.bus }]
         autoconfigure: false
 
     #Event Store
-    Taranto\ListMaker\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore:
+    Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore:
         arguments:
-            $eventStore: '@Taranto\ListMaker\Infrastructure\Persistence\EventStore\MySqlEventStore'
+            $eventStore: '@Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\MySqlEventStore'
             $eventBus: '@event.bus'
 
     # Mongo Collections
     mongo.collection.boards:
-        class: Taranto\ListMaker\Infrastructure\Persistence\Projection\MongoCollectionFactory
-        factory: ['@Taranto\ListMaker\Infrastructure\Persistence\Projection\MongoCollectionFactory', 'createCollection']
+        class: Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionFactory
+        factory: ['@Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionFactory', 'createCollection']
         arguments: ['boards']

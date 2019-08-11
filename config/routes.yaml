@@ -2,7 +2,7 @@
 command::create-board:
     path: /boards/create
     defaults:
-        _controller: Taranto\ListMaker\Ui\Web\Controller\CommandController
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
         method: POST
         _format: json
-        command_class: Taranto\ListMaker\Domain\Model\Board\Command\CreateBoard
+        command_class: Taranto\ListMaker\Board\Domain\Command\CreateBoard

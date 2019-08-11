@@ -1,6 +1,6 @@
 <?php
 
-use Taranto\ListMaker\Infrastructure\Kernel;
+use Taranto\ListMaker\Shared\Infrastructure\Kernel;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
