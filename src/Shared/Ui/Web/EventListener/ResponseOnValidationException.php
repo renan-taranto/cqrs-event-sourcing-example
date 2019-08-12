@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Shared\Ui\Web\EventListener;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Messenger\Exception\ValidationFailedException;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -51,14 +51,14 @@ final class ResponseOnValidationException
         /** @var ConstraintViolation $violation */
         foreach ($event->getException()->getViolations() as $violation) {
             if ($violation->getConstraint() instanceof AggregateExists) {
-                $response = new JsonResponse(null, JsonResponse::HTTP_NOT_FOUND);
+                $response = new Response(null, Response::HTTP_NOT_FOUND);
                 $event->setResponse($response);
                 return;
             }
         }
 
         $violations = $this->constraintViolationsTranslator->translate($event->getException()->getViolations());
-        $response = new JsonResponse(['errors' => $violations], JsonResponse::HTTP_BAD_REQUEST);
+        $response = new Response(json_encode(['errors' => $violations]), Response::HTTP_BAD_REQUEST);
         $event->setResponse($response);
     }
 }

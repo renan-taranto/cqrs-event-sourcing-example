@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Shared\Ui\Web\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -45,14 +45,14 @@ final class CommandController
 
     /**
      * @param Request $request
-     * @return JsonResponse
+     * @return Response
      * @throws \Exception
      */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request): Response
     {
         $command = $this->commandFactory->fromHttpRequest($request);
         $this->commandBus->dispatch($command);
 
-        return JsonResponse::create(null, JsonResponse::HTTP_ACCEPTED);
+        return Response::create(null, Response::HTTP_ACCEPTED);
     }
 }

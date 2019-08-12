@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Shared\Ui\Web\EventListener;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
@@ -33,7 +33,10 @@ final class JsonRequestValidation
 
         \json_decode($event->getRequest()->getContent());
         if (json_last_error() !== JSON_ERROR_NONE || is_numeric($event->getRequest()->getContent())) {
-            $response = new JsonResponse(['errors' => ['Invalid request payload.']], JsonResponse::HTTP_BAD_REQUEST);
+            $response = new Response(
+                json_encode(['errors' => ['Invalid request payload.']]),
+                Response::HTTP_BAD_REQUEST
+            );
             $event->setResponse($response);
         }
     }
