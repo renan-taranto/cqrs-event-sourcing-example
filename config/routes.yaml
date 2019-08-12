@@ -6,3 +6,11 @@ command::create-board:
         method: POST
         _format: json
         command_class: Taranto\ListMaker\Board\Domain\Command\CreateBoard
+
+command::change-board-title:
+    path: /boards/change-title
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        method: POST
+        _format: json
+        command_class: Taranto\ListMaker\Board\Domain\Command\ChangeBoardTitle
