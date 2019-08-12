@@ -14,3 +14,12 @@ command::change-board-title:
         method: POST
         _format: json
         command_class: Taranto\ListMaker\Board\Domain\Command\ChangeBoardTitle
+
+
+command::close-board:
+    path: /boards/close
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        method: POST
+        _format: json
+        command_class: Taranto\ListMaker\Board\Domain\Command\CloseBoard

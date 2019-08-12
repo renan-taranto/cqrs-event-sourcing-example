@@ -32,7 +32,7 @@ Feature: Change Board Title
     }
     """
 
-  Scenario: Title change of nonexistent Board
+  Scenario: Title change of nonexistent board
     Given I send a POST request to "/boards/change-title" with body:
     """
     {
