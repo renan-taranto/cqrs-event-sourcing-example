@@ -11,11 +11,13 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Board\Domain\Query;
 
+use Taranto\ListMaker\Shared\Domain\Message\Query;
+
 /**
  * Class ClosedBoards
  * @package Taranto\ListMaker\Board\Domain\Query
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class ClosedBoards
+final class ClosedBoards extends Query
 {
 }
