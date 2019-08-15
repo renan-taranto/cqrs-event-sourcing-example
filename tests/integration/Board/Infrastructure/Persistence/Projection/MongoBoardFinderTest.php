@@ -51,22 +51,6 @@ class MongoBoardFinderTest extends Unit
     /**
      * @test
      */
-    public function findAllBoards(): void
-    {
-        $this->describe('Find all boards', function() {
-            $this->should('return all persisted boards', function() {
-                $allBoards = $this->boardCollection->find([])->toArray();
-
-                $boardsFound = $this->boardFinder->allBoards();
-
-                expect($boardsFound)->equals($allBoards);
-            });
-        });
-    }
-
-    /**
-     * @test
-     */
     public function findOpenBoards(): void
     {
         $this->describe('Find open boards', function() {
@@ -99,19 +83,19 @@ class MongoBoardFinderTest extends Unit
     /**
      * @test
      */
-    public function findBoardOfId(): void
+    public function findBoardById(): void
     {
-        $this->describe('Find board of id', function() {
+        $this->describe('Find board by id', function() {
             $this->should('return a board with the given id', function() {
-                $board = $this->boardCollection->findOne([], ["typeMap" => ['root' => 'array', 'document' => 'array']]);
+                $board = $this->boardCollection->findOne([], ['typeMap' => ['root' => 'array', 'document' => 'array']]);
 
-                $boardFound = $this->boardFinder->boardOfId($board['boardId']);
+                $boardFound = $this->boardFinder->boardById($board['boardId']);
 
                 expect($boardFound)->equals($board);
             });
 
             $this->should('return null when board is not found', function() {
-                expect($this->boardFinder->boardOfId('12345'))->null();
+                expect($this->boardFinder->boardById('12345'))->null();
             });
         });
     }

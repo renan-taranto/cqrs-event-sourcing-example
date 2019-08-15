@@ -29,14 +29,21 @@ final class BoardData
     private $title;
 
     /**
+     * @var bool
+     */
+    private $isOpen;
+
+    /**
      * BoardData constructor.
      * @param string $boardId
      * @param string $title
+     * @param bool $isOpen
      */
-    public function __construct(string $boardId, string $title)
+    public function __construct(string $boardId, string $title, bool $isOpen)
     {
         $this->boardId = $boardId;
         $this->title = $title;
+        $this->isOpen = $isOpen;
     }
 
     /**
@@ -53,5 +60,13 @@ final class BoardData
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpen(): bool
+    {
+        return $this->isOpen;
     }
 }

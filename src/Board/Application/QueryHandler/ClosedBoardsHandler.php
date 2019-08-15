@@ -43,7 +43,7 @@ final class ClosedBoardsHandler
     public function __invoke(ClosedBoards $query): array
     {
         return array_map(function ($board) {
-            return new BoardData($board['boardId'], $board['title']);
+            return new BoardData($board['boardId'], $board['title'], $board['isOpen']);
         }, $this->boardFinder->closedBoards());
     }
 }

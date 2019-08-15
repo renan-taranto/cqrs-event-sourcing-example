@@ -35,6 +35,16 @@ class ApiTester extends \Codeception\Actor
     }
 
     /**
+     * @Given I send a GET request to :url
+     *
+     * @param $url
+     */
+    public function iSendAGETRequestTo($url)
+    {
+        $this->sendGET($url);
+    }
+
+    /**
      * @Then the response should be empty
      */
     public function theResponseShouldBeEmpty(): void
@@ -59,6 +69,6 @@ class ApiTester extends \Codeception\Actor
      */
     public function theResponseShouldBe(PyStringNode $body): void
     {
-        $this->assertEquals(json_decode($this->grabResponse()), json_decode($body->getRaw()));
+        $this->assertEquals(json_decode($body->getRaw()), json_decode($this->grabResponse()));
     }
 }

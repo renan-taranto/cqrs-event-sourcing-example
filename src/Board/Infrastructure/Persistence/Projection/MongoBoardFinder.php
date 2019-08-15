@@ -38,14 +38,6 @@ final class MongoBoardFinder implements BoardFinder
     /**
      * @return array
      */
-    public function allBoards(): array
-    {
-        return $this->boardCollection->find([])->toArray();
-    }
-
-    /**
-     * @return array
-     */
     public function openBoards(): array
     {
         return $this->boardCollection->find(['isOpen' => true])->toArray();
@@ -63,11 +55,11 @@ final class MongoBoardFinder implements BoardFinder
      * @param string $boardId
      * @return array|null
      */
-    public function boardOfId(string $boardId): ?array
+    public function boardById(string $boardId): ?array
     {
         return $this->boardCollection->findOne(
             ['boardId' => $boardId],
-            ["typeMap" => ['root' => 'array', 'document' => 'array']]
+            ['typeMap' => ['root' => 'array', 'document' => 'array']]
         );
     }
 }

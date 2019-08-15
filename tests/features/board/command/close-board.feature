@@ -7,7 +7,7 @@ Feature: Close Board
     Given I send a POST request to "/boards/close" with body:
     """
     {
-      "id": "00cb8019-9ad9-442f-8908-6c90ba5cb827"
+      "id": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392"
     }
     """
     Then the response status code should be 202

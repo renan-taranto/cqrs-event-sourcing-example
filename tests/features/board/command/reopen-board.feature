@@ -7,7 +7,7 @@ Feature: Reopen Board
     Given I send a POST request to "/boards/reopen" with body:
     """
     {
-      "id": "00cb8019-9ad9-442f-8908-6c90ba5cb827"
+      "id": "d81805d3-a350-4ef0-81f0-9eb122b4c1ea"
     }
     """
     Then the response status code should be 202

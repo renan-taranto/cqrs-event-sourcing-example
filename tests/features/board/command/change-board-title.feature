@@ -7,8 +7,8 @@ Feature: Change Board Title
     Given I send a POST request to "/boards/change-title" with body:
     """
     {
-      "id": "00cb8019-9ad9-442f-8908-6c90ba5cb827",
-      "title": "Tasks"
+      "id": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392",
+      "title": "Features"
     }
     """
     Then the response status code should be 202
@@ -18,7 +18,7 @@ Feature: Change Board Title
     Given I send a POST request to "/boards/change-title" with body:
     """
     {
-      "id": "00cb8019-9ad9-442f-8908-6c90ba5cb827",
+      "id": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392",
       "title": ""
     }
     """

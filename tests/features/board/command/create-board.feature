@@ -8,7 +8,7 @@ Feature: Create Board
     """
     {
       "id": "af2ece25-9ead-41dd-a2c6-4bf68d92c30f",
-      "title": "Tasks"
+      "title": "Ideas"
     }
     """
     Then the response status code should be 202

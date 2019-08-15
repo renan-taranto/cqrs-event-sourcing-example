@@ -13,14 +13,14 @@ namespace Taranto\ListMaker\Board\Application\QueryHandler;
 
 use Taranto\ListMaker\Board\Application\QueryHandler\Data\BoardData;
 use Taranto\ListMaker\Board\Domain\BoardFinder;
-use Taranto\ListMaker\Board\Domain\Query\BoardOfId;
+use Taranto\ListMaker\Board\Domain\Query\BoardById;
 
 /**
- * Class BoardOfIdHandler
+ * Class BoardByIdHandler
  * @package Taranto\ListMaker\Board\Application\QueryHandler
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class BoardOfIdHandler
+final class BoardByIdHandler
 {
     /**
      * @var BoardFinder
@@ -37,15 +37,15 @@ final class BoardOfIdHandler
     }
 
     /**
-     * @param BoardOfId $query
+     * @param BoardById $query
      * @return BoardData|null
      */
-    public function __invoke(BoardOfId $query): ?BoardData
+    public function __invoke(BoardById $query): ?BoardData
     {
-        if (null === $board = $this->boardFinder->boardOfId($query->boardId())) {
+        if (null === $board = $this->boardFinder->boardById($query->boardId())) {
             return null;
         }
 
-        return new BoardData($board['boardId'], $board['title']);
+        return new BoardData($board['boardId'], $board['title'], $board['isOpen']);
     }
 }

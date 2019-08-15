@@ -14,11 +14,11 @@ namespace Taranto\ListMaker\Board\Domain\Query;
 use Taranto\ListMaker\Shared\Domain\Message\Query;
 
 /**
- * Class BoardOfId
+ * Class BoardById
  * @package Taranto\ListMaker\Board\Domain\Query
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class BoardOfId extends Query
+final class BoardById extends Query
 {
     /**
      * @return string

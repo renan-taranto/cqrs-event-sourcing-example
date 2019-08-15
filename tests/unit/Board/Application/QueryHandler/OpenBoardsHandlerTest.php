@@ -51,11 +51,11 @@ class OpenBoardsHandlerTest extends Unit
     protected function _before(): void
     {
         $this->normalizedBoards = [
-            ['boardId' => (string) BoardId::generate(), 'title' => 'To-Dos'],
-            ['boardId' => (string) BoardId::generate(), 'title' => 'Jobs']
+            ['boardId' => (string) BoardId::generate(), 'title' => 'To-Dos', 'isOpen' => true],
+            ['boardId' => (string) BoardId::generate(), 'title' => 'Jobs', 'isOpen' => true]
         ];
         $this->openBoardsData = array_map(function ($board) {
-            return new BoardData($board['boardId'], $board['title']);
+            return new BoardData($board['boardId'], $board['title'], $board['isOpen']);
         }, $this->normalizedBoards);
 
         $this->boardFinder = \Mockery::mock(BoardFinder::class);

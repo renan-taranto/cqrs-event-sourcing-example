@@ -1,1 +1,1 @@
-{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"appdb-test.boards"}],"uuid":"61fc0b140a354dac9b9b95ccd7bea0fa"}
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"appdb.boards"}],"uuid":"1caff9d2c9f04fada56424c1629a51f5"}

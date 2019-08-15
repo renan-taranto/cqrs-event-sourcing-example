@@ -21,11 +21,6 @@ interface BoardFinder
     /**
      * @return array
      */
-    public function allBoards(): array;
-
-    /**
-     * @return array
-     */
     public function openBoards(): array;
 
     /**
@@ -37,5 +32,5 @@ interface BoardFinder
      * @param string $boardId
      * @return array|null
      */
-    public function boardOfId(string $boardId): ?array;
+    public function boardById(string $boardId): ?array;
 }

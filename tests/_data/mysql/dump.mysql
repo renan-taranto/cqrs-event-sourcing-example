@@ -31,7 +31,7 @@ CREATE TABLE `event_stream` (
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_aggregate_version` (`aggregate_id`,`aggregate_version`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `event_stream` (
 
 LOCK TABLES `event_stream` WRITE;
 /*!40000 ALTER TABLE `event_stream` DISABLE KEYS */;
-INSERT INTO `event_stream` VALUES (8,'00cb8019-9ad9-442f-8908-6c90ba5cb827',1,'board-created','{\"title\": \"My First Board!\"}','2019-08-01 04:21:07'),(9,'efa1da3d-5308-48c3-88de-731c27abf2f9',1,'board-created','{\"title\": \"To-Dos\"}','2019-08-02 00:05:17'),(10,'e50f3b3d-1e6c-4315-b46f-583333ccf5ca',1,'board-created','{\"title\": \"Jobs\"}','2019-08-02 00:06:56');
+INSERT INTO `event_stream` (`id`, `aggregate_id`, `aggregate_version`, `event_type`, `payload`, `created_at`) VALUES (61,'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392',1,'board-created','{\"title\": \"To-Dos\"}','2019-08-15 20:46:31'),(62,'4b2baa7e-315b-41cc-857b-8852619d230b',1,'board-created','{\"title\": \"Tasks\"}','2019-08-15 20:46:54'),(63,'d81805d3-a350-4ef0-81f0-9eb122b4c1ea',1,'board-created','{\"title\": \"Jobs\"}','2019-08-15 20:47:03'),(64,'37d22c48-17f7-4849-8fb2-dc67f29496f1',1,'board-created','{\"title\": \"Backlog\"}','2019-08-15 20:48:21'),(65,'c62abbe1-fb68-4e6d-a6a3-b41aee8564c8',1,'board-created','{\"title\": \"Issues\"}','2019-08-15 20:48:52'),(66,'37d22c48-17f7-4849-8fb2-dc67f29496f1',2,'board-closed','[]','2019-08-15 20:49:09'),(67,'d81805d3-a350-4ef0-81f0-9eb122b4c1ea',2,'board-closed','[]','2019-08-15 20:49:34');
 /*!40000 ALTER TABLE `event_stream` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-01 22:43:41
+-- Dump completed on 2019-08-15 17:52:04
