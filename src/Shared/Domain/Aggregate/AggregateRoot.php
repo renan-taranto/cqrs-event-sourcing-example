@@ -19,7 +19,7 @@ use Taranto\ListMaker\Shared\Domain\Message\DomainEvents;
  * @package Taranto\ListMaker\Shared\Domain\Aggregate
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-class AggregateRoot
+abstract class AggregateRoot
 {
     /**
      * @var DomainEvent[]
