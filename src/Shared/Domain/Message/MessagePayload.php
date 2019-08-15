@@ -11,30 +11,17 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Shared\Domain\Message;
 
-use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
-
 /**
- * Class DomainMessage
+ * Trait MessagePayload
  * @package Taranto\ListMaker\Shared\Domain\Message
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-abstract class DomainMessage
+trait MessagePayload
 {
-    /**
-     * @var string
-     */
-    protected $aggregateId;
-
     /**
      * @var array
      */
     protected $payload;
-
-    protected function __construct(string $aggregateId, array $payload = [])
-    {
-        $this->aggregateId = $aggregateId;
-        $this->payload = $payload;
-    }
 
     /**
      * @return array
@@ -43,9 +30,4 @@ abstract class DomainMessage
     {
         return $this->payload;
     }
-
-    /**
-     * @return IdentifiesAggregate
-     */
-    abstract public function aggregateId(): IdentifiesAggregate;
 }
