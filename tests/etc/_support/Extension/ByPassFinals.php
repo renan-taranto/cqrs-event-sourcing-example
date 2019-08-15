@@ -17,7 +17,7 @@ use Codeception\Extension;
 
 /**
  * Class ByPassFinals
- * @package Taranto\ListMaker\Tests\Extension
+ * @package Taranto\ListMaker\Tests\Helper\Extension
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 final class ByPassFinals extends Extension

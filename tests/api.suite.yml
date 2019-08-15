@@ -13,13 +13,13 @@ modules:
               dsn: "mysql:host=mysql;dbname=%MYSQL_DATABASE%"
               user: "%MYSQL_USER%"
               password: "%MYSQL_PASSWORD%"
-              dump: tests/_data/mysql/dump.mysql
+              dump: tests/etc/_data/mysql/dump.mysql
               cleanup: true
               populate: true
         - MongoDb:
               dsn: "%MONGO_URL%/%MONGO_DATABASE%"
               dump_type: mongodump
-              dump: tests/_data/mongo
+              dump: tests/etc/_data/mongo
               cleanup: true
               populate: true
               quiet: true
