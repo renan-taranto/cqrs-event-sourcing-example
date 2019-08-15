@@ -17,7 +17,9 @@ framework:
             command.bus:
                 middleware:
                     - validation
-            query.bus: ~
+            query.bus:
+                middleware:
+                    - validation
             event.bus:
                 default_middleware: allow_no_handlers
         default_bus: command.bus

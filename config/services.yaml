@@ -39,9 +39,9 @@ services:
             - { name: kernel.event_listener, event: kernel.exception }
 
     # Message Handlers
-    board.command_handlers:
-        namespace: Taranto\ListMaker\Board\Application\CommandHandler\
-        resource: '%kernel.project_dir%/src/Board/Application/CommandHandler/*'
+    command_handlers:
+        namespace: Taranto\ListMaker\
+        resource: '%kernel.project_dir%/src/**/CommandHandler/*Handler.php'
         tags: [{ name: messenger.message_handler, bus: command.bus }]
         autoconfigure: false
     query_handlers:
