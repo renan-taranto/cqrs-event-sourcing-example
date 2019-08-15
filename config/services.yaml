@@ -62,6 +62,6 @@ services:
 
     # Mongo Collections
     mongo.collection.boards:
-        class: Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionFactory
-        factory: ['@Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionFactory', 'createCollection']
+        class: Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider
+        factory: ['@Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider', 'getCollection']
         arguments: ['boards']

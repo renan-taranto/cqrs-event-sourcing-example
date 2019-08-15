@@ -14,7 +14,7 @@ namespace Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionFactory;
+use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider;
 
 /**
  * Class AggregateDoesNotExistValidator
@@ -24,17 +24,17 @@ use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollecti
 class AggregateDoesNotExistValidator extends ConstraintValidator
 {
     /**
-     * @var MongoCollectionFactory
+     * @var MongoCollectionProvider
      */
     private $mongoCollectionFactory;
 
     /**
      * AggregateDoesNotExistValidator constructor.
-     * @param MongoCollectionFactory $mongoCollectionFactory
+     * @param MongoCollectionProvider $mongoCollectionProvider
      */
-    public function __construct(MongoCollectionFactory $mongoCollectionFactory)
+    public function __construct(MongoCollectionProvider $mongoCollectionProvider)
     {
-        $this->mongoCollectionFactory = $mongoCollectionFactory;
+        $this->mongoCollectionFactory = $mongoCollectionProvider;
     }
 
     /**
@@ -53,7 +53,7 @@ class AggregateDoesNotExistValidator extends ConstraintValidator
             return;
         }
 
-        $collection = $this->mongoCollectionFactory->createCollection($constraint->collectionName);
+        $collection = $this->mongoCollectionFactory->getCollection($constraint->collectionName);
         if ($collection->findOne([$constraint->idField => $value]) !== null) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }

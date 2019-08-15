@@ -15,11 +15,11 @@ use MongoDB\Client;
 use MongoDB\Collection;
 
 /**
- * Class MongoCollectionFactory
+ * Class MongoCollectionProvider
  * @package Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class MongoCollectionFactory
+final class MongoCollectionProvider
 {
     /**
      * @var string
@@ -46,7 +46,7 @@ final class MongoCollectionFactory
      * @param string $collectionName
      * @return Collection
      */
-    public function createCollection(string $collectionName): Collection
+    public function getCollection(string $collectionName): Collection
     {
         return (new Client($this->mongoUrl))->{$this->mongoDatabase}->$collectionName;
     }
