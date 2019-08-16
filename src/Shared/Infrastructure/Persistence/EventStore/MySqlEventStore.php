@@ -67,27 +67,41 @@ final class MySqlEventStore implements EventStore
     }
 
     /**
+     * @param IdentifiesAggregate $aggregateId
      * @param DomainEvents $events
-     * @param AggregateVersion $aggregateVersion
+     * @param AggregateVersion $expectedVersion
      * @throws \Doctrine\DBAL\ConnectionException
      */
-    public function commit(DomainEvents $events, AggregateVersion $aggregateVersion): void
+    public function commit(IdentifiesAggregate $aggregateId, DomainEvents $events, AggregateVersion $expectedVersion): void
     {
         try {
             $this->connection->beginTransaction();
+
+            $stmt = $this->connection->executeQuery(
+                'SELECT aggregate_version 
+                        FROM event_stream 
+                        WHERE aggregate_id = :aggregate_id 
+                        ORDER BY aggregate_version DESC
+                        LIMIT 1',
+                [':aggregate_id' => (string) $aggregateId]
+            );
+            if ((int) $stmt->fetchColumn() !== $expectedVersion->version()) {
+                throw new ConcurrencyException();
+            }
+
             $stmt = $this->connection->prepare("
                 INSERT INTO event_stream (aggregate_id, aggregate_version, event_type, payload, created_at)
                 VALUES(:aggregate_id, :aggregate_version, :event_type, :payload, :created_at)
             ");
 
-            $aggregateVersion = $aggregateVersion->decreaseBy(count($events));
+            $version = $expectedVersion->copy();
             foreach ($events as $event) {
-                $aggregateVersion = $aggregateVersion->next();
+                $version = $version->next();
 
-                /** @var $event \Taranto\ListMaker\Shared\Domain\DomainEvent */
+                /** @var $event DomainEvent */
                 $stmt->execute([
                     ':aggregate_id' => (string) $event->aggregateId(),
-                    ':aggregate_version' => $aggregateVersion->version(),
+                    ':aggregate_version' => $version->version(),
                     ':event_type' => $event->eventType(),
                     ':payload' => json_encode($event->payload()),
                     ':created_at' => (new \DateTimeImmutable())->format('Y-m-d H:i:s')

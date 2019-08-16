@@ -22,14 +22,19 @@ use Taranto\ListMaker\Shared\Domain\Message\DomainEvents;
 abstract class AggregateRoot
 {
     /**
-     * @var DomainEvent[]
+     * @var IdentifiesAggregate
      */
-    protected $recordedEvents = [];
+    protected $aggregateId;
 
     /**
      * @var AggregateVersion
      */
     protected $aggregateVersion;
+
+    /**
+     * @var DomainEvent[]
+     */
+    protected $recordedEvents = [];
 
     /**
      * AggregateRoot constructor.
@@ -48,6 +53,7 @@ abstract class AggregateRoot
         $instance = new static();
         foreach ($aggregateHistory as $event) {
             $instance->apply($event);
+            $instance->aggregateVersion = $instance->aggregateVersion->next();
         }
         return $instance;
     }
@@ -75,7 +81,6 @@ abstract class AggregateRoot
         }
 
         $this->$method($event);
-        $this->aggregateVersion = $this->aggregateVersion->next();
     }
 
     /**
@@ -90,6 +95,17 @@ abstract class AggregateRoot
         return $domainEvents;
     }
 
+    /**
+     * @return IdentifiesAggregate
+     */
+    public function aggregateId(): IdentifiesAggregate
+    {
+        return $this->aggregateId;
+    }
+
+    /**
+     * @return AggregateVersion
+     */
     public function aggregateVersion(): AggregateVersion
     {
         return $this->aggregateVersion;

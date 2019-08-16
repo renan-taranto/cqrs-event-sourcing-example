@@ -74,7 +74,7 @@ class MySqlEventStoreTest extends Unit
             BoardClosed::occur((string) $this->aggregateId)
         ];
         $this->domainEvents = new DomainEvents($this->events);
-        $this->aggregateVersion = AggregateVersion::fromVersion(count($this->events));
+        $this->aggregateVersion = AggregateVersion::fromVersion(0);
     }
 
     /**
@@ -83,7 +83,11 @@ class MySqlEventStoreTest extends Unit
     public function aggregateHistoryFor(): void
     {
         $this->should('return AggregateHistory from committed events', function () {
-            $this->mySqlEventStore->commit($this->domainEvents, $this->aggregateVersion);
+            $this->mySqlEventStore->commit(
+                $this->aggregateId,
+                $this->domainEvents,
+                $this->aggregateVersion
+            );
 
             $aggregateHistory = $this->mySqlEventStore->aggregateHistoryFor($this->aggregateId);
 

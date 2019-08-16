@@ -43,12 +43,13 @@ abstract class EventStoreDecorator implements EventStore
     }
 
     /**
+     * @param IdentifiesAggregate $aggregateId
      * @param DomainEvents $events
-     * @param AggregateVersion $aggregateVersion
+     * @param AggregateVersion $expectedVersion
      */
-    public function commit(DomainEvents $events, AggregateVersion $aggregateVersion): void
+    public function commit(IdentifiesAggregate $aggregateId, DomainEvents $events, AggregateVersion $expectedVersion): void
     {
-        $this->eventStore->commit($events, $aggregateVersion);
+        $this->eventStore->commit($aggregateId,$events, $expectedVersion);
     }
 
     /**

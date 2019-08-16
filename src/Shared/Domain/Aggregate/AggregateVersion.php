@@ -52,6 +52,14 @@ final class AggregateVersion
     /**
      * @return AggregateVersion
      */
+    public function copy(): self
+    {
+        return new self($this->aggregateVersion);
+    }
+
+    /**
+     * @return AggregateVersion
+     */
     public function next(): self
     {
         return new self(++$this->aggregateVersion);

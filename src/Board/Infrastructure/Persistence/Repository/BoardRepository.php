@@ -42,7 +42,11 @@ final class BoardRepository implements BoardRepositoryInterface
      */
     public function save(Board $board): void
     {
-        $this->eventStore->commit($board->popRecordedEvents(), $board->aggregateVersion());
+        $this->eventStore->commit(
+            $board->aggregateId(),
+            $board->popRecordedEvents(),
+            $board->aggregateVersion()
+        );
     }
 
     /**

@@ -13,6 +13,7 @@ namespace Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore;
 
 use Symfony\Component\Messenger\MessageBusInterface;
 use Taranto\ListMaker\Shared\Domain\Aggregate\AggregateVersion;
+use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
 use Taranto\ListMaker\Shared\Domain\Message\DomainEvents;
 
 /**
@@ -39,12 +40,13 @@ class MessageDispatcherEventStore extends EventStoreDecorator
     }
 
     /**
+     * @param IdentifiesAggregate $aggregateId
      * @param DomainEvents $events
-     * @param AggregateVersion $aggregateVersion
+     * @param AggregateVersion $expectedVersion
      */
-    public function commit(DomainEvents $events, AggregateVersion $aggregateVersion): void
+    public function commit(IdentifiesAggregate $aggregateId, DomainEvents $events, AggregateVersion $expectedVersion): void
     {
-        parent::commit($events, $aggregateVersion);
+        parent::commit($aggregateId, $events, $expectedVersion);
 
         foreach ($events as $event) {
             $this->eventBus->dispatch($event);

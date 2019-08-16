@@ -15,6 +15,7 @@ use Codeception\Specify;
 use Codeception\Test\Unit;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Taranto\ListMaker\Shared\Domain\Aggregate\AggregateVersion;
+use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
 use Taranto\ListMaker\Shared\Domain\Message\DomainEvent;
 use Taranto\ListMaker\Shared\Domain\Message\DomainEvents;
 use Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\EventStore;
@@ -50,6 +51,11 @@ class MessageDispatcherEventStoreTest extends Unit
     private $eventStore;
 
     /**
+     * @var IdentifiesAggregate
+     */
+    private $aggregateId;
+
+    /**
      * @var AggregateVersion
      */
     private $aggregateVersion;
@@ -67,6 +73,7 @@ class MessageDispatcherEventStoreTest extends Unit
         $this->event = \Mockery::mock(DomainEvent::class);
         $this->domainEvents = new DomainEvents([$this->event]);
 
+        $this->aggregateId = \Mockery::mock(IdentifiesAggregate::class);
         $this->aggregateVersion = AggregateVersion::fromVersion(1);
 
         $this->messageDispatcherEventStore = new MessageDispatcherEventStore(
@@ -82,9 +89,17 @@ class MessageDispatcherEventStoreTest extends Unit
     {
         $this->describe('Commit', function() {
             $this->should('dispatch events after committing them', function() {
-                $this->messageDispatcherEventStore->commit($this->domainEvents, $this->aggregateVersion);
+                $this->messageDispatcherEventStore->commit(
+                    $this->aggregateId,
+                    $this->domainEvents,
+                    $this->aggregateVersion
+                );
 
-                $this->eventStore->shouldHaveReceived('commit')->with($this->domainEvents, $this->aggregateVersion);
+                $this->eventStore->shouldHaveReceived('commit')->with(
+                    $this->aggregateId,
+                    $this->domainEvents,
+                    $this->aggregateVersion
+                );
                 $this->eventBus->shouldHaveReceived('dispatch')->with($this->event);
             });
         });
