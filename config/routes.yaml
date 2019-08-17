@@ -1,56 +1,56 @@
 # Board
 command::create-board:
     path: /boards/create
+    methods: POST
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
-        method: POST
         _format: json
         command_class: Taranto\ListMaker\Board\Domain\Command\CreateBoard
 
 command::change-board-title:
     path: /boards/change-title
+    methods: POST
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
-        method: POST
         _format: json
         command_class: Taranto\ListMaker\Board\Domain\Command\ChangeBoardTitle
 
 command::close-board:
     path: /boards/close
+    methods: POST
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
-        method: POST
         _format: json
         command_class: Taranto\ListMaker\Board\Domain\Command\CloseBoard
 
 command::reopen-board:
     path: /boards/reopen
+    methods: POST
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
-        method: POST
         _format: json
         command_class: Taranto\ListMaker\Board\Domain\Command\ReopenBoard
 
 query::closed-boards:
     path: /boards/closed/
+    methods: GET
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
-        method: GET
         _format: json
         query_class: Taranto\ListMaker\Board\Domain\Query\ClosedBoards
 
 query::open-boards:
     path: /boards/open
+    methods: GET
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
-        method: GET
         _format: json
         query_class: Taranto\ListMaker\Board\Domain\Query\OpenBoards
 
 query::board-by-id:
     path: /boards/{boardId}
+    methods: GET
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
-        method: GET
         _format: json
         query_class: Taranto\ListMaker\Board\Domain\Query\BoardById
