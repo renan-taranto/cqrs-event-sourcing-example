@@ -27,7 +27,7 @@ final class JsonRequestValidation
      */
     public function onKernelRequest(RequestEvent $event): void
     {
-        if ($event->getRequest()->getMethod() !== Request::METHOD_POST) {
+        if ($event->getRequest()->getMethod() !== Request::METHOD_POST || empty($event->getRequest()->getContent())) {
             return;
         }
 

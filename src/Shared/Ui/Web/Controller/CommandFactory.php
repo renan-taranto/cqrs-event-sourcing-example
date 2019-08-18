@@ -32,10 +32,9 @@ final class CommandFactory
     public function fromHttpRequest(Request $request): Command
     {
         $commandClass = $this->getCommandClass($request);
-        $requestPayload = $this->getRequestPayload($request);
         return $commandClass::request(
-            $this->getAggregateId($requestPayload),
-            $this->getCommandPayload($requestPayload)
+            $this->getAggregateId($request),
+            $this->getCommandPayload($request)
         );
     }
 
@@ -56,29 +55,49 @@ final class CommandFactory
 
     /**
      * @param Request $request
+     * @return string
+     */
+    private function getAggregateId(Request $request): string
+    {
+        $aggregateId = $this->getAggregateIdFromUri($request) ?: $this->getAggregateIdFromPayload($request);
+        return $aggregateId ?: '';
+    }
+
+    /**
+     * @param Request $request
+     * @return string|null
+     */
+    private function getAggregateIdFromUri(Request $request): ?string
+    {
+        return $request->get(self::AGGREGATE_ID_ATTRIBUTE);
+    }
+
+    /**
+     * @param Request $request
+     * @return string|null
+     */
+    private function getAggregateIdFromPayload(Request $request): ?string
+    {
+        return $this->getRequestPayload($request)[self::AGGREGATE_ID_ATTRIBUTE] ?? null;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function getCommandPayload(Request $request): array
+    {
+        $requestPayload = $this->getRequestPayload($request);
+        unset($requestPayload[self::AGGREGATE_ID_ATTRIBUTE]);
+        return $requestPayload;
+    }
+
+    /**
+     * @param Request $request
      * @return array
      */
     private function getRequestPayload(Request $request): array
     {
-        return \json_decode($request->getContent(), true);
-    }
-
-    /**
-     * @param array $requestPayload
-     * @return string
-     */
-    private function getAggregateId(array $requestPayload): string
-    {
-        return $requestPayload[self::AGGREGATE_ID_ATTRIBUTE] ?? '';
-    }
-
-    /**
-     * @param array $requestPayload
-     * @return array
-     */
-    private function getCommandPayload(array $requestPayload): array
-    {
-        unset($requestPayload[self::AGGREGATE_ID_ATTRIBUTE]);
-        return $requestPayload;
+        return \json_decode($request->getContent(), true) ?: [];
     }
 }

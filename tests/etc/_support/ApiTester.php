@@ -24,6 +24,16 @@ class ApiTester extends \Codeception\Actor
     use _generated\ApiTesterActions;
 
     /**
+     * @Given I send a POST request to :url
+     *
+     * @param $url
+     */
+    public function iSendAPOSTRequestTo($url)
+    {
+        $this->sendPOST($url);
+    }
+
+    /**
      * @Given I send a POST request to :url with body: :body
      *
      * @param string $url

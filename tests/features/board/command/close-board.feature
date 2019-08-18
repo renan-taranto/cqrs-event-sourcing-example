@@ -4,21 +4,11 @@ Feature: Close Board
   I need to close them
 
   Scenario: Successful board closing
-    Given I send a POST request to "/boards/close" with body:
-    """
-    {
-      "id": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392"
-    }
-    """
+    Given I send a POST request to "/boards/b6e7cfd0-ae2b-44ee-9353-3e5d95e57392/closing"
     Then the response status code should be 202
     And the response should be empty
 
   Scenario: Closing a nonexistent board
-    Given I send a POST request to "/boards/close" with body:
-    """
-    {
-      "id": "12345"
-    }
-    """
+    Given I send a POST request to "/boards/12345/closing"
     Then the response status code should be 404
     And the response should be empty

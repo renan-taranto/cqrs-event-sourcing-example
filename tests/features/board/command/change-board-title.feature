@@ -4,10 +4,9 @@ Feature: Change Board Title
   I need to be able to change it through the api
 
   Scenario: Successful board title change
-    Given I send a POST request to "/boards/change-title" with body:
+    Given I send a POST request to "/boards/b6e7cfd0-ae2b-44ee-9353-3e5d95e57392/title-change" with body:
     """
     {
-      "id": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392",
       "title": "Features"
     }
     """
@@ -15,10 +14,9 @@ Feature: Change Board Title
     And the response should be empty
 
   Scenario: Board title change with invalid data
-    Given I send a POST request to "/boards/change-title" with body:
+    Given I send a POST request to "/boards/b6e7cfd0-ae2b-44ee-9353-3e5d95e57392/title-change" with body:
     """
     {
-      "id": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392",
       "title": ""
     }
     """
@@ -33,10 +31,9 @@ Feature: Change Board Title
     """
 
   Scenario: Title change of nonexistent board
-    Given I send a POST request to "/boards/change-title" with body:
+    Given I send a POST request to "/boards/12345/title-change" with body:
     """
     {
-      "id": "12345",
       "title": "Tasks"
     }
     """
