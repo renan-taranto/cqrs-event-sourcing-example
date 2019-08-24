@@ -1,5 +1,5 @@
 # Commands
-Taranto\ListMaker\Board\Domain\Command\CreateBoard:
+Taranto\ListMaker\Board\Application\Command\CreateBoard:
     properties:
         aggregateId:
             - NotBlank: ~
@@ -16,7 +16,7 @@ Taranto\ListMaker\Board\Domain\Command\CreateBoard:
                           - Length:
                                 max: 50
 
-Taranto\ListMaker\Board\Domain\Command\ChangeBoardTitle:
+Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle:
     properties:
         aggregateId:
             - NotBlank: ~
@@ -33,7 +33,7 @@ Taranto\ListMaker\Board\Domain\Command\ChangeBoardTitle:
                           - Length:
                                 max: 50
 
-Taranto\ListMaker\Board\Domain\Command\CloseBoard:
+Taranto\ListMaker\Board\Application\Command\CloseBoard:
     properties:
         aggregateId:
             - NotBlank: ~
@@ -43,7 +43,7 @@ Taranto\ListMaker\Board\Domain\Command\CloseBoard:
                   idField: boardId
                   collectionName: boards
 
-Taranto\ListMaker\Board\Domain\Command\ReopenBoard:
+Taranto\ListMaker\Board\Application\Command\ReopenBoard:
     properties:
         aggregateId:
             - NotBlank: ~
@@ -54,7 +54,7 @@ Taranto\ListMaker\Board\Domain\Command\ReopenBoard:
                   collectionName: boards
 
 # Queries
-Taranto\ListMaker\Board\Domain\Query\BoardById:
+Taranto\ListMaker\Board\Application\Query\BoardById:
     properties:
         payload:
             - Collection:
@@ -67,14 +67,14 @@ Taranto\ListMaker\Board\Domain\Query\BoardById:
                                 idField: boardId
                                 collectionName: boards
 
-Taranto\ListMaker\Board\Domain\Query\ClosedBoards:
+Taranto\ListMaker\Board\Application\Query\ClosedBoards:
     properties:
         payload:
             - Count:
                   min: 0
                   max: 0
 
-Taranto\ListMaker\Board\Domain\Query\OpenBoards:
+Taranto\ListMaker\Board\Application\Query\OpenBoards:
     properties:
         payload:
             - Count:

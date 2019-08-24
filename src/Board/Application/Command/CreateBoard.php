@@ -9,18 +9,19 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Domain\Command;
+namespace Taranto\ListMaker\Board\Application\Command;
 
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
 use Taranto\ListMaker\Shared\Domain\Message\Command;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**
- * Class CloseBoard
- * @package Taranto\ListMaker\Board\Domain\Command
+ * Class CreateBoard
+ * @package Taranto\ListMaker\Board\Application\Command
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class CloseBoard extends Command
+final class CreateBoard extends Command
 {
     /**
      * @return BoardId
@@ -28,5 +29,13 @@ final class CloseBoard extends Command
     public function aggregateId(): IdentifiesAggregate
     {
         return BoardId::fromString($this->aggregateId);
+    }
+
+    /**
+     * @return Title
+     */
+    public function title(): Title
+    {
+        return Title::fromString($this->payload['title']);
     }
 }

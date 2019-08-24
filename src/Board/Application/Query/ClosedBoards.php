@@ -9,15 +9,15 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Domain\Query;
+namespace Taranto\ListMaker\Board\Application\Query;
 
 use Taranto\ListMaker\Shared\Domain\Message\Query;
 
 /**
- * Class OpenBoards
- * @package Taranto\ListMaker\Board\Domain\Query
+ * Class ClosedBoards
+ * @package Taranto\ListMaker\Board\Application\Query
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class OpenBoards extends Query
+final class ClosedBoards extends Query
 {
 }

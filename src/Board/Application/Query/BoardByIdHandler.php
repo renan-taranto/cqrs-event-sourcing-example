@@ -9,15 +9,14 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Application\QueryHandler;
+namespace Taranto\ListMaker\Board\Application\Query;
 
-use Taranto\ListMaker\Board\Application\QueryHandler\Data\BoardData;
+use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
 use Taranto\ListMaker\Board\Domain\BoardFinder;
-use Taranto\ListMaker\Board\Domain\Query\BoardById;
 
 /**
  * Class BoardByIdHandler
- * @package Taranto\ListMaker\Board\Application\QueryHandler
+ * @package Taranto\ListMaker\Board\Application\Query
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 final class BoardByIdHandler

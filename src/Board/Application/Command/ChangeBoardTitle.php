@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Domain\Command;
+namespace Taranto\ListMaker\Board\Application\Command;
 
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
@@ -17,11 +17,11 @@ use Taranto\ListMaker\Shared\Domain\Message\Command;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**
- * Class CreateBoard
- * @package Taranto\ListMaker\Board\Domain\Command
+ * Class ChangeBoardTitle
+ * @package Taranto\ListMaker\Board\Application\Command
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class CreateBoard extends Command
+final class ChangeBoardTitle extends Command
 {
     /**
      * @return BoardId

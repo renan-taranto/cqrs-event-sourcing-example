@@ -5,7 +5,7 @@ command::create-board:
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
         _format: json
-        command_class: Taranto\ListMaker\Board\Domain\Command\CreateBoard
+        command_class: Taranto\ListMaker\Board\Application\Command\CreateBoard
 
 command::change-board-title:
     path: /boards/{id}/title-change
@@ -13,7 +13,7 @@ command::change-board-title:
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
         _format: json
-        command_class: Taranto\ListMaker\Board\Domain\Command\ChangeBoardTitle
+        command_class: Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle
 
 command::close-board:
     path: /boards/{id}/closing
@@ -21,7 +21,7 @@ command::close-board:
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
         _format: json
-        command_class: Taranto\ListMaker\Board\Domain\Command\CloseBoard
+        command_class: Taranto\ListMaker\Board\Application\Command\CloseBoard
 
 command::reopen-board:
     path: /boards/{id}/reopening
@@ -29,7 +29,7 @@ command::reopen-board:
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
         _format: json
-        command_class: Taranto\ListMaker\Board\Domain\Command\ReopenBoard
+        command_class: Taranto\ListMaker\Board\Application\Command\ReopenBoard
 
 query::closed-boards:
     path: /boards/closed
@@ -37,7 +37,7 @@ query::closed-boards:
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
         _format: json
-        query_class: Taranto\ListMaker\Board\Domain\Query\ClosedBoards
+        query_class: Taranto\ListMaker\Board\Application\Query\ClosedBoards
 
 query::open-boards:
     path: /boards/open
@@ -45,7 +45,7 @@ query::open-boards:
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
         _format: json
-        query_class: Taranto\ListMaker\Board\Domain\Query\OpenBoards
+        query_class: Taranto\ListMaker\Board\Application\Query\OpenBoards
 
 query::board-by-id:
     path: /boards/{boardId}
@@ -53,4 +53,4 @@ query::board-by-id:
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
         _format: json
-        query_class: Taranto\ListMaker\Board\Domain\Query\BoardById
+        query_class: Taranto\ListMaker\Board\Application\Query\BoardById

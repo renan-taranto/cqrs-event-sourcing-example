@@ -9,24 +9,25 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\Board\Application\CommandHandler;
+namespace Taranto\ListMaker\Tests\Board\Application\Command;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use Hamcrest\Core\IsEqual;
-use Taranto\ListMaker\Board\Application\CommandHandler\CloseBoardHandler;
+use Taranto\ListMaker\Board\Application\Command\ChangeBoardTitleHandler;
 use Taranto\ListMaker\Board\Domain\Board;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Board\Domain\BoardRepository;
-use Taranto\ListMaker\Board\Domain\Command\CloseBoard;
+use Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle;
 use Taranto\ListMaker\Board\Domain\Exception\BoardNotFound;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**
- * Class CloseBoardHandlerTest
- * @package Taranto\ListMaker\Tests\Board\Application\CommandHandler
+ * Class ChangeBoardTitleHandlerTest
+ * @package Taranto\ListMaker\Tests\Board\Application\Command
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-class CloseBoardHandlerTest extends Unit
+class ChangeBoardTitleHandlerTest extends Unit
 {
     use Specify;
 
@@ -36,7 +37,7 @@ class CloseBoardHandlerTest extends Unit
     private $repository;
 
     /**
-     * @var CloseBoardHandler
+     * @var ChangeBoardTitleHandler
      */
     private $handler;
 
@@ -46,42 +47,47 @@ class CloseBoardHandlerTest extends Unit
     private $board;
 
     /**
+     * @var Title
+     */
+    private $title;
+
+    /**
      * @var BoardId
      */
     private $boardId;
 
     /**
-     * @var CloseBoard
+     * @var \Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle
      */
     private $command;
 
     protected function _before(): void
     {
         $this->board = \Mockery::spy(Board::class);
+        $this->title = Title::fromString('Tasks');
         $this->boardId = BoardId::generate();
-        $this->command = CloseBoard::request((string) $this->boardId);
+        $this->command = ChangeBoardTitle::request((string) $this->boardId, ['title' => (string) $this->title]);
     }
 
     /**
      * @test
      */
-    public function closeBoard(): void
+    public function changeBoardTitle(): void
     {
-        $this->describe('Close Board', function() {
+        $this->describe('Change Board Title', function() {
             $this->beforeSpecify(function () {
                 $this->repository = \Mockery::mock(BoardRepository::class);
-                $this->handler = new CloseBoardHandler($this->repository);
+                $this->handler = new ChangeBoardTitleHandler($this->repository);
             });
-            $this->should('close the Board and save it', function () {
+            $this->should('change title and save the Board', function() {
                 $this->repository->shouldReceive('get')
-                    ->with(isEqual::equalTo($this->boardId))
+                    ->with(IsEqual::equalTo($this->boardId))
                     ->andReturn($this->board);
-                $this->repository->shouldReceive('save')
-                    ->with(isEqual::equalTo($this->board));
+                $this->repository->shouldReceive('save')->with($this->board);
 
                 ($this->handler)($this->command);
 
-                $this->board->shouldHaveReceived('close');
+                $this->board->shouldHaveReceived('changeTitle')->with(IsEqual::equalTo((string) $this->title));
             });
             $this->should("throw exception when Board not found", function() {
                 $this->repository->shouldReceive('get')

@@ -9,15 +9,14 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Application\CommandHandler;
+namespace Taranto\ListMaker\Board\Application\Command;
 
 use Taranto\ListMaker\Board\Domain\Board;
 use Taranto\ListMaker\Board\Domain\BoardRepository;
-use Taranto\ListMaker\Board\Domain\Command\CreateBoard;
 
 /**
  * Class CreateBoardHandler
- * @package Taranto\ListMaker\Board\Application\CommandHandler
+ * @package Taranto\ListMaker\Board\Application\Command
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 final class CreateBoardHandler

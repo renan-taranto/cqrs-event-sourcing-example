@@ -9,18 +9,17 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Application\CommandHandler;
+namespace Taranto\ListMaker\Board\Application\Command;
 
 use Taranto\ListMaker\Board\Domain\BoardRepository;
-use Taranto\ListMaker\Board\Domain\Command\ReopenBoard;
 use Taranto\ListMaker\Board\Domain\Exception\BoardNotFound;
 
 /**
- * Class ReopenBoardHandler
- * @package Taranto\ListMaker\Board\Application\CommandHandler
+ * Class CloseBoardHandler
+ * @package Taranto\ListMaker\Board\Application\Command
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class ReopenBoardHandler
+final class CloseBoardHandler
 {
     /**
      * @var BoardRepository
@@ -28,7 +27,7 @@ final class ReopenBoardHandler
     private $boardRepository;
 
     /**
-     * ReopenBoardHandler constructor.
+     * CloseBoardHandler constructor.
      * @param BoardRepository $boardRepository
      */
     public function __construct(BoardRepository $boardRepository)
@@ -37,17 +36,17 @@ final class ReopenBoardHandler
     }
 
     /**
-     * @param ReopenBoard $command
+     * @param CloseBoard $command
      * @throws BoardNotFound
      */
-    public function __invoke(ReopenBoard $command): void
+    public function __invoke(CloseBoard $command): void
     {
         $board = $this->boardRepository->get($command->aggregateId());
         if ($board === null) {
             throw BoardNotFound::withBoardId($command->aggregateId());
         }
 
-        $board->reopen();
+        $board->close();
         $this->boardRepository->save($board);
     }
 }

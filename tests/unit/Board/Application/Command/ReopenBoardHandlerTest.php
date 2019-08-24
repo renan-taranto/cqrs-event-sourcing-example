@@ -9,21 +9,21 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\Board\Application\CommandHandler;
+namespace Taranto\ListMaker\Tests\Board\Application\Command;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use Hamcrest\Core\IsEqual;
-use Taranto\ListMaker\Board\Application\CommandHandler\ReopenBoardHandler;
+use Taranto\ListMaker\Board\Application\Command\ReopenBoardHandler;
 use Taranto\ListMaker\Board\Domain\Board;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Board\Domain\BoardRepository;
-use Taranto\ListMaker\Board\Domain\Command\ReopenBoard;
+use Taranto\ListMaker\Board\Application\Command\ReopenBoard;
 use Taranto\ListMaker\Board\Domain\Exception\BoardNotFound;
 
 /**
  * Class ReopenBoardHandlerTest
- * @package Taranto\ListMaker\Tests\Board\Application\CommandHandler
+ * @package Taranto\ListMaker\Tests\Board\Application\Command
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 class ReopenBoardHandlerTest extends Unit

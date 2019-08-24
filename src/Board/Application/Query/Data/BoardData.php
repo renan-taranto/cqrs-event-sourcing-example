@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Application\QueryHandler\Data;
+namespace Taranto\ListMaker\Board\Application\Query\Data;
 
 /**
  * Class BoardData
- * @package Taranto\ListMaker\Board\Application\QueryHandler\Data
+ * @package Taranto\ListMaker\Board\Application\Query\Data
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 final class BoardData

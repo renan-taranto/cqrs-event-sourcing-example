@@ -9,15 +9,22 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Domain\Query;
+namespace Taranto\ListMaker\Board\Application\Query;
 
 use Taranto\ListMaker\Shared\Domain\Message\Query;
 
 /**
- * Class ClosedBoards
- * @package Taranto\ListMaker\Board\Domain\Query
+ * Class BoardById
+ * @package Taranto\ListMaker\Board\Application\Query
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class ClosedBoards extends Query
+final class BoardById extends Query
 {
+    /**
+     * @return string
+     */
+    public function boardId(): string
+    {
+        return $this->payload['boardId'];
+    }
 }

@@ -9,19 +9,19 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\unit\Board\Application\QueryHandler;
+namespace Taranto\ListMaker\Tests\Board\Application\Query;
 
 use Codeception\Specify;
 use Codeception\Test\Unit;
-use Taranto\ListMaker\Board\Application\QueryHandler\BoardByIdHandler;
-use Taranto\ListMaker\Board\Application\QueryHandler\Data\BoardData;
+use Taranto\ListMaker\Board\Application\Query\BoardById;
+use Taranto\ListMaker\Board\Application\Query\BoardByIdHandler;
+use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
 use Taranto\ListMaker\Board\Domain\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
-use Taranto\ListMaker\Board\Domain\Query\BoardById;
 
 /**
  * Class BoardByIdHandlerTest
- * @package Taranto\ListMaker\Tests\unit\Board\Application\QueryHandler
+ * @package Taranto\ListMaker\Tests\Board\Application\Query
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 class BoardByIdHandlerTest extends Unit

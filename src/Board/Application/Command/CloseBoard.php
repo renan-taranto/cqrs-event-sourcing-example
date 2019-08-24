@@ -9,21 +9,21 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Domain\Command;
+namespace Taranto\ListMaker\Board\Application\Command;
 
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
 use Taranto\ListMaker\Shared\Domain\Message\Command;
 
 /**
- * Class ReopenBoard
- * @package Taranto\ListMaker\Board\Domain\Command
+ * Class CloseBoard
+ * @package Taranto\ListMaker\Board\Application\Command
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class ReopenBoard extends Command
+final class CloseBoard extends Command
 {
     /**
-     * @return IdentifiesAggregate
+     * @return BoardId
      */
     public function aggregateId(): IdentifiesAggregate
     {

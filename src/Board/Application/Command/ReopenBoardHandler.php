@@ -9,18 +9,17 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Application\CommandHandler;
+namespace Taranto\ListMaker\Board\Application\Command;
 
 use Taranto\ListMaker\Board\Domain\BoardRepository;
-use Taranto\ListMaker\Board\Domain\Command\ChangeBoardTitle;
 use Taranto\ListMaker\Board\Domain\Exception\BoardNotFound;
 
 /**
- * Class ChangeBoardTitleHandler
- * @package Taranto\ListMaker\Board\Application\CommandHandler
+ * Class ReopenBoardHandler
+ * @package Taranto\ListMaker\Board\Application\Command
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class ChangeBoardTitleHandler
+final class ReopenBoardHandler
 {
     /**
      * @var BoardRepository
@@ -28,7 +27,7 @@ final class ChangeBoardTitleHandler
     private $boardRepository;
 
     /**
-     * ChangeBoardTitleHandler constructor.
+     * ReopenBoardHandler constructor.
      * @param BoardRepository $boardRepository
      */
     public function __construct(BoardRepository $boardRepository)
@@ -37,17 +36,17 @@ final class ChangeBoardTitleHandler
     }
 
     /**
-     * @param ChangeBoardTitle $command
+     * @param ReopenBoard $command
      * @throws BoardNotFound
      */
-    public function __invoke(ChangeBoardTitle $command): void
+    public function __invoke(ReopenBoard $command): void
     {
         $board = $this->boardRepository->get($command->aggregateId());
         if ($board === null) {
             throw BoardNotFound::withBoardId($command->aggregateId());
         }
 
-        $board->changeTitle($command->title());
+        $board->reopen();
         $this->boardRepository->save($board);
     }
 }
