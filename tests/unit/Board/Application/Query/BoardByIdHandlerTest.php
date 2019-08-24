@@ -16,7 +16,7 @@ use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Application\Query\BoardById;
 use Taranto\ListMaker\Board\Application\Query\BoardByIdHandler;
 use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
-use Taranto\ListMaker\Board\Domain\BoardFinder;
+use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
 
 /**
@@ -31,12 +31,7 @@ class BoardByIdHandlerTest extends Unit
     /**
      * @var string
      */
-
     private $boardId;
-    /**
-     * @var array
-     */
-    private $normalizedBoard;
 
     /**
      * @var BoardData
@@ -56,12 +51,7 @@ class BoardByIdHandlerTest extends Unit
     protected function _before(): void
     {
         $this->boardId = (string) BoardId::generate();
-        $this->normalizedBoard = ['boardId'  => $this->boardId, 'title' => 'To-Dos', 'isOpen' => true];
-        $this->boardData = new BoardData(
-            $this->normalizedBoard['boardId'],
-            $this->normalizedBoard['title'],
-            $this->normalizedBoard['isOpen']
-        );
+        $this->boardData = new BoardData($this->boardId, 'To-Dos', true);
     }
 
     /**
@@ -78,7 +68,7 @@ class BoardByIdHandlerTest extends Unit
             $this->should('return a board with the given id', function () {
                 $this->boardFinder->shouldReceive('boardById')
                     ->with($this->boardId)
-                    ->andReturn($this->normalizedBoard);
+                    ->andReturn($this->boardData);
 
                 $boardData = ($this->boardOfIdHandler)(new BoardById(['boardId' => $this->boardId]));
 

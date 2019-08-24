@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Board\Application\Query;
 
 use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
-use Taranto\ListMaker\Board\Domain\BoardFinder;
+use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
 
 /**
  * Class BoardByIdHandler
@@ -41,10 +41,6 @@ final class BoardByIdHandler
      */
     public function __invoke(BoardById $query): ?BoardData
     {
-        if (null === $board = $this->boardFinder->boardById($query->boardId())) {
-            return null;
-        }
-
-        return new BoardData($board['boardId'], $board['title'], $board['isOpen']);
+        return $this->boardFinder->boardById($query->boardId());
     }
 }

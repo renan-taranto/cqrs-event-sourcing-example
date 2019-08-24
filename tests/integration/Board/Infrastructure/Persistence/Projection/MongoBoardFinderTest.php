@@ -14,7 +14,7 @@ namespace Taranto\ListMaker\Tests\integration\Board\Infrastructure\Persistence\P
 use Codeception\Specify;
 use Codeception\Test\Unit;
 use MongoDB\Collection;
-use Taranto\ListMaker\Board\Domain\BoardFinder;
+use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
 use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\MongoBoardFinder;
 use Taranto\ListMaker\Tests\IntegrationTester;
 
@@ -55,11 +55,11 @@ class MongoBoardFinderTest extends Unit
     {
         $this->describe('Find open boards', function() {
             $this->should('return open boards', function() {
-                $openBoards = $this->boardCollection->find(['isOpen' => true])->toArray();
+                $openBoards = $this->boardFinder->openBoards();
 
-                $boardsFound = $this->boardFinder->openBoards();
-
-                expect($boardsFound)->equals($openBoards);
+                foreach ($openBoards as $board) {
+                    expect_that($board->isOpen());
+                }
             });
         });
     }
@@ -71,11 +71,11 @@ class MongoBoardFinderTest extends Unit
     {
         $this->describe('Find closed boards', function() {
             $this->should('return closed boards', function() {
-                $closedBoards = $this->boardCollection->find(['isOpen' => false])->toArray();
+                $closedBoards = $this->boardFinder->closedBoards();
 
-                $boardsFound = $this->boardFinder->closedBoards();
-
-                expect($boardsFound)->equals($closedBoards);
+                foreach ($closedBoards as $board) {
+                    expect_not($board->isOpen());
+                }
             });
         });
     }
@@ -87,11 +87,10 @@ class MongoBoardFinderTest extends Unit
     {
         $this->describe('Find board by id', function() {
             $this->should('return a board with the given id', function() {
-                $board = $this->boardCollection->findOne([], ['typeMap' => ['root' => 'array', 'document' => 'array']]);
+                $boardId = 'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392';
+                $board = $this->boardFinder->boardById($boardId);
 
-                $boardFound = $this->boardFinder->boardById($board['boardId']);
-
-                expect($boardFound)->equals($board);
+                expect($board->getBoardId())->equals($boardId);
             });
 
             $this->should('return null when board is not found', function() {

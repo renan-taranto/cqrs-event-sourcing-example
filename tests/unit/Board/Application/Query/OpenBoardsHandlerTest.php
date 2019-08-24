@@ -16,7 +16,7 @@ use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
 use Taranto\ListMaker\Board\Application\Query\OpenBoards;
 use Taranto\ListMaker\Board\Application\Query\OpenBoardsHandler;
-use Taranto\ListMaker\Board\Domain\BoardFinder;
+use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
 
 /**
@@ -27,11 +27,6 @@ use Taranto\ListMaker\Board\Domain\BoardId;
 class OpenBoardsHandlerTest extends Unit
 {
     use Specify;
-
-    /**
-     * @var array
-     */
-    private $normalizedBoards;
 
     /**
      * @var BoardData[]
@@ -50,13 +45,10 @@ class OpenBoardsHandlerTest extends Unit
 
     protected function _before(): void
     {
-        $this->normalizedBoards = [
-            ['boardId' => (string) BoardId::generate(), 'title' => 'To-Dos', 'isOpen' => true],
-            ['boardId' => (string) BoardId::generate(), 'title' => 'Jobs', 'isOpen' => true]
+        $this->openBoardsData = [
+            new BoardData((string) BoardId::generate(), 'To-Dos', true),
+            new BoardData((string) BoardId::generate(), 'Jobs', true)
         ];
-        $this->openBoardsData = array_map(function ($board) {
-            return new BoardData($board['boardId'], $board['title'], $board['isOpen']);
-        }, $this->normalizedBoards);
 
         $this->boardFinder = \Mockery::mock(BoardFinder::class);
         $this->openBoardsHandler = new OpenBoardsHandler($this->boardFinder);
@@ -69,7 +61,7 @@ class OpenBoardsHandlerTest extends Unit
     {
         $this->describe('Query Open Boards', function () {
             $this->should('return all open boards', function () {
-                $this->boardFinder->shouldReceive('openBoards')->andReturn($this->normalizedBoards);
+                $this->boardFinder->shouldReceive('openBoards')->andReturn($this->openBoardsData);
 
                 $boardsData = ($this->openBoardsHandler)(new OpenBoards());
 

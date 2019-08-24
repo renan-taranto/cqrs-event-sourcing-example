@@ -9,28 +9,28 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Domain;
+namespace Taranto\ListMaker\Board\Application\Query\Data;
 
 /**
  * Interface BoardFinder
- * @package Taranto\ListMaker\Board\Domain
+ * @package Taranto\ListMaker\Board\Application\Query\Data
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 interface BoardFinder
 {
     /**
-     * @return array
+     * @return BoardData[]
      */
     public function openBoards(): array;
 
     /**
-     * @return array
+     * @return BoardData[]
      */
     public function closedBoards(): array;
 
     /**
      * @param string $boardId
-     * @return array|null
+     * @return BoardData|null
      */
-    public function boardById(string $boardId): ?array;
+    public function boardById(string $boardId): ?BoardData;
 }

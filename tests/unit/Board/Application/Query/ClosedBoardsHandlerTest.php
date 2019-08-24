@@ -16,7 +16,7 @@ use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Application\Query\ClosedBoards;
 use Taranto\ListMaker\Board\Application\Query\ClosedBoardsHandler;
 use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
-use Taranto\ListMaker\Board\Domain\BoardFinder;
+use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
 
 /**
@@ -27,11 +27,6 @@ use Taranto\ListMaker\Board\Domain\BoardId;
 class ClosedBoardsHandlerTest extends Unit
 {
     use Specify;
-
-    /**
-     * @var array
-     */
-    private $normalizedBoards;
 
     /**
      * @var BoardData[]
@@ -50,13 +45,10 @@ class ClosedBoardsHandlerTest extends Unit
 
     protected function _before(): void
     {
-        $this->normalizedBoards = [
-            ['boardId' => (string) BoardId::generate(), 'title' => 'To-Dos', 'isOpen' => false],
-            ['boardId' => (string) BoardId::generate(), 'title' => 'Jobs', 'isOpen' => false]
+        $this->closedBoardsData = [
+            new BoardData((string) BoardId::generate(), 'To-Dos', false),
+            new BoardData((string) BoardId::generate(), 'Jobs', false)
         ];
-        $this->closedBoardsData = array_map(function ($board) {
-            return new BoardData($board['boardId'], $board['title'], $board['isOpen']);
-        }, $this->normalizedBoards);
 
         $this->boardFinder = \Mockery::mock(BoardFinder::class);
         $this->closedBoardsHandler = new ClosedBoardsHandler($this->boardFinder);
@@ -69,7 +61,7 @@ class ClosedBoardsHandlerTest extends Unit
     {
         $this->describe('Query Closed Boards', function () {
             $this->should('return all closed boards', function () {
-                $this->boardFinder->shouldReceive('closedBoards')->andReturn($this->normalizedBoards);
+                $this->boardFinder->shouldReceive('closedBoards')->andReturn($this->closedBoardsData);
 
                 $boardsData = ($this->closedBoardsHandler)(new ClosedBoards());
 

@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Board\Application\Query;
 
 use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
-use Taranto\ListMaker\Board\Domain\BoardFinder;
+use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
 
 /**
  * Class ClosedBoardsHandler
@@ -41,8 +41,6 @@ final class ClosedBoardsHandler
      */
     public function __invoke(ClosedBoards $query): array
     {
-        return array_map(function ($board) {
-            return new BoardData($board['boardId'], $board['title'], $board['isOpen']);
-        }, $this->boardFinder->closedBoards());
+        return $this->boardFinder->closedBoards();
     }
 }
