@@ -77,40 +77,60 @@ final class MySqlEventStore implements EventStore
         try {
             $this->connection->beginTransaction();
 
-            $stmt = $this->connection->executeQuery(
-                'SELECT aggregate_version 
-                        FROM event_stream 
-                        WHERE aggregate_id = :aggregate_id 
-                        ORDER BY aggregate_version DESC
-                        LIMIT 1',
-                [':aggregate_id' => (string) $aggregateId]
-            );
-            if ((int) $stmt->fetchColumn() !== $expectedVersion->version()) {
-                throw new ConcurrencyException();
-            }
+            $this->checkForConcurrency($aggregateId, $expectedVersion);
+            $this->insertDomainEvents($events, $expectedVersion);
 
-            $stmt = $this->connection->prepare("
-                INSERT INTO event_stream (aggregate_id, aggregate_version, event_type, payload, created_at)
-                VALUES(:aggregate_id, :aggregate_version, :event_type, :payload, :created_at)
-            ");
-
-            $version = $expectedVersion->copy();
-            foreach ($events as $event) {
-                $version = $version->next();
-
-                /** @var $event DomainEvent */
-                $stmt->execute([
-                    ':aggregate_id' => (string) $event->aggregateId(),
-                    ':aggregate_version' => $version->version(),
-                    ':event_type' => $event->eventType(),
-                    ':payload' => json_encode($event->payload()),
-                    ':created_at' => (new \DateTimeImmutable())->format('Y-m-d H:i:s')
-                ]);
-            }
             $this->connection->commit();
         } catch (\Exception $e) {
             $this->connection->rollBack();
             throw $e;
+        }
+    }
+
+    /**
+     * @param IdentifiesAggregate $aggregateId
+     * @param AggregateVersion $expectedVersion
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    private function checkForConcurrency(IdentifiesAggregate $aggregateId, AggregateVersion $expectedVersion): void
+    {
+        $stmt = $this->connection->executeQuery(
+            'SELECT aggregate_version 
+                        FROM event_stream 
+                        WHERE aggregate_id = :aggregate_id 
+                        ORDER BY aggregate_version DESC
+                        LIMIT 1',
+            [':aggregate_id' => (string) $aggregateId]
+        );
+        if ((int) $stmt->fetchColumn() !== $expectedVersion->version()) {
+            throw new ConcurrencyException();
+        }
+    }
+
+    /**
+     * @param DomainEvents $events
+     * @param AggregateVersion $currentVersion
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    private function insertDomainEvents(DomainEvents $events, AggregateVersion $currentVersion): void
+    {
+        $stmt = $this->connection->prepare("
+                INSERT INTO event_stream (aggregate_id, aggregate_version, event_type, payload, created_at)
+                VALUES(:aggregate_id, :aggregate_version, :event_type, :payload, :created_at)
+            ");
+
+        $version = $currentVersion->copy();
+        foreach ($events as $event) {
+            $version = $version->next();
+
+            /** @var $event DomainEvent */
+            $stmt->execute([
+                ':aggregate_id' => (string) $event->aggregateId(),
+                ':aggregate_version' => $version->version(),
+                ':event_type' => $event->eventType(),
+                ':payload' => json_encode($event->payload()),
+                ':created_at' => (new \DateTimeImmutable())->format('Y-m-d H:i:s')
+            ]);
         }
     }
 
@@ -122,26 +142,35 @@ final class MySqlEventStore implements EventStore
      */
     public function aggregateHistoryFor(IdentifiesAggregate $aggregateId): AggregateHistory
     {
+        return new AggregateHistory($aggregateId, $this->loadEvents($aggregateId));
+    }
+
+    /**
+     * @param IdentifiesAggregate $aggregateId
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    private function loadEvents(IdentifiesAggregate $aggregateId): array
+    {
         $stmt = $this->connection->prepare("SELECT * FROM event_stream WHERE aggregate_id = :aggregate_id");
         $stmt->execute([':aggregate_id' => (string) $aggregateId]);
 
         $events = [];
         while ($row = $stmt->fetch(FetchMode::ASSOCIATIVE)) {
-            $jsonEncodedEvent = $this->eventStreamRowToJson($row);
-            $events[] = $this->serializer->deserialize($jsonEncodedEvent, DomainEvent::class, 'json');
+            $events[] = $this->deserializeEvent($row);
         }
         $stmt->closeCursor();
 
-        return new AggregateHistory($aggregateId, $events);
+        return $events;
     }
 
     /**
      * @param array $eventStreamRow
-     * @return string
+     * @return DomainEvent
      */
-    private function eventStreamRowToJson(array $eventStreamRow): string
+    private function deserializeEvent(array $eventStreamRow): DomainEvent
     {
         $eventStreamRow['payload'] = json_decode($eventStreamRow['payload'], true);
-        return json_encode($eventStreamRow);
+        return $this->serializer->deserialize(json_encode($eventStreamRow), DomainEvent::class, 'json');
     }
 }
