@@ -11,14 +11,13 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\Board\Application\Command;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
 use Hamcrest\Core\IsEqual;
+use Taranto\ListMaker\Board\Application\Command\CloseBoard;
 use Taranto\ListMaker\Board\Application\Command\CloseBoardHandler;
 use Taranto\ListMaker\Board\Domain\Board;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Board\Domain\BoardRepository;
-use Taranto\ListMaker\Board\Application\Command\CloseBoard;
 use Taranto\ListMaker\Board\Domain\Exception\BoardNotFound;
 
 /**
@@ -28,8 +27,6 @@ use Taranto\ListMaker\Board\Domain\Exception\BoardNotFound;
  */
 class CloseBoardHandlerTest extends Unit
 {
-    use Specify;
-
     /**
      * @var BoardRepository
      */
@@ -57,6 +54,9 @@ class CloseBoardHandlerTest extends Unit
 
     protected function _before(): void
     {
+        $this->repository = \Mockery::mock(BoardRepository::class);
+        $this->handler = new CloseBoardHandler($this->repository);
+
         $this->board = \Mockery::spy(Board::class);
         $this->boardId = BoardId::generate();
         $this->command = CloseBoard::request((string) $this->boardId);
@@ -65,33 +65,29 @@ class CloseBoardHandlerTest extends Unit
     /**
      * @test
      */
-    public function closeBoard(): void
+    public function it_closes_a_board(): void
     {
-        $this->describe('Close Board', function() {
-            $this->beforeSpecify(function () {
-                $this->repository = \Mockery::mock(BoardRepository::class);
-                $this->handler = new CloseBoardHandler($this->repository);
-            });
-            $this->should('close the Board and save it', function () {
-                $this->repository->shouldReceive('get')
-                    ->with(isEqual::equalTo($this->boardId))
-                    ->andReturn($this->board);
-                $this->repository->shouldReceive('save')
-                    ->with(isEqual::equalTo($this->board));
+        $this->repository->shouldReceive('get')
+            ->with(isEqual::equalTo($this->boardId))
+            ->andReturn($this->board);
+        $this->repository->shouldReceive('save')->with(isEqual::equalTo($this->board));
 
-                ($this->handler)($this->command);
+        ($this->handler)($this->command);
 
-                $this->board->shouldHaveReceived('close');
-            });
-            $this->should("throw exception when Board not found", function() {
-                $this->repository->shouldReceive('get')
-                    ->with(IsEqual::equalTo($this->boardId))
-                    ->andReturn(null);
+        $this->board->shouldHaveReceived('close');
+    }
 
-                $this->expectExceptionObject(BoardNotFound::withBoardId($this->boardId));
+    /**
+     * @test
+     */
+    public function it_throws_when_board_not_found(): void
+    {
+        $this->repository->shouldReceive('get')
+            ->with(IsEqual::equalTo($this->boardId))
+            ->andReturn(null);
 
-                ($this->handler)($this->command);
-            });
-        });
+        $this->expectExceptionObject(BoardNotFound::withBoardId($this->boardId));
+
+        ($this->handler)($this->command);
     }
 }

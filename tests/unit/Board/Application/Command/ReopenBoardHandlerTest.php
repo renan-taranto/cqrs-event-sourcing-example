@@ -11,14 +11,13 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\Board\Application\Command;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
 use Hamcrest\Core\IsEqual;
+use Taranto\ListMaker\Board\Application\Command\ReopenBoard;
 use Taranto\ListMaker\Board\Application\Command\ReopenBoardHandler;
 use Taranto\ListMaker\Board\Domain\Board;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Board\Domain\BoardRepository;
-use Taranto\ListMaker\Board\Application\Command\ReopenBoard;
 use Taranto\ListMaker\Board\Domain\Exception\BoardNotFound;
 
 /**
@@ -28,8 +27,6 @@ use Taranto\ListMaker\Board\Domain\Exception\BoardNotFound;
  */
 class ReopenBoardHandlerTest extends Unit
 {
-    use Specify;
-
     /**
      * @var BoardRepository
      */
@@ -57,6 +54,9 @@ class ReopenBoardHandlerTest extends Unit
 
     protected function _before(): void
     {
+        $this->repository = \Mockery::mock(BoardRepository::class);
+        $this->handler = new ReopenBoardHandler($this->repository);
+
         $this->board = \Mockery::spy(Board::class);
         $this->boardId = BoardId::generate();
         $this->command = ReopenBoard::request((string) $this->boardId);
@@ -65,33 +65,29 @@ class ReopenBoardHandlerTest extends Unit
     /**
      * @test
      */
-    public function reopenBoard(): void
+    public function it_reopens_a_board(): void
     {
-        $this->describe('Reopen Board', function() {
-            $this->beforeSpecify(function () {
-                $this->repository = \Mockery::mock(BoardRepository::class);
-                $this->handler = new ReopenBoardHandler($this->repository);
-            });
-            $this->should('reopen the Board and save it', function () {
-                $this->repository->shouldReceive('get')
-                    ->with(isEqual::equalTo($this->boardId))
-                    ->andReturn($this->board);
-                $this->repository->shouldReceive('save')
-                    ->with(isEqual::equalTo($this->board));
+        $this->repository->shouldReceive('get')
+            ->with(isEqual::equalTo($this->boardId))
+            ->andReturn($this->board);
+        $this->repository->shouldReceive('save')->with(isEqual::equalTo($this->board));
 
-                ($this->handler)($this->command);
+        ($this->handler)($this->command);
 
-                $this->board->shouldHaveReceived('reopen');
-            });
-            $this->should("throw exception when Board not found", function() {
-                $this->repository->shouldReceive('get')
-                    ->with(IsEqual::equalTo($this->boardId))
-                    ->andReturn(null);
+        $this->board->shouldHaveReceived('reopen');
+    }
 
-                $this->expectExceptionObject(BoardNotFound::withBoardId($this->boardId));
+    /**
+     * @test
+     */
+    public function it_throws_when_board_not_found(): void
+    {
+        $this->repository->shouldReceive('get')
+            ->with(IsEqual::equalTo($this->boardId))
+            ->andReturn(null);
 
-                ($this->handler)($this->command);
-            });
-        });
+        $this->expectExceptionObject(BoardNotFound::withBoardId($this->boardId));
+
+        ($this->handler)($this->command);
     }
 }

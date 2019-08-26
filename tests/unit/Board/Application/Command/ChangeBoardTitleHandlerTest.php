@@ -11,14 +11,13 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\Board\Application\Command;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
 use Hamcrest\Core\IsEqual;
+use Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle;
 use Taranto\ListMaker\Board\Application\Command\ChangeBoardTitleHandler;
 use Taranto\ListMaker\Board\Domain\Board;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Board\Domain\BoardRepository;
-use Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle;
 use Taranto\ListMaker\Board\Domain\Exception\BoardNotFound;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
@@ -29,8 +28,6 @@ use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
  */
 class ChangeBoardTitleHandlerTest extends Unit
 {
-    use Specify;
-
     /**
      * @var BoardRepository
      */
@@ -57,12 +54,15 @@ class ChangeBoardTitleHandlerTest extends Unit
     private $boardId;
 
     /**
-     * @var \Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle
+     * @var ChangeBoardTitle
      */
     private $command;
 
     protected function _before(): void
     {
+        $this->repository = \Mockery::mock(BoardRepository::class);
+        $this->handler = new ChangeBoardTitleHandler($this->repository);
+
         $this->board = \Mockery::spy(Board::class);
         $this->title = Title::fromString('Tasks');
         $this->boardId = BoardId::generate();
@@ -72,32 +72,29 @@ class ChangeBoardTitleHandlerTest extends Unit
     /**
      * @test
      */
-    public function changeBoardTitle(): void
+    public function it_changes_the_board_title(): void
     {
-        $this->describe('Change Board Title', function() {
-            $this->beforeSpecify(function () {
-                $this->repository = \Mockery::mock(BoardRepository::class);
-                $this->handler = new ChangeBoardTitleHandler($this->repository);
-            });
-            $this->should('change title and save the Board', function() {
-                $this->repository->shouldReceive('get')
-                    ->with(IsEqual::equalTo($this->boardId))
-                    ->andReturn($this->board);
-                $this->repository->shouldReceive('save')->with($this->board);
+        $this->repository->shouldReceive('get')
+            ->with(isEqual::equalTo($this->boardId))
+            ->andReturn($this->board);
+        $this->repository->shouldReceive('save')->with($this->board);
 
-                ($this->handler)($this->command);
+        ($this->handler)($this->command);
 
-                $this->board->shouldHaveReceived('changeTitle')->with(IsEqual::equalTo((string) $this->title));
-            });
-            $this->should("throw exception when Board not found", function() {
-                $this->repository->shouldReceive('get')
-                    ->with(IsEqual::equalTo($this->boardId))
-                    ->andReturn(null);
+        $this->board->shouldHaveReceived('changeTitle')->with(isEqual::equalTo((string) $this->title));
+    }
 
-                $this->expectExceptionObject(BoardNotFound::withBoardId($this->boardId));
+    /**
+     * @test
+     */
+    public function it_throws_when_board_not_found(): void
+    {
+        $this->repository->shouldReceive('get')
+            ->with(IsEqual::equalTo($this->boardId))
+            ->andReturn(null);
 
-                ($this->handler)($this->command);
-            });
-        });
+        $this->expectExceptionObject(BoardNotFound::withBoardId($this->boardId));
+
+        ($this->handler)($this->command);
     }
 }

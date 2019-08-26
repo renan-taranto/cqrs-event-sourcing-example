@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\Board\Application\Query;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Application\Query\BoardById;
 use Taranto\ListMaker\Board\Application\Query\BoardByIdHandler;
@@ -26,8 +25,6 @@ use Taranto\ListMaker\Board\Domain\BoardId;
  */
 class BoardByIdHandlerTest extends Unit
 {
-    use Specify;
-
     /**
      * @var string
      */
@@ -46,10 +43,13 @@ class BoardByIdHandlerTest extends Unit
     /**
      * @var BoardByIdHandler
      */
-    private $boardOfIdHandler;
+    private $handler;
 
     protected function _before(): void
     {
+        $this->boardFinder = \Mockery::mock(BoardFinder::class);
+        $this->handler = new BoardByIdHandler($this->boardFinder);
+
         $this->boardId = (string) BoardId::generate();
         $this->boardData = new BoardData($this->boardId, 'To-Dos', true);
     }
@@ -57,33 +57,28 @@ class BoardByIdHandlerTest extends Unit
     /**
      * @test
      */
-    public function boardById(): void
+    public function it_returns_a_board_with_the_given_id(): void
     {
-        $this->describe('Query Board by Id', function () {
-            $this->beforeSpecify(function () {
-                $this->boardFinder = \Mockery::mock(BoardFinder::class);
-                $this->boardOfIdHandler = new BoardByIdHandler($this->boardFinder);
-            });
+        $this->boardFinder->shouldReceive('boardById')
+            ->with($this->boardId)
+            ->andReturn($this->boardData);
 
-            $this->should('return a board with the given id', function () {
-                $this->boardFinder->shouldReceive('boardById')
-                    ->with($this->boardId)
-                    ->andReturn($this->boardData);
+        $boardData = ($this->handler)(new BoardById(['boardId' => $this->boardId]));
 
-                $boardData = ($this->boardOfIdHandler)(new BoardById(['boardId' => $this->boardId]));
+        expect($boardData)->equals($this->boardData);
+    }
 
-                expect($boardData)->equals($this->boardData);
-            });
+    /**
+     * @test
+     */
+    public function it_returns_null_when_board_not_found(): void
+    {
+        $this->boardFinder->shouldReceive('boardById')
+            ->with($this->boardId)
+            ->andReturn(null);
 
-            $this->should('return null when board not found', function () {
-                $this->boardFinder->shouldReceive('boardById')
-                    ->with($this->boardId)
-                    ->andReturn(null);
+        $boardData = ($this->handler)(new BoardById(['boardId' => $this->boardId]));
 
-                $boardData = ($this->boardOfIdHandler)(new BoardById(['boardId' => $this->boardId]));
-
-                expect($boardData)->null();
-            });
-        });
+        expect($boardData)->null();
     }
 }

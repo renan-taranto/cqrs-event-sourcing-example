@@ -11,12 +11,11 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\Board\Application\Query;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
+use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
 use Taranto\ListMaker\Board\Application\Query\OpenBoards;
 use Taranto\ListMaker\Board\Application\Query\OpenBoardsHandler;
-use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
 
 /**
@@ -26,8 +25,6 @@ use Taranto\ListMaker\Board\Domain\BoardId;
  */
 class OpenBoardsHandlerTest extends Unit
 {
-    use Specify;
-
     /**
      * @var BoardData[]
      */
@@ -57,16 +54,12 @@ class OpenBoardsHandlerTest extends Unit
     /**
      * @test
      */
-    public function openBoards(): void
+    public function it_returns_all_open_boards(): void
     {
-        $this->describe('Query Open Boards', function () {
-            $this->should('return all open boards', function () {
-                $this->boardFinder->shouldReceive('openBoards')->andReturn($this->openBoardsData);
+        $this->boardFinder->shouldReceive('openBoards')->andReturn($this->openBoardsData);
 
-                $boardsData = ($this->openBoardsHandler)(new OpenBoards());
+        $boardsData = ($this->openBoardsHandler)(new OpenBoards());
 
-                expect($boardsData)->equals($this->openBoardsData);
-            });
-        });
+        expect($boardsData)->equals($this->openBoardsData);
     }
 }

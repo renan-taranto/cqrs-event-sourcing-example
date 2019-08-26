@@ -11,9 +11,7 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\integration\Board\Infrastructure\Persistence\Projection;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
-use MongoDB\Collection;
 use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
 use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\MongoBoardFinder;
 use Taranto\ListMaker\Tests\IntegrationTester;
@@ -25,8 +23,6 @@ use Taranto\ListMaker\Tests\IntegrationTester;
  */
 class MongoBoardFinderTest extends Unit
 {
-    use Specify;
-
     /**
      * @var IntegrationTester
      */
@@ -37,65 +33,51 @@ class MongoBoardFinderTest extends Unit
      */
     private $boardFinder;
 
-    /**
-     * @var Collection
-     */
-    private $boardCollection;
-
     protected function _before(): void
     {
         $this->boardFinder = $this->tester->grabService('test.service_container')->get(MongoBoardFinder::class);
-        $this->boardCollection = $this->tester->grabService('test.service_container')->get('mongo.collection.boards');
     }
 
     /**
      * @test
      */
-    public function findOpenBoards(): void
+    public function it_returns_open_boards(): void
     {
-        $this->describe('Find open boards', function() {
-            $this->should('return open boards', function() {
-                $openBoards = $this->boardFinder->openBoards();
+        $openBoards = $this->boardFinder->openBoards();
 
-                foreach ($openBoards as $board) {
-                    expect_that($board->isOpen());
-                }
-            });
-        });
+        foreach ($openBoards as $board) {
+            expect_that($board->isOpen());
+        }
     }
 
     /**
      * @test
      */
-    public function findClosedBoards(): void
+    public function it_returns_closed_boards(): void
     {
-        $this->describe('Find closed boards', function() {
-            $this->should('return closed boards', function() {
-                $closedBoards = $this->boardFinder->closedBoards();
+        $closedBoards = $this->boardFinder->closedBoards();
 
-                foreach ($closedBoards as $board) {
-                    expect_not($board->isOpen());
-                }
-            });
-        });
+        foreach ($closedBoards as $board) {
+            expect_not($board->isOpen());
+        }
     }
 
     /**
      * @test
      */
-    public function findBoardById(): void
+    public function it_returns_a_board_with_the_given_id(): void
     {
-        $this->describe('Find board by id', function() {
-            $this->should('return a board with the given id', function() {
-                $boardId = 'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392';
-                $board = $this->boardFinder->boardById($boardId);
+        $boardId = 'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392';
+        $board = $this->boardFinder->boardById($boardId);
 
-                expect($board->getBoardId())->equals($boardId);
-            });
+        expect($board->getBoardId())->equals($boardId);
+    }
 
-            $this->should('return null when board is not found', function() {
-                expect($this->boardFinder->boardById('12345'))->null();
-            });
-        });
+    /**
+     * @test
+     */
+    public function it_returns_null_when_board_not_found(): void
+    {
+        expect($this->boardFinder->boardById('12345'))->null();
     }
 }

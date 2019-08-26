@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\Board\Infrastructure\Persistence\Projection;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
 use Hamcrest\Core\IsEqual;
 use Taranto\ListMaker\Board\Domain\BoardId;
@@ -29,8 +28,6 @@ use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\BoardProjector
  */
 class BoardProjectorTest extends Unit
 {
-    use Specify;
-
     /**
      * @var BoardProjection
      */
@@ -76,39 +73,50 @@ class BoardProjectorTest extends Unit
     /**
      * @test
      */
-    public function project(): void
+    public function it_projects_the_BoardCreated_event(): void
     {
-        $this->describe('Project', function () {
-            $this->should('project the BoardCreated event', function () {
-                ($this->projector)($this->boardCreated);
+        ($this->projector)($this->boardCreated);
 
-                $this->projection->shouldHaveReceived('createBoard')
-                    ->with(
-                        isEqual::equalTo($this->boardCreated->aggregateId()),
-                        isEqual::equalTo($this->boardCreated->title())
-                    );
-            });
-            $this->should('project the BoardTitleChanged event', function () {
-                ($this->projector)($this->boardTitleChanged);
+        $this->projection->shouldHaveReceived('createBoard')
+            ->with(
+                isEqual::equalTo($this->boardCreated->aggregateId()),
+                isEqual::equalTo($this->boardCreated->title())
+            );
+    }
 
-                $this->projection->shouldHaveReceived('changeBoardTitle')
-                    ->with(
-                        isEqual::equalTo($this->boardTitleChanged->aggregateId()),
-                        isEqual::equalTo($this->boardTitleChanged->title())
-                    );
-            });
-            $this->should('project the BoardClosed event', function () {
-                ($this->projector)($this->boardClosed);
+    /**
+     * @test
+     */
+    public function it_projects_the_BoardTitleChanged_event(): void
+    {
+        ($this->projector)($this->boardTitleChanged);
 
-                $this->projection->shouldHaveReceived('closeBoard')
-                    ->with(isEqual::equalTo($this->boardClosed->aggregateId()));
-            });
-            $this->should('project the BoardReopened event', function () {
-                ($this->projector)($this->boardReopened);
+        $this->projection->shouldHaveReceived('changeBoardTitle')
+            ->with(
+                isEqual::equalTo($this->boardTitleChanged->aggregateId()),
+                isEqual::equalTo($this->boardTitleChanged->title())
+            );
+    }
 
-                $this->projection->shouldHaveReceived('reopenBoard')
-                    ->with(isEqual::equalTo($this->boardReopened->aggregateId()));
-            });
-        });
+    /**
+     * @test
+     */
+    public function it_projects_the_BoardClosed_event(): void
+    {
+        ($this->projector)($this->boardClosed);
+
+        $this->projection->shouldHaveReceived('closeBoard')
+            ->with(isEqual::equalTo($this->boardClosed->aggregateId()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_the_BoardReopened_event(): void
+    {
+        ($this->projector)($this->boardReopened);
+
+        $this->projection->shouldHaveReceived('reopenBoard')
+            ->with(isEqual::equalTo($this->boardReopened->aggregateId()));
     }
 }

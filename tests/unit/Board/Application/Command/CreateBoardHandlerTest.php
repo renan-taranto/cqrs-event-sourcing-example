@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\Board\Application\Command;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
 use Hamcrest\Core\IsEqual;
 use Taranto\ListMaker\Board\Application\Command\CreateBoard;
@@ -28,8 +27,6 @@ use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
  */
 class CreateBoardHandlerTest extends Unit
 {
-    use Specify;
-
     /**
      * @var BoardRepository
      */
@@ -64,14 +61,10 @@ class CreateBoardHandlerTest extends Unit
     /**
      * @test
      */
-    public function createBoard(): void
+    public function it_creates_a_board(): void
     {
-        $this->describe("Create Board", function() {
-            $this->should("create and save the Board", function() {
-                ($this->handler)($this->command);
+        ($this->handler)($this->command);
 
-                $this->repository->shouldHaveReceived('save')->with(isEqual::equalTo($this->board));
-            });
-        });
+        $this->repository->shouldHaveReceived('save')->with(isEqual::equalTo($this->board));
     }
 }

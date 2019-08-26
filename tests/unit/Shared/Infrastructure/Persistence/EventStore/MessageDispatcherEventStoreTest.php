@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\Shared\Infrastructure\Persistence\EventStore;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Taranto\ListMaker\Shared\Domain\Aggregate\AggregateVersion;
@@ -28,8 +27,6 @@ use Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\MessageDispat
  */
 class MessageDispatcherEventStoreTest extends Unit
 {
-    use Specify;
-
     /**
      * @var DomainEvents
      */
@@ -85,23 +82,20 @@ class MessageDispatcherEventStoreTest extends Unit
     /**
      * @test
      */
-    public function commit(): void
+    public function it_dispatch_events_after_committing_them(): void
     {
-        $this->describe('Commit', function() {
-            $this->should('dispatch events after committing them', function() {
-                $this->messageDispatcherEventStore->commit(
-                    $this->aggregateId,
-                    $this->domainEvents,
-                    $this->aggregateVersion
-                );
+        $this->messageDispatcherEventStore->commit(
+            $this->aggregateId,
+            $this->domainEvents,
+            $this->aggregateVersion
+        );
 
-                $this->eventStore->shouldHaveReceived('commit')->with(
-                    $this->aggregateId,
-                    $this->domainEvents,
-                    $this->aggregateVersion
-                );
-                $this->eventBus->shouldHaveReceived('dispatch')->with($this->event);
-            });
-        });
+        $this->eventStore->shouldHaveReceived('commit')->with(
+            $this->aggregateId,
+            $this->domainEvents,
+            $this->aggregateVersion
+        );
+
+        $this->eventBus->shouldHaveReceived('dispatch')->with($this->event);
     }
 }

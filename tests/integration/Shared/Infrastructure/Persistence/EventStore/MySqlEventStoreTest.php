@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\Shared\Infrastructure\Persistence\EventStore;
 
-use Codeception\Specify;
 use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Board\Domain\Event\BoardClosed;
@@ -31,8 +30,6 @@ use Taranto\ListMaker\Tests\IntegrationTester;
  */
 class MySqlEventStoreTest extends Unit
 {
-    use Specify;
-
     /**
      * @var IntegrationTester
      */
@@ -80,18 +77,16 @@ class MySqlEventStoreTest extends Unit
     /**
      * @test
      */
-    public function aggregateHistoryFor(): void
+    public function it_returns_committed_events(): void
     {
-        $this->should('return AggregateHistory from committed events', function () {
-            $this->mySqlEventStore->commit(
-                $this->aggregateId,
-                $this->domainEvents,
-                $this->aggregateVersion
-            );
+        $this->mySqlEventStore->commit(
+            $this->aggregateId,
+            $this->domainEvents,
+            $this->aggregateVersion
+        );
 
-            $aggregateHistory = $this->mySqlEventStore->aggregateHistoryFor($this->aggregateId);
+        $aggregateHistory = $this->mySqlEventStore->aggregateHistoryFor($this->aggregateId);
 
-            expect($aggregateHistory)->equals(new AggregateHistory($this->aggregateId, $this->events));
-        });
+        expect($aggregateHistory)->equals(new AggregateHistory($this->aggregateId, $this->events));
     }
 }

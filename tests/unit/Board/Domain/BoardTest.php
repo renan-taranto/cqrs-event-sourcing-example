@@ -11,8 +11,6 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Tests\Board\Domain;
 
-use Codeception\Specify;
-use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Domain\Board;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Board\Domain\Event\BoardClosed;
@@ -20,151 +18,130 @@ use Taranto\ListMaker\Board\Domain\Event\BoardCreated;
 use Taranto\ListMaker\Board\Domain\Event\BoardReopened;
 use Taranto\ListMaker\Board\Domain\Event\BoardTitleChanged;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
+use Taranto\ListMaker\Tests\AggregateRootTestCase;
 
 /**
  * Class BoardTest
  * @package Taranto\ListMaker\Tests\Board\Domain
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-class BoardTest extends Unit
+class BoardTest extends AggregateRootTestCase
 {
-    use Specify;
-
     /**
-     * @var BoardId
+     * @var string
      */
-    private $boardId;
+    private $id;
 
     /**
-     * @var Title
+     * @var string
      */
     private $title;
 
     /**
-     * @var Title
+     * @var string
      */
     private $changedTitle;
 
-    /**
-     * @var Board
-     * @specify
-     */
-    private $board;
-
     protected function _before(): void
     {
-        $this->boardId = BoardId::generate();
-        $this->title = Title::fromString("To-Dos");
-        $this->changedTitle = Title::fromString("Best Practices");
-        $this->board = Board::create($this->boardId, $this->title);
+        $this->id = (string) BoardId::generate();
+        $this->title = "To-Dos";
+        $this->changedTitle = "Best Practices";
     }
 
     /**
      * @test
      */
-    public function create(): void
+    public function it_can_be_created(): void
     {
-        $this->describe("Create", function() {
-            $this->should("have recorded one event", function() {
-                expect($this->board->popRecordedEvents())->count(1);
-            });
-            $this->should("have recorded a BoardCreated event", function() {
-                /** @var BoardCreated $event */
-                $event = $this->board->popRecordedEvents()[0];
-
-                expect($event)->isInstanceOf(BoardCreated::class);
-                expect($event->aggregateId())->equals($this->boardId);
-                expect($event->title())->equals($this->title);
-            });
-        });
+        $this
+            ->when(function() {
+                return Board::create(BoardId::fromString($this->id), Title::fromString($this->title));
+            })
+            ->then([BoardCreated::occur($this->id, ['title' => $this->title])]);
     }
 
     /**
      * @test
      */
-    public function changeTitle(): void
+    public function title_can_be_changed(): void
     {
-        $this->describe("Change Title", function() {
-            $this->beforeSpecify(function () {
-                $this->board->popRecordedEvents();
-            });
-            $this->should("have recorded one event", function() {
-                $this->board->changeTitle($this->changedTitle);
-                expect($this->board->popRecordedEvents())->count(1);
-            });
-            $this->should("have recorded a BoardTitleChanged event", function() {
-                $this->board->changeTitle($this->changedTitle);
-                /** @var BoardTitleChanged $event */
-                $event = $this->board->popRecordedEvents()[0];
-
-                expect($event)->isInstanceOf(BoardTitleChanged::class);
-                expect($event->aggregateId())->equals($this->boardId);
-                expect($event->title())->equals($this->changedTitle);
-            });
-        });
+        $this
+            ->withAggregateId(BoardId::fromString($this->id))
+            ->given([BoardCreated::occur($this->id, ['title' => $this->title])])
+            ->when(function (Board $board) {
+                $board->changeTitle(Title::fromString($this->changedTitle));
+            })
+            ->then([BoardTitleChanged::occur($this->id, ['title' => $this->changedTitle])]);
     }
 
     /**
      * @test
      */
-    public function close(): void
+    public function it_can_be_closed(): void
     {
-        $this->describe("Close", function() {
-            $this->beforeSpecify(function () {
-                $this->board->popRecordedEvents();
-            });
-            $this->should("have recorded one event", function() {
-                $this->board->close();
-                expect($this->board->popRecordedEvents())->count(1);
-            });
-            $this->should("have recorded a BoardClosed event", function() {
-                $this->board->close();
-
-                $event = $this->board->popRecordedEvents()[0];
-                expect($event)->isInstanceOf(BoardClosed::class);
-                expect($event->aggregateId())->equals($this->boardId);
-            });
-            $this->should("not record another BoardClosed event when already closed", function() {
-                $this->board->close();
-                $this->board->popRecordedEvents();
-
-                $this->board->close();
-
-                expect($this->board->popRecordedEvents())->count(0);
-            });
-        });
+        $this
+            ->withAggregateId(BoardId::fromString($this->id))
+            ->given([BoardCreated::occur($this->id, ['title' => $this->title])])
+            ->when(function (Board $board) {
+                $board->close();
+            })
+            ->then([BoardClosed::occur($this->id)]);
     }
 
     /**
      * @test
      */
-    public function reopen(): void
+    public function closing_a_closed_board_records_no_events(): void
     {
-        $this->describe("Reopen", function() {
-            $this->beforeSpecify(function () {
-                $this->board->close();
-                $this->board->popRecordedEvents();
-            });
-            $this->should("have recorded one event", function () {
-                $this->board->reopen();
-                expect($this->board->popRecordedEvents())->count(1);
-            });
-            $this->should("have recorded a BoardReopened event", function() {
-                $this->board->reopen();
-                /** @var BoardReopened $event */
-                $event = $this->board->popRecordedEvents()[0];
+        $this
+            ->withAggregateId(BoardId::fromString($this->id))
+            ->given([
+                BoardCreated::occur($this->id, ['title' => $this->title]),
+                BoardClosed::occur($this->id)
+            ])
+            ->when(function (Board $board) {
+                $board->close();
+            })
+            ->then([]);
+    }
 
-                expect($event)->isInstanceOf(BoardReopened::class);
-                expect($event->aggregateId())->equals($this->boardId);
-            });
-            $this->should("not record another BoardReopened event when already open", function() {
-                $this->board->reopen();
-                $this->board->popRecordedEvents();
+    /**
+     * @test
+     */
+    public function it_can_be_reopened(): void
+    {
+        $this
+            ->withAggregateId(BoardId::fromString($this->id))
+            ->given([
+                BoardCreated::occur($this->id, ['title' => $this->title]),
+                BoardClosed::occur($this->id)
+            ])
+            ->when(function (Board $board) {
+                $board->reopen();
+            })
+            ->then([BoardReopened::occur($this->id)]);
+    }
 
-                $this->board->reopen();
+    /**
+     * @test
+     */
+    public function reopening_an_open_board_records_no_events(): void
+    {
+        $this
+            ->withAggregateId(BoardId::fromString($this->id))
+            ->given([BoardCreated::occur($this->id, ['title' => $this->title])])
+            ->when(function (Board $board) {
+                $board->reopen();
+            })
+            ->then([]);
+    }
 
-                expect($this->board->popRecordedEvents())->count(0);
-            });
-        });
+    /**
+     * @return string
+     */
+    protected function getAggregateRootClass(): string
+    {
+        return Board::class;
     }
 }
