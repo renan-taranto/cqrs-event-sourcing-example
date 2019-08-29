@@ -45,7 +45,7 @@ final class MongoBoardProjection implements BoardProjection
         $this->boardCollection->insertOne([
             'boardId' => (string) $aggregateId,
             'title' => (string) $title,
-            'isOpen' => true
+            'open' => true
         ]);
     }
 
@@ -68,7 +68,7 @@ final class MongoBoardProjection implements BoardProjection
     {
         $this->boardCollection->updateOne(
             ['boardId' => (string) $aggregateId],
-            ['$set' => ['isOpen' => false]]
+            ['$set' => ['open' => false]]
         );
     }
 
@@ -79,7 +79,7 @@ final class MongoBoardProjection implements BoardProjection
     {
         $this->boardCollection->updateOne(
             ['boardId' => (string) $aggregateId],
-            ['$set' => ['isOpen' => true]]
+            ['$set' => ['open' => true]]
         );
     }
 }

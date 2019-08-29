@@ -25,18 +25,18 @@ final class BoardReopened extends DomainEvent
     private const EVENT_TYPE = 'board-reopened';
 
     /**
-     * @return string
-     */
-    public function eventType(): string
-    {
-        return self::EVENT_TYPE;
-    }
-
-    /**
      * @return IdentifiesAggregate
      */
     public function aggregateId(): IdentifiesAggregate
     {
         return BoardId::fromString($this->aggregateId);
+    }
+
+    /**
+     * @return string
+     */
+    public function eventType(): string
+    {
+        return self::EVENT_TYPE;
     }
 }

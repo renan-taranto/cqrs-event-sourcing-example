@@ -76,11 +76,9 @@ abstract class AggregateRoot
         $path = explode("\\", get_class($event));
         $method = 'when' . end($path);
 
-        if (!method_exists($this, $method)) {
-            throw new \BadMethodCallException("Method '{$method}' does not exist.");
+        if (method_exists($this, $method)) {
+            $this->$method($event);
         }
-
-        $this->$method($event);
     }
 
     /**

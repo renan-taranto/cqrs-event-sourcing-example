@@ -60,7 +60,7 @@ class MongoBoardProjectionTest extends Unit
             ->equals([
                 'boardId' => (string) $boardId,
                 'title' => (string) $title,
-                'isOpen' => true
+                'open' => true
             ]);
     }
 
@@ -86,12 +86,12 @@ class MongoBoardProjectionTest extends Unit
      */
     public function it_closes_a_board(): void
     {
-        $board = $this->findBoards(['isOpen' => true])[0];
+        $board = $this->findBoards(['open' => true])[0];
 
         $this->boardProjection->closeBoard(BoardId::fromString($board['boardId']));
 
         $updatedBoard = $this->findBoards(['boardId' => $board['boardId']])[0];
-        expect_not($updatedBoard['isOpen']);
+        expect_not($updatedBoard['open']);
     }
 
     /**
@@ -99,12 +99,12 @@ class MongoBoardProjectionTest extends Unit
      */
     public function it_reopens_a_board(): void
     {
-        $board = $this->findBoards(['isOpen' => false])[0];
+        $board = $this->findBoards(['open' => false])[0];
 
         $this->boardProjection->reopenBoard(BoardId::fromString($board['boardId']));
 
         $updatedBoard = $this->findBoards(['boardId' => $board['boardId']])[0];
-        expect_that($updatedBoard['isOpen']);
+        expect_that($updatedBoard['open']);
     }
 
     /**

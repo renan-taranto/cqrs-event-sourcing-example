@@ -28,7 +28,7 @@ final class Board extends AggregateRoot
     /**
      * @var bool
      */
-    private $isOpen;
+    private $open;
 
     /**
      * @param BoardId $boardId
@@ -52,7 +52,7 @@ final class Board extends AggregateRoot
     protected function whenBoardCreated(BoardCreated $event): void
     {
         $this->aggregateId = $event->aggregateId();
-        $this->isOpen = true;
+        $this->open = true;
     }
 
     /**
@@ -65,16 +65,9 @@ final class Board extends AggregateRoot
         );
     }
 
-    /**
-     * @param BoardTitleChanged $event
-     */
-    protected function whenBoardTitleChanged(BoardTitleChanged $event): void
-    {
-    }
-
     public function close(): void
     {
-       if (!$this->isOpen) {
+       if (!$this->open) {
            return;
        }
 
@@ -86,12 +79,12 @@ final class Board extends AggregateRoot
      */
     protected function whenBoardClosed(BoardClosed $event): void
     {
-        $this->isOpen = false;
+        $this->open = false;
     }
 
     public function reopen(): void
     {
-        if ($this->isOpen) {
+        if ($this->open) {
             return;
         }
 
@@ -103,6 +96,6 @@ final class Board extends AggregateRoot
      */
     protected function whenBoardReopened(BoardReopened $event): void
     {
-        $this->isOpen = true;
+        $this->open = true;
     }
 }

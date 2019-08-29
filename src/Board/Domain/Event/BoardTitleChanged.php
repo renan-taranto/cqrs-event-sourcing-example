@@ -26,14 +26,6 @@ final class BoardTitleChanged extends DomainEvent
     private const EVENT_TYPE = 'board-title-changed';
 
     /**
-     * @return string
-     */
-    public function eventType(): string
-    {
-        return self::EVENT_TYPE;
-    }
-
-    /**
      * @return IdentifiesAggregate
      */
     public function aggregateId(): IdentifiesAggregate
@@ -47,5 +39,13 @@ final class BoardTitleChanged extends DomainEvent
     public function title(): Title
     {
         return Title::fromString($this->payload['title']);
+    }
+
+    /**
+     * @return string
+     */
+    public function eventType(): string
+    {
+        return self::EVENT_TYPE;
     }
 }

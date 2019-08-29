@@ -31,19 +31,19 @@ final class BoardData
     /**
      * @var bool
      */
-    private $isOpen;
+    private $open;
 
     /**
      * BoardData constructor.
      * @param string $boardId
      * @param string $title
-     * @param bool $isOpen
+     * @param bool $open
      */
-    public function __construct(string $boardId, string $title, bool $isOpen)
+    public function __construct(string $boardId, string $title, bool $open)
     {
         $this->boardId = $boardId;
         $this->title = $title;
-        $this->isOpen = $isOpen;
+        $this->open = $open;
     }
 
     /**
@@ -67,6 +67,6 @@ final class BoardData
      */
     public function isOpen(): bool
     {
-        return $this->isOpen;
+        return $this->open;
     }
 }

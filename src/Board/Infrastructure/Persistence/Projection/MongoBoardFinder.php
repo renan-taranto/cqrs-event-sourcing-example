@@ -43,8 +43,8 @@ final class MongoBoardFinder implements BoardFinder
     public function openBoards(): array
     {
         return array_map(function (BSONDocument $board) {
-            return new BoardData($board['boardId'], $board['title'], $board['isOpen']);
-        }, $this->boardCollection->find(['isOpen' => true])->toArray());
+            return new BoardData($board['boardId'], $board['title'], $board['open']);
+        }, $this->boardCollection->find(['open' => true])->toArray());
     }
 
     /**
@@ -53,8 +53,8 @@ final class MongoBoardFinder implements BoardFinder
     public function closedBoards(): array
     {
         return array_map(function (BSONDocument $board) {
-            return new BoardData($board['boardId'], $board['title'], $board['isOpen']);
-        }, $this->boardCollection->find(['isOpen' => false])->toArray());
+            return new BoardData($board['boardId'], $board['title'], $board['open']);
+        }, $this->boardCollection->find(['open' => false])->toArray());
     }
 
     /**
@@ -71,6 +71,6 @@ final class MongoBoardFinder implements BoardFinder
             return null;
         }
 
-        return new BoardData($board['boardId'], $board['title'], $board['isOpen']);
+        return new BoardData($board['boardId'], $board['title'], $board['open']);
     }
 }
