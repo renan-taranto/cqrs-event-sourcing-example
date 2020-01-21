@@ -23,7 +23,7 @@ class AggregateExists extends Constraint
     /**
      * @var string
      */
-    public $message = 'Aggregate not found';
+    public $message = 'Aggregate not found.';
 
     /**
      * @var string
@@ -34,6 +34,11 @@ class AggregateExists extends Constraint
      * @var string|null
      */
     public $collectionName = null;
+
+    /**
+     * @var bool
+     */
+    public $returnsNotFoundResponse = false;
 
     /**
      * @return array

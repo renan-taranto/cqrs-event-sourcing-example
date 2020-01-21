@@ -42,14 +42,17 @@ test-unit: ## runs unit tests
 test-integration: ## runs integration tests
 	$(EXEC_PHP) php vendor/bin/codecept run integration
 
+test-functional: ## runs functional tests
+	$(EXEC_PHP) php vendor/bin/codecept run functional
+
 test-api: ## runs api tests
 	$(EXEC_PHP) php vendor/bin/codecept run api
 
 test-all: ## runs all tests
-	$(EXEC_PHP) php vendor/bin/codecept run unit,integration,api
+	$(EXEC_PHP) php vendor/bin/codecept run unit,integration,functional,api
 
 test-coverage: ## runs all tests and creates a code coverage report
-	$(EXEC_PHP) php vendor/bin/codecept run unit,integration,api --coverage-html
+	$(EXEC_PHP) php vendor/bin/codecept run unit,integration,functional,api --coverage-html
 
 .DEFAULT_GOAL := help
 help:
