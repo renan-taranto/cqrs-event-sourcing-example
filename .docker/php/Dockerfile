@@ -1,6 +1,10 @@
 FROM php:7.3-fpm-alpine
 
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/main' >> /etc/apk/repositories
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/community' >> /etc/apk/repositories
+
 RUN apk add --update \
+    shadow
     php7-apcu \
     php7-intl \
     libzip-dev \
@@ -35,5 +39,10 @@ RUN set -xe && \
     apk del .fetch-deps
 
 COPY symfony.ini /usr/local/etc/php/conf.d/symfony.ini
+
+RUN usermod -u 1000 www-data && \
+    groupmod -g 1000 www-data
+
+USER www-data
 
 WORKDIR /var/www/app
