@@ -76,7 +76,7 @@ abstract class AggregateRootTestCase extends Unit
      */
     protected function then($expectedEvents): void
     {
-        expect($expectedEvents)->equals($this->aggregateRoot->popRecordedEvents()->toArray());
+        expect($this->aggregateRoot->popRecordedEvents()->toArray())->equals($expectedEvents);
     }
 
     /**
