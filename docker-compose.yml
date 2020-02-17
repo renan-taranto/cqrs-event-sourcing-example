@@ -14,11 +14,12 @@ services:
         volumes:
             - ./.docker/mysql/data:/var/lib/mysql:rw
     mongo:
-        image: mongo:latest
+        build: ./.docker/mongo
         ports:
             - "27017:27017"
         volumes:
             - ./.docker/mongo/data:/data/db:rw
+            - ./tests/etc/_data/mongo:/testing-data:rw
     php:
         build: ./.docker/php
         volumes:

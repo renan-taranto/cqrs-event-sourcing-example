@@ -19,7 +19,7 @@ modules:
         - MongoDb:
               dsn: "%MONGO_URL%/%MONGO_DATABASE%"
               dump_type: mongodump
-              dump: tests/etc/_data/mongo
+              dump: tests/etc/_data/mongo/dump
               cleanup: true
               populate: true
               quiet: true

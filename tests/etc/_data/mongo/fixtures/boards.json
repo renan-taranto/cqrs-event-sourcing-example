@@ -1,0 +1,27 @@
+[
+  {
+    "boardId": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392",
+    "title": "To-Dos",
+    "open": true
+  },
+  {
+    "boardId": "4b2baa7e-315b-41cc-857b-8852619d230b",
+    "title": "Tasks",
+    "open": true
+  },
+  {
+    "boardId": "d81805d3-a350-4ef0-81f0-9eb122b4c1ea",
+    "title": "Jobs",
+    "open": false
+  },
+  {
+    "boardId": "37d22c48-17f7-4849-8fb2-dc67f29496f1",
+    "title": "Backlog",
+    "open": false
+  },
+  {
+    "boardId": "c62abbe1-fb68-4e6d-a6a3-b41aee8564c8",
+    "title": "Issues",
+    "open": true
+  }
+]
