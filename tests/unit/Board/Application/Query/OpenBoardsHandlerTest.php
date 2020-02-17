@@ -12,10 +12,9 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Tests\Board\Application\Query;
 
 use Codeception\Test\Unit;
-use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
-use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
 use Taranto\ListMaker\Board\Application\Query\OpenBoards;
 use Taranto\ListMaker\Board\Application\Query\OpenBoardsHandler;
+use Taranto\ListMaker\Board\Domain\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
 
 /**
@@ -26,7 +25,7 @@ use Taranto\ListMaker\Board\Domain\BoardId;
 class OpenBoardsHandlerTest extends Unit
 {
     /**
-     * @var BoardData[]
+     * @var array
      */
     private $openBoardsData;
 
@@ -43,8 +42,8 @@ class OpenBoardsHandlerTest extends Unit
     protected function _before(): void
     {
         $this->openBoardsData = [
-            new BoardData((string) BoardId::generate(), 'To-Dos', true),
-            new BoardData((string) BoardId::generate(), 'Jobs', true)
+            ['boardId' => (string) BoardId::generate(), 'title' => 'Sprint 1', 'open' => true],
+            ['boardId' => (string) BoardId::generate(), 'title' => 'Sprint 2', 'open' => true],
         ];
 
         $this->boardFinder = \Mockery::mock(BoardFinder::class);

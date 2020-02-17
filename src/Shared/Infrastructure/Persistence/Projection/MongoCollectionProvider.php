@@ -48,6 +48,13 @@ final class MongoCollectionProvider
      */
     public function getCollection(string $collectionName): Collection
     {
-        return (new Client($this->mongoUrl))->{$this->mongoDatabase}->$collectionName;
+        $driverOptions = ['typeMap' => [
+            'array' => 'array',
+            'document' => 'array',
+            'root' => 'array'
+        ]];
+        return (new Client($this->mongoUrl, [], $driverOptions))
+            ->{$this->mongoDatabase}
+            ->$collectionName;
     }
 }

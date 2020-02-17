@@ -9,18 +9,17 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\Board\Application\Query;
+namespace Taranto\ListMaker\Tests\Unit\Board\Application\Query;
 
 use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Application\Query\BoardById;
 use Taranto\ListMaker\Board\Application\Query\BoardByIdHandler;
-use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
-use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
+use Taranto\ListMaker\Board\Domain\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
 
 /**
  * Class BoardByIdHandlerTest
- * @package Taranto\ListMaker\Tests\Board\Application\Query
+ * @package Taranto\ListMaker\Tests\Unit\Board\Application\Query
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 class BoardByIdHandlerTest extends Unit
@@ -31,7 +30,7 @@ class BoardByIdHandlerTest extends Unit
     private $boardId;
 
     /**
-     * @var BoardData
+     * @var array
      */
     private $boardData;
 
@@ -51,7 +50,7 @@ class BoardByIdHandlerTest extends Unit
         $this->handler = new BoardByIdHandler($this->boardFinder);
 
         $this->boardId = (string) BoardId::generate();
-        $this->boardData = new BoardData($this->boardId, 'To-Dos', true);
+        $this->boardData = ['id' => $this->boardId, 'title' => 'To-Dos', 'open' => true, 'lists' => [], 'archivedLists' => []];
     }
 
     /**
@@ -59,7 +58,7 @@ class BoardByIdHandlerTest extends Unit
      */
     public function it_returns_a_board_with_the_given_id(): void
     {
-        $this->boardFinder->shouldReceive('boardById')
+        $this->boardFinder->shouldReceive('byId')
             ->with($this->boardId)
             ->andReturn($this->boardData);
 
@@ -73,7 +72,7 @@ class BoardByIdHandlerTest extends Unit
      */
     public function it_returns_null_when_board_not_found(): void
     {
-        $this->boardFinder->shouldReceive('boardById')
+        $this->boardFinder->shouldReceive('byId')
             ->with($this->boardId)
             ->andReturn(null);
 

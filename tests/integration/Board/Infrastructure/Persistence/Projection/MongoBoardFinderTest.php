@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Tests\integration\Board\Infrastructure\Persistence\Projection;
 
 use Codeception\Test\Unit;
-use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
+use Taranto\ListMaker\Board\Domain\BoardFinder;
 use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\MongoBoardFinder;
 use Taranto\ListMaker\Tests\IntegrationTester;
 
@@ -46,7 +46,7 @@ class MongoBoardFinderTest extends Unit
         $openBoards = $this->boardFinder->openBoards();
 
         foreach ($openBoards as $board) {
-            expect_that($board->isOpen());
+            expect_that($board['open']);
         }
     }
 
@@ -58,7 +58,7 @@ class MongoBoardFinderTest extends Unit
         $closedBoards = $this->boardFinder->closedBoards();
 
         foreach ($closedBoards as $board) {
-            expect_not($board->isOpen());
+            expect_not($board['open']);
         }
     }
 
@@ -68,9 +68,9 @@ class MongoBoardFinderTest extends Unit
     public function it_returns_a_board_with_the_given_id(): void
     {
         $boardId = 'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392';
-        $board = $this->boardFinder->boardById($boardId);
+        $board = $this->boardFinder->byId($boardId);
 
-        expect($board->getBoardId())->equals($boardId);
+        expect($board['boardId'])->equals($boardId);
     }
 
     /**
@@ -78,6 +78,6 @@ class MongoBoardFinderTest extends Unit
      */
     public function it_returns_null_when_board_not_found(): void
     {
-        expect($this->boardFinder->boardById('12345'))->null();
+        expect($this->boardFinder->byId('12345'))->null();
     }
 }

@@ -14,8 +14,7 @@ namespace Taranto\ListMaker\Tests\Board\Application\Query;
 use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Application\Query\ClosedBoards;
 use Taranto\ListMaker\Board\Application\Query\ClosedBoardsHandler;
-use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
-use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
+use Taranto\ListMaker\Board\Domain\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
 
 /**
@@ -26,7 +25,7 @@ use Taranto\ListMaker\Board\Domain\BoardId;
 class ClosedBoardsHandlerTest extends Unit
 {
     /**
-     * @var BoardData[]
+     * @var array
      */
     private $closedBoardsData;
 
@@ -46,8 +45,8 @@ class ClosedBoardsHandlerTest extends Unit
         $this->closedBoardsHandler = new ClosedBoardsHandler($this->boardFinder);
 
         $this->closedBoardsData = [
-            new BoardData((string) BoardId::generate(), 'To-Dos', false),
-            new BoardData((string) BoardId::generate(), 'Jobs', false)
+            ['boardId' => (string) BoardId::generate(), 'title' => 'Sprint 1', 'open' => false],
+            ['boardId' => (string) BoardId::generate(), 'title' => 'Sprint 2', 'open' => false],
         ];
     }
 

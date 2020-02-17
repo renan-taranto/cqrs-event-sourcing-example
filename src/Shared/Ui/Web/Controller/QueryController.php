@@ -11,9 +11,8 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Shared\Ui\Web\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
 use Taranto\ListMaker\Shared\Infrastructure\MessageBus\QueryBus;
 
 /**
@@ -34,33 +33,26 @@ final class QueryController
     private $queryFactory;
 
     /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-
-    /**
      * QueryController constructor.
      * @param QueryBus $queryBus
      * @param QueryFactory $queryFactory
-     * @param SerializerInterface $serializer
      */
-    public function __construct(QueryBus $queryBus, QueryFactory $queryFactory, SerializerInterface $serializer)
+    public function __construct(QueryBus $queryBus, QueryFactory $queryFactory)
     {
         $this->queryBus = $queryBus;
         $this->queryFactory = $queryFactory;
-        $this->serializer = $serializer;
     }
 
     /**
      * @param Request $request
-     * @return Response
+     * @return JsonResponse
      * @throws \Exception
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): JsonResponse
     {
         $query = $this->queryFactory->fromHttpRequest($request);
         $response = $this->queryBus->query($query);
 
-        return new Response($this->serializer->serialize($response, 'json'), 200);
+        return new JsonResponse($response, 200);
     }
 }

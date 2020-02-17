@@ -12,9 +12,7 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Board\Infrastructure\Persistence\Projection;
 
 use MongoDB\Collection;
-use MongoDB\Model\BSONDocument;
-use Taranto\ListMaker\Board\Application\Query\Data\BoardData;
-use Taranto\ListMaker\Board\Application\Query\Data\BoardFinder;
+use Taranto\ListMaker\Board\Domain\BoardFinder;
 
 /**
  * Class MongoBoardFinder
@@ -38,39 +36,30 @@ final class MongoBoardFinder implements BoardFinder
     }
 
     /**
-     * @return BoardData[]
+     * @return array
      */
     public function openBoards(): array
     {
-        return array_map(function (BSONDocument $board) {
-            return new BoardData($board['boardId'], $board['title'], $board['open']);
-        }, $this->boardCollection->find(['open' => true])->toArray());
+        return $this->boardCollection->find(['open' => true], ['projection' => ['_id' => false]])->toArray();
     }
 
     /**
-     * @return BoardData[]
+     * @return array
      */
     public function closedBoards(): array
     {
-        return array_map(function (BSONDocument $board) {
-            return new BoardData($board['boardId'], $board['title'], $board['open']);
-        }, $this->boardCollection->find(['open' => false])->toArray());
+        return $this->boardCollection->find(['open' => false], ['projection' => ['_id' => false]])->toArray();
     }
 
     /**
      * @param string $boardId
-     * @return BoardData|null
+     * @return array|null
      */
-    public function boardById(string $boardId): ?BoardData
+    public function byId(string $boardId): ?array
     {
-        $board = $this->boardCollection->findOne(
+        return $this->boardCollection->findOne(
             ['boardId' => $boardId],
-            ['typeMap' => ['root' => 'array', 'document' => 'array']]
+            ['projection' => ['_id' => false]]
         );
-        if ($board === null) {
-            return null;
-        }
-
-        return new BoardData($board['boardId'], $board['title'], $board['open']);
     }
 }
