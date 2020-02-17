@@ -14,7 +14,7 @@ namespace Taranto\ListMaker\Board\Infrastructure\Persistence\Repository;
 use Taranto\ListMaker\Board\Domain\Board;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\Board\Domain\BoardRepository as BoardRepositoryInterface;
-use Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\EventStore;
+use Taranto\ListMaker\Shared\Infrastructure\Persistence\Repository\AggregateRepository;
 
 /**
  * Class BoardRepository
@@ -24,17 +24,17 @@ use Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\EventStore;
 final class BoardRepository implements BoardRepositoryInterface
 {
     /**
-     * @var EventStore
+     * @var AggregateRepository
      */
-    private $eventStore;
+    private $aggregateRepository;
 
     /**
      * BoardRepository constructor.
-     * @param EventStore $eventStore
+     * @param AggregateRepository $aggregateRepository
      */
-    public function __construct(EventStore $eventStore)
+    public function __construct(AggregateRepository $aggregateRepository)
     {
-        $this->eventStore = $eventStore;
+        $this->aggregateRepository = $aggregateRepository;
     }
 
     /**
@@ -42,11 +42,7 @@ final class BoardRepository implements BoardRepositoryInterface
      */
     public function save(Board $board): void
     {
-        $this->eventStore->commit(
-            $board->aggregateId(),
-            $board->popRecordedEvents(),
-            $board->aggregateVersion()
-        );
+        $this->aggregateRepository->save($board);
     }
 
     /**
@@ -55,11 +51,6 @@ final class BoardRepository implements BoardRepositoryInterface
      */
     public function get(BoardId $boardId): ?Board
     {
-        $aggregateHistory = $this->eventStore->aggregateHistoryFor($boardId);
-        if (count($aggregateHistory) === 0) {
-            return null;
-        }
-
-        return Board::reconstituteFrom($aggregateHistory);
+        return $this->aggregateRepository->get(Board::class, $boardId);
     }
 }
