@@ -4,7 +4,7 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/main' >> /etc/apk/repositori
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/community' >> /etc/apk/repositories
 
 RUN apk add --update \
-    shadow
+    shadow \
     php7-apcu \
     php7-intl \
     libzip-dev \
