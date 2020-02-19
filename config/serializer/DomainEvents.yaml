@@ -7,3 +7,9 @@ Taranto\ListMaker\Shared\Domain\Message\DomainEvent:
             board-title-changed: 'Taranto\ListMaker\Board\Domain\Event\BoardTitleChanged'
             board-closed: 'Taranto\ListMaker\Board\Domain\Event\BoardClosed'
             board-reopened: 'Taranto\ListMaker\Board\Domain\Event\BoardReopened'
+            # List
+            list-created: 'Taranto\ListMaker\ItemList\Domain\Event\ListCreated'
+            list-title-changed: 'Taranto\ListMaker\ItemList\Domain\Event\ListTitleChanged'
+            list-archived: 'Taranto\ListMaker\ItemList\Domain\Event\ListArchived'
+            list-restored: 'Taranto\ListMaker\ItemList\Domain\Event\ListRestored'
+            list-reordered: 'Taranto\ListMaker\ItemList\Domain\Event\ListReordered'

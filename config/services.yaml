@@ -43,16 +43,16 @@ services:
         namespace: Taranto\ListMaker\
         resource: '%kernel.project_dir%/src/**/Command/*Handler.php'
         tags: [{ name: messenger.message_handler, bus: command.bus }]
-        autoconfigure: false
+
     query_handlers:
         namespace: Taranto\ListMaker\
         resource: '%kernel.project_dir%/src/**/Query/*Handler.php'
         tags: [{ name: messenger.message_handler, bus: query.bus }]
-        autoconfigure: false
 
-    Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\BoardProjector:
+    projectors:
+        namespace: Taranto\ListMaker\
+        resource: '%kernel.project_dir%/src/**/Projection/*Projector.php'
         tags: [{ name: messenger.message_handler, bus: event.bus }]
-        autoconfigure: false
 
     #Event Store
     Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore:

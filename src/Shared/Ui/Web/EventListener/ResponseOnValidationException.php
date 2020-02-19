@@ -50,7 +50,11 @@ final class ResponseOnValidationException
 
         /** @var ConstraintViolation $violation */
         foreach ($event->getException()->getViolations() as $violation) {
-            if ($violation->getConstraint() instanceof AggregateExists && $violation->getConstraint()->returnsNotFoundResponse) {
+            $constraint = $violation->getConstraint();
+            if (
+                property_exists(get_class($constraint), 'returnsNotFoundResponse') &&
+                $constraint->returnsNotFoundResponse
+            ) {
                 $response = new Response(null, Response::HTTP_NOT_FOUND);
                 $event->setResponse($response);
                 return;

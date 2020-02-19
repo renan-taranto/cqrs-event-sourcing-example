@@ -1,0 +1,69 @@
+# Commands
+Taranto\ListMaker\ItemList\Application\Command\CreateList:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Uuid:
+                  versions: [4]
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListDoesNotExist: ~
+        payload:
+            - Collection:
+                  fields:
+                      title:
+                          - NotBlank: ~
+                          - Length:
+                                max: 50
+                      boardId:
+                          - NotBlank: ~
+                          - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
+                                idField: boardId
+                                collectionName: boards
+                                message: 'Board not found.'
+
+Taranto\ListMaker\ItemList\Application\Command\ChangeListTitle:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists:
+                  returnsNotFoundResponse: true
+        payload:
+            - Collection:
+                  fields:
+                      title:
+                          - NotBlank: ~
+                          - Length:
+                                max: 50
+
+Taranto\ListMaker\ItemList\Application\Command\ArchiveList:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists:
+                  returnsNotFoundResponse: true
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListIsNotArchived:
+                  message: 'The list is already archived.'
+
+Taranto\ListMaker\ItemList\Application\Command\RestoreList:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists:
+                  returnsNotFoundResponse: true
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListIsArchived: ~
+
+Taranto\ListMaker\ItemList\Application\Command\ReorderList:
+    constraints:
+        - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListPositionIsValid: ~
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists:
+                  returnsNotFoundResponse: true
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListIsNotArchived:
+                  message: 'Unable to reorder an archived list.'
+        payload:
+            - Collection:
+                  fields:
+                      toPosition:
+                          - NotBlank: ~
+                          - Type: integer

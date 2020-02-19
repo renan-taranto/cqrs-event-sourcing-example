@@ -2,7 +2,7 @@
 --
 -- Host: 127.0.0.1    Database: appdb
 -- ------------------------------------------------------
--- Server version	8.0.16
+-- Server version	8.0.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,15 +23,15 @@ DROP TABLE IF EXISTS `event_stream`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `event_stream` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `aggregate_id` char(36) COLLATE utf8mb4_bin NOT NULL,
-  `aggregate_version` int(11) unsigned NOT NULL,
+  `aggregate_version` int unsigned NOT NULL,
   `event_type` varchar(100) COLLATE utf8mb4_bin NOT NULL,
   `payload` json NOT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_aggregate_version` (`aggregate_id`,`aggregate_version`)
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `event_stream` (
 
 LOCK TABLES `event_stream` WRITE;
 /*!40000 ALTER TABLE `event_stream` DISABLE KEYS */;
-INSERT INTO `event_stream` (`id`, `aggregate_id`, `aggregate_version`, `event_type`, `payload`, `created_at`) VALUES (61,'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392',1,'board-created','{\"title\": \"To-Dos\"}','2019-08-15 20:46:31'),(62,'4b2baa7e-315b-41cc-857b-8852619d230b',1,'board-created','{\"title\": \"Tasks\"}','2019-08-15 20:46:54'),(63,'d81805d3-a350-4ef0-81f0-9eb122b4c1ea',1,'board-created','{\"title\": \"Jobs\"}','2019-08-15 20:47:03'),(64,'37d22c48-17f7-4849-8fb2-dc67f29496f1',1,'board-created','{\"title\": \"Backlog\"}','2019-08-15 20:48:21'),(65,'c62abbe1-fb68-4e6d-a6a3-b41aee8564c8',1,'board-created','{\"title\": \"Issues\"}','2019-08-15 20:48:52'),(66,'37d22c48-17f7-4849-8fb2-dc67f29496f1',2,'board-closed','[]','2019-08-15 20:49:09'),(67,'d81805d3-a350-4ef0-81f0-9eb122b4c1ea',2,'board-closed','[]','2019-08-15 20:49:34');
+INSERT INTO `event_stream` (`id`, `aggregate_id`, `aggregate_version`, `event_type`, `payload`, `created_at`) VALUES (1,'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392',1,'board-created','{\"title\": \"To-Dos\"}','2020-02-18 02:12:39'),(2,'4b2baa7e-315b-41cc-857b-8852619d230b',1,'board-created','{\"title\": \"Tasks\"}','2020-02-18 02:12:50'),(3,'d81805d3-a350-4ef0-81f0-9eb122b4c1ea',1,'board-created','{\"title\": \"Jobs\"}','2020-02-18 02:13:01'),(4,'37d22c48-17f7-4849-8fb2-dc67f29496f1',1,'board-created','{\"title\": \"Backlog\"}','2020-02-18 02:13:12'),(5,'c62abbe1-fb68-4e6d-a6a3-b41aee8564c8',1,'board-created','{\"title\": \"Issues\"}','2020-02-18 02:13:21'),(6,'37d22c48-17f7-4849-8fb2-dc67f29496f1',2,'board-closed','[]','2020-02-18 02:14:23'),(7,'d81805d3-a350-4ef0-81f0-9eb122b4c1ea',2,'board-closed','[]','2020-02-18 02:14:33'),(8,'197c76a8-dcd9-473e-afd8-3ea6556484f3',1,'list-created','{\"title\": \"To Do\", \"boardId\": \"b6e7cfd0-ae2b-44ee-9353-3e5d95e57392\"}','2020-02-18 02:16:20'),(9,'78a03a97-6643-4940-853b-0c89ada22bf2',1,'list-created','{\"title\": \"Doing\", \"boardId\": \"b6e7cfd0-ae2b-44ee-9353-3e5d95e57392\"}','2020-02-18 02:16:40'),(10,'c69fdf67-353d-4196-b8e8-2d8f1d475208',1,'list-created','{\"title\": \"Done\", \"boardId\": \"b6e7cfd0-ae2b-44ee-9353-3e5d95e57392\"}','2020-02-18 02:17:19'),(11,'d33a1a8e-5933-4fbc-b60c-0f37d201b2b4',1,'list-created','{\"title\": \"Reviewing\", \"boardId\": \"b6e7cfd0-ae2b-44ee-9353-3e5d95e57392\"}','2020-02-18 02:17:30'),(12,'d33a1a8e-5933-4fbc-b60c-0f37d201b2b4',2,'list-archived','[]','2020-02-18 02:22:06');
 /*!40000 ALTER TABLE `event_stream` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-15 17:52:04
+-- Dump completed on 2020-02-17 23:26:35

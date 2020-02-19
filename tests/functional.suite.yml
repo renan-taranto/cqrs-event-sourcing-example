@@ -1,0 +1,25 @@
+actor: FunctionalTester
+modules:
+    enabled:
+        - Symfony:
+              app_path: src/Shared/Infrastructure
+              environment: test
+              kernel_class: Taranto\ListMaker\Shared\Infrastructure\Kernel
+        - REST:
+              url: /
+              depends: Symfony
+        - Db:
+              dsn: "mysql:host=mysql;dbname=%MYSQL_DATABASE%"
+              user: "%MYSQL_USER%"
+              password: "%MYSQL_PASSWORD%"
+              dump: tests/etc/_data/mysql/dump.mysql
+              cleanup: true
+              populate: true
+        - MongoDb:
+              dsn: "%MONGO_URL%/%MONGO_DATABASE%"
+              dump_type: mongodump
+              dump: tests/etc/_data/mongo/dump
+              cleanup: true
+              populate: true
+              quiet: true
+        - \Taranto\ListMaker\Tests\Helper\Functional

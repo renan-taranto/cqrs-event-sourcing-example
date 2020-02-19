@@ -45,7 +45,9 @@ final class MongoBoardProjection implements BoardProjection
         $this->boardCollection->insertOne([
             'boardId' => (string) $aggregateId,
             'title' => (string) $title,
-            'open' => true
+            'open' => true,
+            'lists' => [],
+            'archivedLists' => []
         ]);
     }
 

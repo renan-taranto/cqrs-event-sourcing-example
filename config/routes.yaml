@@ -54,3 +54,44 @@ query::board-by-id:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
         _format: json
         query_class: Taranto\ListMaker\Board\Application\Query\BoardById
+
+# List
+command::create-list:
+    path: /lists
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\ItemList\Application\Command\CreateList
+
+command::change-list-title:
+    path: /lists/{id}/change-title
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\ItemList\Application\Command\ChangeListTitle
+
+command::archive-list:
+    path: /lists/{id}/archive
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\ItemList\Application\Command\ArchiveList
+
+command::restore-list:
+    path: /lists/{id}/restore
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\ItemList\Application\Command\RestoreList
+
+command::reorder-list:
+    path: /lists/{id}/reorder
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\ItemList\Application\Command\ReorderList

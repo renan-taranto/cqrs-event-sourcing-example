@@ -60,7 +60,9 @@ class MongoBoardProjectionTest extends Unit
             ->equals([
                 'boardId' => (string) $boardId,
                 'title' => (string) $title,
-                'open' => true
+                'open' => true,
+                'lists' => [],
+                'archivedLists' => []
             ]);
     }
 
