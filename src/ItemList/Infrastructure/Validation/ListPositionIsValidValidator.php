@@ -14,7 +14,6 @@ namespace Taranto\ListMaker\ItemList\Infrastructure\Validation;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Taranto\ListMaker\ItemList\Application\Command\ReorderList;
 use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider;
 
 /**
@@ -50,34 +49,14 @@ final class ListPositionIsValidValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ListPositionIsValid::class);
         }
 
-        if (!$value instanceof ReorderList) {
-            throw new \InvalidArgumentException('Unable to validate objects other than the ReorderList.');
-        }
-
-        try {
-            $toPosition = $value->toPosition();
-        } catch (\Exception $exception) {
-            $toPosition = null;
-        }
-
-        if ($value === null || $value === '' || $toPosition === null) {
-            return;
-        }
-
-        if ($toPosition->toInt() < 0) {
-            $this->context->buildViolation($constraint->message)->atPath('toPosition')->addViolation();
-        }
-
         $collection = $this->mongoCollectionProvider->getCollection(self::BOARD_COLLECTION);
         $listsCount = $collection->aggregate([
-            ['$match' => ['lists.id' => (string) $value->aggregateId()]],
+            ['$match' => [$constraint->matchId => (string) call_user_func([$value, $constraint->idAccessor])]],
             ['$project' => ['count' => ['$size' => '$lists'], '_id' => false]]
         ])->toArray();
-        if (!isset($listsCount[0])) {
-            return;
-        }
-        if ($toPosition->toInt() > $listsCount[0]['count'] - 1) {
-            $this->context->buildViolation($constraint->message)->atPath('toPosition')->addViolation();
+        $position = call_user_func([$value, $constraint->positionAccessor])->toInt();
+        if ($position < 0 || ($position > 0 && $position > $listsCount[0]['count'] - 1)) {
+            $this->context->buildViolation($constraint->message)->atPath($constraint->positionAccessor)->addViolation();
         }
     }
 }

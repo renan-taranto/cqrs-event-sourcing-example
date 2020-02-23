@@ -1,5 +1,14 @@
 # Commands
 Taranto\ListMaker\ItemList\Application\Command\CreateList:
+    group_sequence:
+        - CreateList
+        - Strict
+    constraints:
+        - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListPositionIsValid:
+              matchId: id
+              idAccessor: boardId
+              positionAccessor: position
+              groups: [Strict]
     properties:
         aggregateId:
             - NotBlank: ~
@@ -14,9 +23,9 @@ Taranto\ListMaker\ItemList\Application\Command\CreateList:
                           - Length:
                                 max: 50
                       position:
-                          - NotBlank: ~
-                          - Type: integer
-                          - GreaterThan: 0
+                          - Optional:
+                              - Type: integer
+                              - GreaterThan: 0
                       boardId:
                           - NotBlank: ~
                           - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
@@ -55,8 +64,15 @@ Taranto\ListMaker\ItemList\Application\Command\RestoreList:
             - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListIsArchived: ~
 
 Taranto\ListMaker\ItemList\Application\Command\ReorderList:
+    group_sequence:
+        - ReorderList
+        - Strict
     constraints:
-        - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListPositionIsValid: ~
+        - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListPositionIsValid:
+              matchId: lists.id
+              idAccessor: aggregateId
+              positionAccessor: toPosition
+              groups: [Strict]
     properties:
         aggregateId:
             - NotBlank: ~
@@ -70,3 +86,4 @@ Taranto\ListMaker\ItemList\Application\Command\ReorderList:
                       toPosition:
                           - NotBlank: ~
                           - Type: integer
+                          - GreaterThanOrEqual: 0

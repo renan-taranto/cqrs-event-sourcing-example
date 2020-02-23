@@ -39,7 +39,7 @@ final class Position
     private function __construct(int $position)
     {
         if ($position < 0) {
-            throw new \InvalidArgumentException('Position must be greater than 0.');
+            throw new \InvalidArgumentException('Position must be greater than or equals 0.');
         }
 
         $this->position = $position;

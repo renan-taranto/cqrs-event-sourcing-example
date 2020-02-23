@@ -46,7 +46,7 @@ final class CreateList extends Command
      */
     public function position(): Position
     {
-        return Position::fromInt($this->payload['position']);
+        return Position::fromInt($this->payload['position'] ?? 0);
     }
 
     /**

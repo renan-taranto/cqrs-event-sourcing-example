@@ -20,7 +20,30 @@ use Symfony\Component\Validator\Constraint;
  */
 final class ListPositionIsValid extends Constraint
 {
+    /**
+     * @var string
+     */
+    public $matchId;
+
+    /**
+     * @var string
+     */
+    public $idAccessor;
+
+    /**
+     * @var string
+     */
+    public $positionAccessor;
+
+    /**
+     * @var string
+     */
     public $message = 'Invalid position.';
+
+    public function getRequiredOptions()
+    {
+        return ['matchId', 'idAccessor', 'positionAccessor'];
+    }
 
     public function getTargets()
     {
