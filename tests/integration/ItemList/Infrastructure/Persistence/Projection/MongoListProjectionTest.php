@@ -15,7 +15,7 @@ use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Domain\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\ListId;
-use Taranto\ListMaker\ItemList\Domain\Position;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 use Taranto\ListMaker\ItemList\Infrastructure\Persistence\Projection\MongoListProjection;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 use Taranto\ListMaker\Tests\IntegrationTester;

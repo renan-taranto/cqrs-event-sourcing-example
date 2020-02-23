@@ -14,7 +14,7 @@ namespace Taranto\ListMaker\ItemList\Infrastructure\Persistence\Projection;
 use MongoDB\Collection;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\ListId;
-use Taranto\ListMaker\ItemList\Domain\Position;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**

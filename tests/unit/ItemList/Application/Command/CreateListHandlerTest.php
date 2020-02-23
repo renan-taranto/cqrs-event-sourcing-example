@@ -22,7 +22,7 @@ use Taranto\ListMaker\ItemList\Application\Command\CreateListHandler;
 use Taranto\ListMaker\ItemList\Domain\ItemList;
 use Taranto\ListMaker\ItemList\Domain\ListId;
 use Taranto\ListMaker\ItemList\Domain\ListRepository;
-use Taranto\ListMaker\ItemList\Domain\Position;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**

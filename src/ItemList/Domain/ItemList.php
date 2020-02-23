@@ -18,6 +18,7 @@ use Taranto\ListMaker\ItemList\Domain\Event\ListReordered;
 use Taranto\ListMaker\ItemList\Domain\Event\ListRestored;
 use Taranto\ListMaker\ItemList\Domain\Event\ListTitleChanged;
 use Taranto\ListMaker\Shared\Domain\Aggregate\AggregateRoot;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**

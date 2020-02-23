@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\ItemList\Domain\Event;
 
 use Taranto\ListMaker\ItemList\Domain\ListId;
-use Taranto\ListMaker\ItemList\Domain\Position;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
 use Taranto\ListMaker\Shared\Domain\Message\DomainEvent;
 

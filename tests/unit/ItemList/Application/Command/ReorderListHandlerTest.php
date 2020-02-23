@@ -19,7 +19,7 @@ use Taranto\ListMaker\ItemList\Domain\Exception\ListNotFound;
 use Taranto\ListMaker\ItemList\Domain\ItemList;
 use Taranto\ListMaker\ItemList\Domain\ListId;
 use Taranto\ListMaker\ItemList\Domain\ListRepository;
-use Taranto\ListMaker\ItemList\Domain\Position;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 
 /**
  * Class ReorderListHandlerTest

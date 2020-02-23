@@ -13,7 +13,7 @@ namespace Taranto\ListMaker\ItemList\Domain\Event;
 
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\ListId;
-use Taranto\ListMaker\ItemList\Domain\Position;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
 use Taranto\ListMaker\Shared\Domain\Message\DomainEvent;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;

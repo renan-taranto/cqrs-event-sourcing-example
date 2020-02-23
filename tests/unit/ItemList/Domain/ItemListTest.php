@@ -19,7 +19,7 @@ use Taranto\ListMaker\ItemList\Domain\Event\ListRestored;
 use Taranto\ListMaker\ItemList\Domain\Event\ListTitleChanged;
 use Taranto\ListMaker\ItemList\Domain\ItemList;
 use Taranto\ListMaker\ItemList\Domain\ListId;
-use Taranto\ListMaker\ItemList\Domain\Position;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 use Taranto\ListMaker\Tests\AggregateRootTestCase;
 

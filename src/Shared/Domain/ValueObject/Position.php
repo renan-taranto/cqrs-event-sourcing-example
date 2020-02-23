@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\ItemList\Domain;
+namespace Taranto\ListMaker\Shared\Domain\ValueObject;
 
 /**
  * Class Position
- * @package Taranto\ListMaker\ItemList\Domain
+ * @package Taranto\ListMaker\Shared\Domain\ValueObject
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 final class Position
