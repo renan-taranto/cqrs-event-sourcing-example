@@ -26,6 +26,11 @@ use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 final class Board extends AggregateRoot
 {
     /**
+     * @var Title
+     */
+    private $title;
+
+    /**
      * @var bool
      */
     private $open;
@@ -52,6 +57,7 @@ final class Board extends AggregateRoot
     protected function whenBoardCreated(BoardCreated $event): void
     {
         $this->aggregateId = $event->aggregateId();
+        $this->title = $event->title();
         $this->open = true;
     }
 
@@ -60,9 +66,21 @@ final class Board extends AggregateRoot
      */
     public function changeTitle(Title $title): void
     {
+        if ($title->equals($this->title)) {
+            return;
+        }
+
         $this->recordThat(
             BoardTitleChanged::occur((string) $this->aggregateId, ['title' => (string) $title])
         );
+    }
+
+    /**
+     * @param BoardTitleChanged $event
+     */
+    public function whenBoardTitleChanged(BoardTitleChanged $event): void
+    {
+        $this->title = $event->title();
     }
 
     public function close(): void

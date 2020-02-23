@@ -78,6 +78,20 @@ class BoardTest extends AggregateRootTestCase
     /**
      * @test
      */
+    public function changing_the_title_records_no_events_when_new_title_is_equals_old_title(): void
+    {
+        $this
+            ->withAggregateId(BoardId::fromString($this->id))
+            ->given([BoardCreated::occur($this->id, ['title' => $this->title])])
+            ->when(function (Board $board) {
+                $board->changeTitle(Title::fromString($this->title));
+            })
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_be_closed(): void
     {
         $this
