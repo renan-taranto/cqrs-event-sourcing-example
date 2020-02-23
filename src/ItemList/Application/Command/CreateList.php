@@ -13,6 +13,7 @@ namespace Taranto\ListMaker\ItemList\Application\Command;
 
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\ListId;
+use Taranto\ListMaker\ItemList\Domain\Position;
 use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
 use Taranto\ListMaker\Shared\Domain\Message\Command;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
@@ -38,6 +39,14 @@ final class CreateList extends Command
     public function title(): Title
     {
         return Title::fromString($this->payload['title']);
+    }
+
+    /**
+     * @return Position
+     */
+    public function position(): Position
+    {
+        return Position::fromInt($this->payload['position']);
     }
 
     /**

@@ -9,6 +9,7 @@ Feature: Create List
     {
       "id": "be31d1ac-304b-4894-b419-c1a9e01d15f4",
       "title": "Backlog",
+      "position": 3,
       "boardId": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392"
     }
     """

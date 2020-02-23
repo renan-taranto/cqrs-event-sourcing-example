@@ -53,13 +53,19 @@ class MongoListProjectionTest extends Unit
      */
     public function it_creates_a_list(): void
     {
-        $boardId = $this->boardFinder->openBoards()[0]['id'];
         $listId = ListId::generate();
-        $title = Title::fromString('Doing');
+        $title = Title::fromString('Reviewing');
+        $position = Position::fromInt(1);
+        $boardId = $this->boardFinder->openBoards()[0]['id'];
 
-        $this->listProjection->createList($listId, $title, BoardId::fromString($boardId));
+        $this->listProjection->createList(
+            $listId,
+            $title,
+            $position,
+            BoardId::fromString($boardId)
+        );
 
-        $list = end($this->boardFinder->byId($boardId)['lists']);
+        $list = $this->boardFinder->byId($boardId)['lists'][$position->toInt()];
         expect($list)->equals(['id' => (string) $listId, 'title' => (string) $title, 'items' => []]);
     }
 

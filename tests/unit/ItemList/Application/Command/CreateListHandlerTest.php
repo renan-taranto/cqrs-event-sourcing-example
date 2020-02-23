@@ -22,6 +22,7 @@ use Taranto\ListMaker\ItemList\Application\Command\CreateListHandler;
 use Taranto\ListMaker\ItemList\Domain\ItemList;
 use Taranto\ListMaker\ItemList\Domain\ListId;
 use Taranto\ListMaker\ItemList\Domain\ListRepository;
+use Taranto\ListMaker\ItemList\Domain\Position;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**
@@ -73,15 +74,16 @@ class CreateListHandlerTest extends Unit
         $this->handler = new CreateListHandler($this->listRepository, $this->boardRepository);
 
         $listId = ListId::generate();
-        $this->boardId = BoardId::generate();
         $title = Title::fromString('Backlog');
+        $position = Position::fromInt(2);
+        $this->boardId = BoardId::generate();
         $this->command = CreateList::request(
             (string) $listId,
-            ['title' => (string) $title, 'boardId' => (string) $this->boardId]
+            ['title' => (string) $title, 'position' => $position->toInt(), 'boardId' => (string) $this->boardId]
         );
 
         $this->board = \Mockery::mock(Board::class);
-        $this->list = ItemList::create($listId, $title, $this->boardId);
+        $this->list = ItemList::create($listId, $title, $position, $this->boardId);
     }
 
     /**

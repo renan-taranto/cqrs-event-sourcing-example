@@ -56,7 +56,12 @@ final class CreateListHandler
         }
 
         $this->listRepository->save(
-            ItemList::create($command->aggregateId(), $command->title(), $command->boardId())
+            ItemList::create(
+                $command->aggregateId(),
+                $command->title(),
+                $command->position(),
+                $command->boardId()
+            )
         );
     }
 }

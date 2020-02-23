@@ -45,17 +45,18 @@ final class ItemList extends AggregateRoot
     /**
      * @param ListId $listId
      * @param Title $title
+     * @param Position $position
      * @param BoardId $boardId
      * @return ItemList
      */
-    public static function create(ListId $listId, Title $title, BoardId $boardId): self
+    public static function create(ListId $listId, Title $title, Position $position, BoardId $boardId): self
     {
         $instance = new self();
 
         $instance->recordThat(
             ListCreated::occur(
                 (string) $listId,
-                ['title' => (string) $title, 'boardId' => (string) $boardId]
+                ['title' => (string) $title, 'position' => $position->toInt() , 'boardId' => (string) $boardId]
             )
         );
 
@@ -69,6 +70,7 @@ final class ItemList extends AggregateRoot
     {
         $this->aggregateId = $event->aggregateId();
         $this->title = $event->title();
+        $this->position = $event->position();
         $this->archived = false;
     }
 

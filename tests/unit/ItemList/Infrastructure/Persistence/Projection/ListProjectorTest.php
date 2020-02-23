@@ -72,7 +72,7 @@ class ListProjectorTest extends Unit
 
         $listId = (string) ListId::generate();
         $boardId = (string) BoardId::generate();
-        $this->listCreated = ListCreated::occur($listId, ['title' => 'To Do', 'boardId' => $boardId]);
+        $this->listCreated = ListCreated::occur($listId, ['title' => 'To Do', 'position' => 2, 'boardId' => $boardId]);
         $this->listTitleChanged = ListTitleChanged::occur($listId, ['title' => 'Doing']);
         $this->listArchived = ListArchived::occur($listId);
         $this->listRestored = ListRestored::occur($listId);
@@ -89,6 +89,7 @@ class ListProjectorTest extends Unit
             ->with(
                 isEqual::equalTo($this->listCreated->aggregateId()),
                 isEqual::equalTo($this->listCreated->title()),
+                isEqual::equalTo($this->listCreated->position()),
                 isEqual::equalTo($this->listCreated->boardId())
             );
     }

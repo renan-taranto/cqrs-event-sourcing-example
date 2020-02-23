@@ -13,6 +13,10 @@ Taranto\ListMaker\ItemList\Application\Command\CreateList:
                           - NotBlank: ~
                           - Length:
                                 max: 50
+                      position:
+                          - NotBlank: ~
+                          - Type: integer
+                          - GreaterThan: 0
                       boardId:
                           - NotBlank: ~
                           - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:

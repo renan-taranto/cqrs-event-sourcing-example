@@ -26,9 +26,10 @@ interface ListProjection
     /**
      * @param ListId $listId
      * @param Title $listTitle
+     * @param Position $position
      * @param BoardId $boardId
      */
-    public function createList(ListId $listId, Title $listTitle, BoardId $boardId): void;
+    public function createList(ListId $listId, Title $listTitle, Position $position, BoardId $boardId): void;
 
     /**
      * @param ListId $listId

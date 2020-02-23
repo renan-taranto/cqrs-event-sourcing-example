@@ -41,15 +41,15 @@ final class MongoListProjection implements ListProjection
     /**
      * @param ListId $listId
      * @param Title $listTitle
+     * @param Position $position
      * @param BoardId $boardId
      */
-    public function createList(ListId $listId, Title $listTitle, BoardId $boardId): void
+    public function createList(ListId $listId, Title $listTitle, Position $position, BoardId $boardId): void
     {
+        $list = ['id' => (string) $listId, 'title' => (string) $listTitle, 'items' => []];
         $this->boardCollection->updateOne(
             ['id' => (string) $boardId],
-            ['$push' => [
-                'lists' => ['id' => (string) $listId, 'title' => (string) $listTitle, 'items' => []]
-            ]]
+            ['$push' => ['lists' => ['$each' => [$list], '$position' => $position->toInt()]]]
         );
     }
 

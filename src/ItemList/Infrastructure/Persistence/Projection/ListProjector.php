@@ -44,7 +44,7 @@ final class ListProjector extends Projector
      */
     protected function projectListCreated(ListCreated $event): void
     {
-        $this->projection->createList($event->aggregateId(), $event->title(), $event->boardId());
+        $this->projection->createList($event->aggregateId(), $event->title(), $event->position(), $event->boardId());
     }
 
     /**
