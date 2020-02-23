@@ -8,7 +8,7 @@ command::create-board:
         command_class: Taranto\ListMaker\Board\Application\Command\CreateBoard
 
 command::change-board-title:
-    path: /boards/{id}/title-change
+    path: /boards/{id}/change-title
     methods: POST
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
@@ -16,7 +16,7 @@ command::change-board-title:
         command_class: Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle
 
 command::close-board:
-    path: /boards/{id}/closing
+    path: /boards/{id}/close
     methods: POST
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
@@ -24,7 +24,7 @@ command::close-board:
         command_class: Taranto\ListMaker\Board\Application\Command\CloseBoard
 
 command::reopen-board:
-    path: /boards/{id}/reopening
+    path: /boards/{id}/reopen
     methods: POST
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
@@ -40,7 +40,7 @@ query::closed-boards:
         query_class: Taranto\ListMaker\Board\Application\Query\ClosedBoards
 
 query::open-boards:
-    path: /boards/open
+    path: /boards
     methods: GET
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController

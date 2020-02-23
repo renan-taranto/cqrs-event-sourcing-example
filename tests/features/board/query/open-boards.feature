@@ -4,7 +4,7 @@ Feature: Query Open Boards
   I need to query them through the api
 
   Scenario: Successful open boards query
-    Given I send a GET request to "/boards/open"
+    Given I send a GET request to "/boards"
     Then the response status code should be 200
     And the response should be:
     """

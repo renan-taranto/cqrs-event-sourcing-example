@@ -38,8 +38,3 @@ Feature: Query Board by Id
       ]
     }
     """
-
-  Scenario: Query of nonexistent board
-    Given I send a GET request to "/boards/12345"
-    Then the response status code should be 404
-    And the response should be empty

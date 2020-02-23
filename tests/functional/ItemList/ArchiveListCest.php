@@ -33,7 +33,7 @@ class ArchiveListCest
     public function it_returns_bad_request_when_list_is_already_archived(FunctionalTester $I)
     {
         $I->haveHttpHeader('content-type', 'application/json');
-        $I->sendPost('/lists/d33a1a8e-5933-4fbc-b60c-0f37d201b2b4/archive', ['toPosition' => 3]);
+        $I->sendPost('/lists/d33a1a8e-5933-4fbc-b60c-0f37d201b2b4/archive');
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(['errors' => ['id' => 'The list is already archived.']]);
     }
