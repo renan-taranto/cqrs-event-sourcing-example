@@ -43,7 +43,7 @@ final class MongoBoardProjection implements BoardProjection
     public function createBoard(IdentifiesAggregate $aggregateId, Title $title): void
     {
         $this->boardCollection->insertOne([
-            'boardId' => (string) $aggregateId,
+            'id' => (string) $aggregateId,
             'title' => (string) $title,
             'open' => true,
             'lists' => [],
@@ -58,7 +58,7 @@ final class MongoBoardProjection implements BoardProjection
     public function changeBoardTitle(IdentifiesAggregate $aggregateId, Title $changedTitle): void
     {
         $this->boardCollection->updateOne(
-          ['boardId' => (string) $aggregateId],
+          ['id' => (string) $aggregateId],
           ['$set' => ['title' => (string) $changedTitle]]
         );
     }
@@ -69,7 +69,7 @@ final class MongoBoardProjection implements BoardProjection
     public function closeBoard(IdentifiesAggregate $aggregateId): void
     {
         $this->boardCollection->updateOne(
-            ['boardId' => (string) $aggregateId],
+            ['id' => (string) $aggregateId],
             ['$set' => ['open' => false]]
         );
     }
@@ -80,7 +80,7 @@ final class MongoBoardProjection implements BoardProjection
     public function reopenBoard(IdentifiesAggregate $aggregateId): void
     {
         $this->boardCollection->updateOne(
-            ['boardId' => (string) $aggregateId],
+            ['id' => (string) $aggregateId],
             ['$set' => ['open' => true]]
         );
     }

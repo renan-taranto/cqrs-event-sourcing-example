@@ -58,7 +58,7 @@ final class MongoBoardFinder implements BoardFinder
     public function byId(string $boardId): ?array
     {
         return $this->boardCollection->findOne(
-            ['boardId' => $boardId],
+            ['id' => $boardId],
             ['projection' => ['_id' => false]]
         );
     }

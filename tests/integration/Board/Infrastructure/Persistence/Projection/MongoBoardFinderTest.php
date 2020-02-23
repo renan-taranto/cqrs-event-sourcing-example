@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\integration\Board\Infrastructure\Persistence\Projection;
+namespace Taranto\ListMaker\Tests\Integration\Board\Infrastructure\Persistence\Projection;
 
 use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Domain\BoardFinder;
@@ -18,7 +18,7 @@ use Taranto\ListMaker\Tests\IntegrationTester;
 
 /**
  * Class MongoBoardFinderTest
- * @package Taranto\ListMaker\Tests\integration\Board\Infrastructure\Persistence\Projection
+ * @package Taranto\ListMaker\Tests\Integration\Board\Infrastructure\Persistence\Projection
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 class MongoBoardFinderTest extends Unit
@@ -70,7 +70,7 @@ class MongoBoardFinderTest extends Unit
         $boardId = 'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392';
         $board = $this->boardFinder->byId($boardId);
 
-        expect($board['boardId'])->equals($boardId);
+        expect($board['id'])->equals($boardId);
     }
 
     /**

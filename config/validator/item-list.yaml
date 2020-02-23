@@ -16,7 +16,6 @@ Taranto\ListMaker\ItemList\Application\Command\CreateList:
                       boardId:
                           - NotBlank: ~
                           - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
-                                idField: boardId
                                 collectionName: boards
                                 message: 'Board not found.'
 

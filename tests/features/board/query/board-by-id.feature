@@ -9,7 +9,7 @@ Feature: Query Board by Id
     And the response should be:
     """
     {
-      "boardId": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392",
+      "id": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392",
       "title": "To-Dos",
       "open": true,
       "lists": [

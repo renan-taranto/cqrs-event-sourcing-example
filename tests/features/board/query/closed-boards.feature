@@ -10,14 +10,14 @@ Feature: Query Closed Boards
     """
     [
       {
-        "boardId": "d81805d3-a350-4ef0-81f0-9eb122b4c1ea",
+        "id": "d81805d3-a350-4ef0-81f0-9eb122b4c1ea",
         "title": "Jobs",
         "open": false,
         "lists": [],
         "archivedLists": []
       },
       {
-        "boardId": "37d22c48-17f7-4849-8fb2-dc67f29496f1",
+        "id": "37d22c48-17f7-4849-8fb2-dc67f29496f1",
         "title": "Backlog",
         "open": false,
         "lists": [],

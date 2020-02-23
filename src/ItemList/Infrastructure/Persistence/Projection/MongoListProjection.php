@@ -45,7 +45,7 @@ final class MongoListProjection implements ListProjection
     public function createList(ListId $listId, Title $listTitle, BoardId $boardId): void
     {
         $this->boardCollection->updateOne(
-            ['boardId' => (string) $boardId],
+            ['id' => (string) $boardId],
             ['$push' => [
                 'lists' => ['id' => (string) $listId, 'title' => (string) $listTitle, 'items' => []]
             ]]
@@ -114,8 +114,8 @@ final class MongoListProjection implements ListProjection
     {
         $boardId = $this->boardCollection->findOne(
             ['lists.id' => (string) $listId],
-            ['projection' => ['_id' => false, 'boardId' => true]]
-        )['boardId'];
+            ['projection' => ['_id' => false, 'id' => true]]
+        )['id'];
 
         $list = $this->boardCollection->findOne(
             ['lists.id' => (string) $listId],
@@ -128,7 +128,7 @@ final class MongoListProjection implements ListProjection
         );
 
         $this->boardCollection->updateOne(
-            ['boardId' => $boardId],
+            ['id' => $boardId],
             ['$push' => ['lists' => ['$each' => [$list], '$position' => $toPosition]]]
         );
     }

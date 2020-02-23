@@ -52,7 +52,7 @@ class MongoListProjectionTest extends Unit
      */
     public function it_creates_a_list(): void
     {
-        $boardId = $this->boardFinder->openBoards()[0]['boardId'];
+        $boardId = $this->boardFinder->openBoards()[0]['id'];
         $listId = ListId::generate();
         $title = Title::fromString('Doing');
 

@@ -27,7 +27,7 @@ class BoardByIdCest
         $I->sendGET('/boards/4b2baa7e-315b-41cc-857b-8852619d230b');
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseContainsJson([
-            'boardId' => '4b2baa7e-315b-41cc-857b-8852619d230b',
+            'id' => '4b2baa7e-315b-41cc-857b-8852619d230b',
             'title' => 'Tasks',
             'open' => true,
             'lists' => [],

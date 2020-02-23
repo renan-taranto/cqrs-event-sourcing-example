@@ -10,7 +10,7 @@ Feature: Query Open Boards
     """
     [
       {
-        "boardId": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392",
+        "id": "b6e7cfd0-ae2b-44ee-9353-3e5d95e57392",
         "title": "To-Dos",
         "open": true,
         "lists": [
@@ -39,14 +39,14 @@ Feature: Query Open Boards
         ]
       },
       {
-        "boardId": "4b2baa7e-315b-41cc-857b-8852619d230b",
+        "id": "4b2baa7e-315b-41cc-857b-8852619d230b",
         "title": "Tasks",
         "open": true,
         "lists": [],
         "archivedLists": []
       },
       {
-        "boardId": "c62abbe1-fb68-4e6d-a6a3-b41aee8564c8",
+        "id": "c62abbe1-fb68-4e6d-a6a3-b41aee8564c8",
         "title": "Issues",
         "open": true,
         "lists": [],

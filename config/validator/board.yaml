@@ -6,7 +6,6 @@ Taranto\ListMaker\Board\Application\Command\CreateBoard:
             - Uuid:
                   versions: [4]
             - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateDoesNotExist:
-                  idField: boardId
                   collectionName: boards
         payload:
             - Collection:
@@ -23,7 +22,6 @@ Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle:
             - Uuid:
                   versions: [4]
             - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
-                  idField: boardId
                   collectionName: boards
                   returnsNotFoundResponse: true
         payload:
@@ -41,7 +39,6 @@ Taranto\ListMaker\Board\Application\Command\CloseBoard:
             - Uuid:
                   versions: [4]
             - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
-                  idField: boardId
                   collectionName: boards
                   returnsNotFoundResponse: true
 
@@ -52,7 +49,6 @@ Taranto\ListMaker\Board\Application\Command\ReopenBoard:
             - Uuid:
                   versions: [4]
             - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
-                  idField: boardId
                   collectionName: boards
                   returnsNotFoundResponse: true
 
@@ -67,7 +63,6 @@ Taranto\ListMaker\Board\Application\Query\BoardById:
                           - Uuid:
                                 versions: [4]
                           - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
-                                idField: boardId
                                 collectionName: boards
                                 returnsNotFoundResponse: true
 

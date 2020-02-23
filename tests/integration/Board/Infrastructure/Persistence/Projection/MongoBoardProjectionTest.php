@@ -55,10 +55,10 @@ class MongoBoardProjectionTest extends Unit
         $title = Title::fromString('To-Dos');
         $this->boardProjection->createBoard($boardId, $title);
 
-        $createdBoard = $this->findBoards(['boardId' => (string) $boardId])[0];
+        $createdBoard = $this->findBoards(['id' => (string) $boardId])[0];
         expect($createdBoard)
             ->equals([
-                'boardId' => (string) $boardId,
+                'id' => (string) $boardId,
                 'title' => (string) $title,
                 'open' => true,
                 'lists' => [],
@@ -75,11 +75,11 @@ class MongoBoardProjectionTest extends Unit
         $changedTitle = Title::fromString('Tasks');
 
         $this->boardProjection->changeBoardTitle(
-            BoardId::fromString($board['boardId']),
+            BoardId::fromString($board['id']),
             $changedTitle
         );
 
-        $updatedBoard = $this->findBoards(['boardId' => $board['boardId']])[0];
+        $updatedBoard = $this->findBoards(['id' => $board['id']])[0];
         expect($updatedBoard['title'])->equals((string) $changedTitle);
     }
 
@@ -90,9 +90,9 @@ class MongoBoardProjectionTest extends Unit
     {
         $board = $this->findBoards(['open' => true])[0];
 
-        $this->boardProjection->closeBoard(BoardId::fromString($board['boardId']));
+        $this->boardProjection->closeBoard(BoardId::fromString($board['id']));
 
-        $updatedBoard = $this->findBoards(['boardId' => $board['boardId']])[0];
+        $updatedBoard = $this->findBoards(['id' => $board['id']])[0];
         expect_not($updatedBoard['open']);
     }
 
@@ -103,9 +103,9 @@ class MongoBoardProjectionTest extends Unit
     {
         $board = $this->findBoards(['open' => false])[0];
 
-        $this->boardProjection->reopenBoard(BoardId::fromString($board['boardId']));
+        $this->boardProjection->reopenBoard(BoardId::fromString($board['id']));
 
-        $updatedBoard = $this->findBoards(['boardId' => $board['boardId']])[0];
+        $updatedBoard = $this->findBoards(['id' => $board['id']])[0];
         expect_that($updatedBoard['open']);
     }
 
