@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\ItemList\Application\Command;
 
 use Taranto\ListMaker\ItemList\Domain\ListId;
+use Taranto\ListMaker\ItemList\Domain\Position;
 use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
 use Taranto\ListMaker\Shared\Domain\Message\Command;
 
@@ -31,10 +32,10 @@ final class ReorderList extends Command
     }
 
     /**
-     * @return int
+     * @return Position
      */
-    public function toPosition(): int
+    public function toPosition(): Position
     {
-        return (int) $this->payload['toPosition'];
+        return Position::fromInt($this->payload['toPosition']);
     }
 }

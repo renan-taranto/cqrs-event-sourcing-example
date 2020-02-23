@@ -15,6 +15,7 @@ use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Domain\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\ListId;
+use Taranto\ListMaker\ItemList\Domain\Position;
 use Taranto\ListMaker\ItemList\Infrastructure\Persistence\Projection\MongoListProjection;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 use Taranto\ListMaker\Tests\IntegrationTester;
@@ -97,11 +98,11 @@ class MongoListProjectionTest extends Unit
     {
         $lists = $this->boardFinder->openBoards()[0]['lists'];
         $listToBeReordered = $lists[2];
-        $toPosition = 1;
+        $toPosition = Position::fromInt(1);
 
         $this->listProjection->reorderList(ListId::fromString($listToBeReordered['id']), $toPosition);
 
         $lists = $this->boardFinder->openBoards()[0]['lists'];
-        expect($lists[$toPosition])->equals($listToBeReordered);
+        expect($lists[$toPosition->toInt()])->equals($listToBeReordered);
     }
 }

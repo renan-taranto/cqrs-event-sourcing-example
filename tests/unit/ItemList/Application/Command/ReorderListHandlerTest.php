@@ -19,6 +19,7 @@ use Taranto\ListMaker\ItemList\Domain\Exception\ListNotFound;
 use Taranto\ListMaker\ItemList\Domain\ItemList;
 use Taranto\ListMaker\ItemList\Domain\ListId;
 use Taranto\ListMaker\ItemList\Domain\ListRepository;
+use Taranto\ListMaker\ItemList\Domain\Position;
 
 /**
  * Class ReorderListHandlerTest
@@ -43,9 +44,9 @@ class ReorderListHandlerTest extends Unit
     private $command;
 
     /**
-     * @var
+     * @var Position
      */
-    private $toPosition = 2;
+    private $toPosition;
 
     /**
      * @var ListId
@@ -63,7 +64,8 @@ class ReorderListHandlerTest extends Unit
         $this->handler = new ReorderListHandler($this->listRepository);
 
         $this->listId = ListId::generate();
-        $this->command = ReorderList::request((string) $this->listId, ['toPosition' => $this->toPosition]);
+        $this->toPosition = Position::fromInt(2);
+        $this->command = ReorderList::request((string) $this->listId, ['toPosition' => $this->toPosition->toInt()]);
 
         $this->list = \Mockery::spy(ItemList::class);
     }
@@ -80,7 +82,7 @@ class ReorderListHandlerTest extends Unit
 
         ($this->handler)($this->command);
 
-        $this->list->shouldHaveReceived('reorder')->with($this->toPosition);
+        $this->list->shouldHaveReceived('reorder')->with(isEqual::equalTo($this->toPosition));
     }
 
     /**

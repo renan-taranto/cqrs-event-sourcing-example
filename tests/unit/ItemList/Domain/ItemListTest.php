@@ -19,6 +19,7 @@ use Taranto\ListMaker\ItemList\Domain\Event\ListRestored;
 use Taranto\ListMaker\ItemList\Domain\Event\ListTitleChanged;
 use Taranto\ListMaker\ItemList\Domain\ItemList;
 use Taranto\ListMaker\ItemList\Domain\ListId;
+use Taranto\ListMaker\ItemList\Domain\Position;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 use Taranto\ListMaker\Tests\AggregateRootTestCase;
 
@@ -118,20 +119,19 @@ class ItemListTest extends AggregateRootTestCase
             ->then([ListRestored::occur($this->listId)]);
     }
 
-
     /**
      * @test
      */
     public function it_can_be_reordered(): void
     {
-        $toPosition = 2;
+        $toPosition = Position::fromInt(2);
         $this
             ->withAggregateId(ListId::fromString($this->listId))
             ->given([ListCreated::occur($this->listId, ['boardId' => $this->boardId, 'title' => $this->title])])
             ->when(function (ItemList $list) use ($toPosition) {
                 $list->reorder($toPosition);
             })
-            ->then([ListReordered::occur($this->listId, ['toPosition' => $toPosition])]);
+            ->then([ListReordered::occur($this->listId, ['toPosition' => $toPosition->toInt()])]);
     }
 
     /**

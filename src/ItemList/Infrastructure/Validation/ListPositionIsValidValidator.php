@@ -64,7 +64,7 @@ final class ListPositionIsValidValidator extends ConstraintValidator
             return;
         }
 
-        if ($toPosition < 0) {
+        if ($toPosition->toInt() < 0) {
             $this->context->buildViolation($constraint->message)->atPath('toPosition')->addViolation();
         }
 
@@ -76,7 +76,7 @@ final class ListPositionIsValidValidator extends ConstraintValidator
         if (!isset($listsCount[0])) {
             return;
         }
-        if ($toPosition > $listsCount[0]['count'] - 1) {
+        if ($toPosition->toInt() > $listsCount[0]['count'] - 1) {
             $this->context->buildViolation($constraint->message)->atPath('toPosition')->addViolation();
         }
     }

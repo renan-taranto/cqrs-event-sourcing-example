@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\ItemList\Domain\Event;
 
 use Taranto\ListMaker\ItemList\Domain\ListId;
+use Taranto\ListMaker\ItemList\Domain\Position;
 use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
 use Taranto\ListMaker\Shared\Domain\Message\DomainEvent;
 
@@ -33,11 +34,11 @@ final class ListReordered extends DomainEvent
     }
 
     /**
-     * @return int
+     * @return Position
      */
-    public function toPosition(): int
+    public function toPosition(): Position
     {
-        return $this->payload['toPosition'];
+        return Position::fromInt($this->payload['toPosition']);
     }
 
     /**

@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\Functional\ItemList;
+namespace Taranto\ListMaker\Tests\Functional\ItemList\Command;
 
 use Codeception\Util\HttpCode;
 use Taranto\ListMaker\Tests\FunctionalTester;
 
 /**
  * Class ChangeListTitleCest
- * @package Taranto\ListMaker\Tests\Functional\ItemList
+ * @package Taranto\ListMaker\Tests\Functional\ItemList\Command
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 class ChangeListTitleCest

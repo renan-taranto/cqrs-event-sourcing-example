@@ -14,6 +14,7 @@ namespace Taranto\ListMaker\ItemList\Infrastructure\Persistence\Projection;
 use MongoDB\Collection;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\ListId;
+use Taranto\ListMaker\ItemList\Domain\Position;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**
@@ -108,9 +109,9 @@ final class MongoListProjection implements ListProjection
 
     /**
      * @param ListId $listId
-     * @param int $toPosition
+     * @param Position $toPosition
      */
-    public function reorderList(ListId $listId, int $toPosition): void
+    public function reorderList(ListId $listId, Position $toPosition): void
     {
         $boardId = $this->boardCollection->findOne(
             ['lists.id' => (string) $listId],
@@ -129,7 +130,7 @@ final class MongoListProjection implements ListProjection
 
         $this->boardCollection->updateOne(
             ['id' => $boardId],
-            ['$push' => ['lists' => ['$each' => [$list], '$position' => $toPosition]]]
+            ['$push' => ['lists' => ['$each' => [$list], '$position' => $toPosition->toInt()]]]
         );
     }
 }

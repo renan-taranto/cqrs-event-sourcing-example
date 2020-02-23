@@ -38,7 +38,7 @@ final class ItemList extends AggregateRoot
     private $archived;
 
     /**
-     * @var int
+     * @var Position
      */
     private $position;
 
@@ -121,17 +121,20 @@ final class ItemList extends AggregateRoot
     }
 
     /**
-     * @param int $toPosition
+     * @param Position $toPosition
      */
-    public function reorder(int $toPosition): void
+    public function reorder(Position $toPosition): void
     {
-        if ($this->position === $toPosition || $this->archived) {
+        if (
+            ($this->position !== null && $this->position->equals($toPosition))
+            || $this->archived
+        ) {
             return;
         }
 
         $this->recordThat(ListReordered::occur(
             (string) $this->aggregateId,
-            ['toPosition' => $toPosition]
+            ['toPosition' => $toPosition->toInt()]
         ));
     }
 

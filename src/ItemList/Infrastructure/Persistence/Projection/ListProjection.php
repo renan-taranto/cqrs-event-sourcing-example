@@ -13,6 +13,7 @@ namespace Taranto\ListMaker\ItemList\Infrastructure\Persistence\Projection;
 
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\ListId;
+use Taranto\ListMaker\ItemList\Domain\Position;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**
@@ -47,7 +48,7 @@ interface ListProjection
 
     /**
      * @param ListId $listId
-     * @param int $toPosition
+     * @param Position $toPosition
      */
-    public function reorderList(ListId $listId, int $toPosition): void;
+    public function reorderList(ListId $listId, Position $toPosition): void;
 }
