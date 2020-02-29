@@ -14,11 +14,11 @@ namespace Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class AggregateDoesNotExist
+ * Class MongoDocumentDoesNotExist
  * @package Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-class AggregateDoesNotExist extends Constraint
+class MongoDocumentDoesNotExist extends Constraint
 {
     /**
      * @var string
@@ -31,15 +31,15 @@ class AggregateDoesNotExist extends Constraint
     public $idField = 'id';
 
     /**
-     * @var string|null
+     * @var string
      */
-    public $collectionName = null;
+    public $collection;
 
     /**
      * @return array
      */
     public function getRequiredOptions()
     {
-        return ['collectionName'];
+        return ['collection'];
     }
 }

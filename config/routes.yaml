@@ -95,3 +95,52 @@ command::reorder-list:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
         _format: json
         command_class: Taranto\ListMaker\ItemList\Application\Command\ReorderList
+
+# Item
+command::add-item:
+    path: /items
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\AddItem
+
+command::change-item-title:
+    path: /items/{id}/change-title
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\ChangeItemTitle
+
+command::archive-item:
+    path: /items/{id}/archive
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\ArchiveItem
+
+command::restore-item:
+    path: /items/{id}/restore
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\RestoreItem
+
+command::change-item-description:
+    path: /items/{id}/change-description
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\ChangeItemDescription
+
+command::reorder-item:
+    path: /items/{id}/reorder
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\ReorderItem

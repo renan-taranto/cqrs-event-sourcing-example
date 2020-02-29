@@ -1,1 +1,1 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"fixtures.boards"}],"uuid":"ed79e89c57424808b5c9e40c04dd5a31"}
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"fixtures.boards"}],"uuid":"605747cdd6a74682a1161ca8777eb385"}

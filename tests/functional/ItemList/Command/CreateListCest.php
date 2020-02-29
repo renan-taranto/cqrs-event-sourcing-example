@@ -32,7 +32,7 @@ class CreateListCest
         $I->seeResponseCodeIs(HttpCode::ACCEPTED);
     }
 
-    public function it_creates_a_list_with_a_given_position(FunctionalTester $I)
+    public function it_creates_a_list_at_a_given_position(FunctionalTester $I)
     {
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendPost('/lists',[
@@ -118,7 +118,7 @@ class CreateListCest
             'boardId' => 'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392'
         ]);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
-        $I->seeResponseContainsJson(['errors' => ['position' => 'This value should be greater than 0.']]);
+        $I->seeResponseContainsJson(['errors' => ['position' => 'This value should be greater than or equal to 0.']]);
     }
 
     public function it_returns_bad_request_when_position_is_greater_than_limit(FunctionalTester $I)

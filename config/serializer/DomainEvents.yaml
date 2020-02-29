@@ -13,3 +13,10 @@ Taranto\ListMaker\Shared\Domain\Message\DomainEvent:
             list-archived: 'Taranto\ListMaker\ItemList\Domain\Event\ListArchived'
             list-restored: 'Taranto\ListMaker\ItemList\Domain\Event\ListRestored'
             list-reordered: 'Taranto\ListMaker\ItemList\Domain\Event\ListReordered'
+            # Item
+            item-added: 'Taranto\ListMaker\Item\Domain\Event\ItemAdded'
+            item-archived: 'Taranto\ListMaker\Item\Domain\Event\ItemArchived'
+            item-description-changed: 'Taranto\ListMaker\Item\Domain\Event\ItemDescriptionChanged'
+            item-reordered: 'Taranto\ListMaker\Item\Domain\Event\ItemReordered'
+            item-restored: 'Taranto\ListMaker\Item\Domain\Event\ItemRestored'
+            item-title-changed: 'Taranto\ListMaker\Item\Domain\Event\ItemTitleChanged'

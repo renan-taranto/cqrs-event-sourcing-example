@@ -20,5 +20,8 @@ use Symfony\Component\Validator\Constraint;
  */
 final class ListIsArchived extends Constraint
 {
+    /**
+     * @var string
+     */
     public $message = 'The list is not archived.';
 }

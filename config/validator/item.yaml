@@ -1,0 +1,104 @@
+# Commands
+Taranto\ListMaker\Item\Application\Command\AddItem:
+    group_sequence:
+        - AddItem
+        - Strict
+    constraints:
+        - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoArrayIndexExists:
+              collection: boards
+              matchId: lists.id
+              idAccessor: listId
+              indexAccessor: position
+              arrayPath: $lists.items
+              groups: [Strict]
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Uuid:
+                  versions: [4]
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemDoesNotExist: ~
+        payload:
+            - Collection:
+                  fields:
+                      title:
+                          - NotBlank: ~
+                          - Length:
+                                max: 50
+                      position:
+                          - Optional:
+                                - Type: integer
+                                - GreaterThanOrEqual: 0
+                      listId:
+                          - NotBlank: ~
+                          - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists: ~
+
+Taranto\ListMaker\Item\Application\Command\ArchiveItem:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemExists:
+                  returnsNotFoundResponse: true
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemIsNotArchived: ~
+
+Taranto\ListMaker\Item\Application\Command\RestoreItem:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemExists:
+                  returnsNotFoundResponse: true
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemIsArchived: ~
+
+Taranto\ListMaker\Item\Application\Command\ChangeItemTitle:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemExists:
+                  returnsNotFoundResponse: true
+        payload:
+            - Collection:
+                  fields:
+                      title:
+                          - NotBlank: ~
+                          - Length:
+                                max: 50
+
+Taranto\ListMaker\Item\Application\Command\ChangeItemDescription:
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemExists:
+                  returnsNotFoundResponse: true
+        payload:
+            - Collection:
+                  fields:
+                      description:
+                          - NotBlank: ~
+                          - Length:
+                                max: 16000
+
+Taranto\ListMaker\Item\Application\Command\ReorderItem:
+    group_sequence:
+        - ReorderItem
+        - Strict
+    constraints:
+        - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoArrayIndexExists:
+              collection: boards
+              matchId: lists.items.id
+              idAccessor: aggregateId
+              indexAccessor: toPosition
+              arrayPath: $lists.items
+              groups: [Strict]
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemExists:
+                  returnsNotFoundResponse: true
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemIsNotArchived:
+                  message: 'Unable to reorder an archived item.'
+        payload:
+            - Collection:
+                  fields:
+                      toPosition:
+                          - NotBlank: ~
+                          - Type: integer
+                          - GreaterThanOrEqual: 0

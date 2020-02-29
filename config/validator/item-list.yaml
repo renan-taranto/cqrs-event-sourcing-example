@@ -4,10 +4,12 @@ Taranto\ListMaker\ItemList\Application\Command\CreateList:
         - CreateList
         - Strict
     constraints:
-        - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListPositionIsValid:
+        - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoArrayIndexExists:
+              collection: boards
               matchId: id
               idAccessor: boardId
-              positionAccessor: position
+              indexAccessor: position
+              arrayPath: $lists
               groups: [Strict]
     properties:
         aggregateId:
@@ -25,11 +27,11 @@ Taranto\ListMaker\ItemList\Application\Command\CreateList:
                       position:
                           - Optional:
                               - Type: integer
-                              - GreaterThan: 0
+                              - GreaterThanOrEqual: 0
                       boardId:
                           - NotBlank: ~
-                          - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
-                                collectionName: boards
+                          - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
+                                collection: boards
                                 message: 'Board not found.'
 
 Taranto\ListMaker\ItemList\Application\Command\ChangeListTitle:
@@ -52,8 +54,7 @@ Taranto\ListMaker\ItemList\Application\Command\ArchiveList:
             - NotBlank: ~
             - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists:
                   returnsNotFoundResponse: true
-            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListIsNotArchived:
-                  message: 'The list is already archived.'
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListIsNotArchived: ~
 
 Taranto\ListMaker\ItemList\Application\Command\RestoreList:
     properties:
@@ -68,10 +69,12 @@ Taranto\ListMaker\ItemList\Application\Command\ReorderList:
         - ReorderList
         - Strict
     constraints:
-        - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListPositionIsValid:
+        - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoArrayIndexExists:
+              collection: boards
               matchId: lists.id
               idAccessor: aggregateId
-              positionAccessor: toPosition
+              indexAccessor: toPosition
+              arrayPath: $lists
               groups: [Strict]
     properties:
         aggregateId:

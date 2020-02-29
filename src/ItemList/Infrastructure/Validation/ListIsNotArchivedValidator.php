@@ -49,6 +49,10 @@ final class ListIsNotArchivedValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ListIsNotArchived::class);
         }
 
+        if ($value === null || $value === '') {
+            return;
+        }
+
         $collection = $this->mongoCollectionProvider->getCollection(self::BOARD_COLLECTION);
         if ($collection->findOne(['lists.id' => $value]) === null) {
             $this->context->buildViolation($constraint->message)->addViolation();

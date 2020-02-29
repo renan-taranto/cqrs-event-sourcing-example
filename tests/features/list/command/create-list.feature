@@ -15,7 +15,7 @@ Feature: Create List
     Then the response status code should be 202
     And the response should be empty
 
-  Scenario: List creation with a given position
+  Scenario: List creation at a given position
     Given I send a POST request to "/lists" with body:
     """
     {

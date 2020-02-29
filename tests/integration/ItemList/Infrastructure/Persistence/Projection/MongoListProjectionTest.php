@@ -66,7 +66,12 @@ class MongoListProjectionTest extends Unit
         );
 
         $list = $this->boardFinder->byId($boardId)['lists'][$position->toInt()];
-        expect($list)->equals(['id' => (string) $listId, 'title' => (string) $title, 'items' => []]);
+        expect($list)->equals([
+            'id' => (string) $listId,
+            'title' => (string) $title,
+            'items' => [],
+            'archivedItems' => []
+        ]);
     }
 
     /**
@@ -110,5 +115,19 @@ class MongoListProjectionTest extends Unit
 
         $lists = $this->boardFinder->openBoards()[0]['lists'];
         expect($lists[$toPosition->toInt()])->equals($listToBeReordered);
+    }
+
+    /**
+     * @test
+     */
+    public function it_changes_the_title_of_a_list(): void
+    {
+        $list = $this->boardFinder->openBoards()[0]['lists'][0];
+        $newTitle = 'Reviewing';
+
+        $this->listProjection->changeListTitle(ListId::fromString($list['id']), Title::fromString($newTitle));
+
+        $updatedList = $this->boardFinder->openBoards()[0]['lists'][0];
+        expect($updatedList['title'])->equals($newTitle);
     }
 }

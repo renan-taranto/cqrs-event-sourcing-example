@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\ItemList\Infrastructure\Validation;
+namespace Taranto\ListMaker\Item\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -17,11 +17,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider;
 
 /**
- * Class ListPositionIsValidValidator
- * @package Taranto\ListMaker\ItemList\Infrastructure\Validation
+ * Class ItemIsNotArchivedValidator
+ * @package Taranto\ListMaker\Item\Infrastructure\Validation
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class ListPositionIsValidValidator extends ConstraintValidator
+final class ItemIsNotArchivedValidator extends ConstraintValidator
 {
     const BOARD_COLLECTION = 'boards';
 
@@ -31,7 +31,7 @@ final class ListPositionIsValidValidator extends ConstraintValidator
     private $mongoCollectionProvider;
 
     /**
-     * ListPositionIsValidHandler constructor.
+     * ItemIsNotArchivedValidator constructor.
      * @param MongoCollectionProvider $mongoCollectionProvider
      */
     public function __construct(MongoCollectionProvider $mongoCollectionProvider)
@@ -39,24 +39,19 @@ final class ListPositionIsValidValidator extends ConstraintValidator
         $this->mongoCollectionProvider = $mongoCollectionProvider;
     }
 
-    /**
-     * @param mixed $value
-     * @param Constraint $constraint
-     */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof ListPositionIsValid) {
-            throw new UnexpectedTypeException($constraint, ListPositionIsValid::class);
+        if (!$constraint instanceof ItemIsNotArchived) {
+            throw new UnexpectedTypeException($constraint, ItemIsNotArchived::class);
+        }
+
+        if ($value === null || $value === '') {
+            return;
         }
 
         $collection = $this->mongoCollectionProvider->getCollection(self::BOARD_COLLECTION);
-        $listsCount = $collection->aggregate([
-            ['$match' => [$constraint->matchId => (string) call_user_func([$value, $constraint->idAccessor])]],
-            ['$project' => ['count' => ['$size' => '$lists'], '_id' => false]]
-        ])->toArray();
-        $position = call_user_func([$value, $constraint->positionAccessor])->toInt();
-        if ($position < 0 || ($position > 0 && $position > $listsCount[0]['count'] - 1)) {
-            $this->context->buildViolation($constraint->message)->atPath($constraint->positionAccessor)->addViolation();
+        if ($collection->findOne(['lists.items.id' => $value]) === null) {
+            $this->context->buildViolation($constraint->message)->addViolation();
         }
     }
 }

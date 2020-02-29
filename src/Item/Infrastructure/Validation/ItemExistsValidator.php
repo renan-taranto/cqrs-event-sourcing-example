@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints;
+namespace Taranto\ListMaker\Item\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -17,44 +17,46 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider;
 
 /**
- * Class AggregateDoesNotExistValidator
- * @package Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints
+ * Class ItemExistsValidator
+ * @package Taranto\ListMaker\Item\Infrastructure\Validation
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-class AggregateDoesNotExistValidator extends ConstraintValidator
+final class ItemExistsValidator extends ConstraintValidator
 {
+    const BOARD_COLLECTION = 'boards';
+
     /**
      * @var MongoCollectionProvider
      */
-    private $mongoCollectionFactory;
+    private $mongoCollectionProvider;
 
     /**
-     * AggregateDoesNotExistValidator constructor.
+     * ItemExistsValidator constructor.
      * @param MongoCollectionProvider $mongoCollectionProvider
      */
     public function __construct(MongoCollectionProvider $mongoCollectionProvider)
     {
-        $this->mongoCollectionFactory = $mongoCollectionProvider;
+        $this->mongoCollectionProvider = $mongoCollectionProvider;
     }
 
-    /**
-     * Checks if the passed value is valid.
-     *
-     * @param mixed $value The value that should be validated
-     * @param Constraint $constraint The constraint for the validation
-     */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof AggregateDoesNotExist) {
-            throw new UnexpectedTypeException($constraint, AggregateDoesNotExist::class);
+        if (!$constraint instanceof ItemExists) {
+            throw new UnexpectedTypeException($constraint, ItemExists::class);
         }
 
         if ($value === null || $value === '') {
             return;
         }
 
-        $collection = $this->mongoCollectionFactory->getCollection($constraint->collectionName);
-        if ($collection->findOne([$constraint->idField => $value]) !== null) {
+        $collection = $this->mongoCollectionProvider->getCollection(self::BOARD_COLLECTION);
+        if ($collection->findOne(['$or' => [
+                ['lists.items.id' => $value],
+                ['lists.archivedItems.id' => $value],
+                ['archivedLists.items.id' => $value],
+                ['archivedLists.archivedItems.id' => $value]
+            ]]) === null
+        ) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

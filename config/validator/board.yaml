@@ -5,8 +5,8 @@ Taranto\ListMaker\Board\Application\Command\CreateBoard:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
-            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateDoesNotExist:
-                  collectionName: boards
+            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentDoesNotExist:
+                  collection: boards
         payload:
             - Collection:
                   fields:
@@ -21,8 +21,8 @@ Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
-            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
-                  collectionName: boards
+            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
+                  collection: boards
                   returnsNotFoundResponse: true
         payload:
             - Collection:
@@ -38,8 +38,8 @@ Taranto\ListMaker\Board\Application\Command\CloseBoard:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
-            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
-                  collectionName: boards
+            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
+                  collection: boards
                   returnsNotFoundResponse: true
 
 Taranto\ListMaker\Board\Application\Command\ReopenBoard:
@@ -48,8 +48,8 @@ Taranto\ListMaker\Board\Application\Command\ReopenBoard:
             - NotBlank: ~
             - Uuid:
                   versions: [4]
-            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
-                  collectionName: boards
+            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
+                  collection: boards
                   returnsNotFoundResponse: true
 
 # Queries
@@ -62,8 +62,8 @@ Taranto\ListMaker\Board\Application\Query\BoardById:
                           - NotBlank: ~
                           - Uuid:
                                 versions: [4]
-                          - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists:
-                                collectionName: boards
+                          - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
+                                collection: boards
                                 returnsNotFoundResponse: true
 
 Taranto\ListMaker\Board\Application\Query\ClosedBoards:

@@ -17,11 +17,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider;
 
 /**
- * Class AggregateExistsValidator
+ * Class MongoArrayIndexExistsValidator
  * @package Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-class AggregateExistsValidator extends ConstraintValidator
+final class MongoArrayIndexExistsValidator extends ConstraintValidator
 {
     /**
      * @var MongoCollectionProvider
@@ -29,7 +29,7 @@ class AggregateExistsValidator extends ConstraintValidator
     private $mongoCollectionProvider;
 
     /**
-     * AggregateDoesNotExistValidator constructor.
+     * MongoArrayIndexExistsValidator constructor.
      * @param MongoCollectionProvider $mongoCollectionProvider
      */
     public function __construct(MongoCollectionProvider $mongoCollectionProvider)
@@ -38,24 +38,28 @@ class AggregateExistsValidator extends ConstraintValidator
     }
 
     /**
-     * Checks if the passed value is valid.
-     *
-     * @param mixed $value The value that should be validated
-     * @param Constraint $constraint The constraint for the validation
+     * @param mixed $value
+     * @param Constraint $constraint
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof AggregateExists) {
-            throw new UnexpectedTypeException($constraint, AggregateExists::class);
+        if (!$constraint instanceof MongoArrayIndexExists) {
+            throw new UnexpectedTypeException($constraint, MongoArrayIndexExists::class);
         }
 
-        if ($value === null || $value === '') {
+        $index = call_user_func([$value, $constraint->indexAccessor])->toInt();
+        if ($index < 0) {
+            $this->context->buildViolation($constraint->message)->atPath($constraint->indexAccessor)->addViolation();
             return;
         }
 
-        $collection = $this->mongoCollectionProvider->getCollection($constraint->collectionName);
-        if ($collection->findOne([$constraint->idField => $value]) === null) {
-            $this->context->buildViolation($constraint->message)->addViolation();
+        $collection = $this->mongoCollectionProvider->getCollection($constraint->collection);
+        $queryResult = $collection->aggregate([
+            ['$match' => [$constraint->matchId => (string) call_user_func([$value, $constraint->idAccessor])]],
+            ['$project' => ['count' => ['$size' => $constraint->arrayPath], '_id' => false]]
+        ])->toArray();
+        if (!isset($queryResult[0]) || $index > $queryResult[0]['count'] - 1) {
+            $this->context->buildViolation($constraint->message)->atPath($constraint->indexAccessor)->addViolation();
         }
     }
 }

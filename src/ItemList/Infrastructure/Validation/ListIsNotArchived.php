@@ -20,5 +20,5 @@ use Symfony\Component\Validator\Constraint;
  */
 final class ListIsNotArchived extends Constraint
 {
-    public $message = 'The list is archived.';
+    public $message = 'The list is already archived.';
 }

@@ -9,17 +9,22 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\ItemList\Infrastructure\Validation;
+namespace Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class ListPositionIsValid
- * @package Taranto\ListMaker\ItemList\Infrastructure\Validation
+ * Class MongoArrayIndexExists
+ * @package Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class ListPositionIsValid extends Constraint
+final class MongoArrayIndexExists extends Constraint
 {
+    /**
+     * @var string
+     */
+    public $collection;
+
     /**
      * @var string
      */
@@ -33,7 +38,12 @@ final class ListPositionIsValid extends Constraint
     /**
      * @var string
      */
-    public $positionAccessor;
+    public $indexAccessor;
+
+    /**
+     * @var string
+     */
+    public $arrayPath;
 
     /**
      * @var string
@@ -42,7 +52,13 @@ final class ListPositionIsValid extends Constraint
 
     public function getRequiredOptions()
     {
-        return ['matchId', 'idAccessor', 'positionAccessor'];
+        return [
+            'collection',
+            'matchId',
+            'idAccessor',
+            'indexAccessor',
+            'arrayPath'
+        ];
     }
 
     public function getTargets()

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Messenger\Exception\ValidationFailedException;
 use Symfony\Component\Validator\ConstraintViolation;
-use Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\AggregateExists;
+use Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists;
 use Taranto\ListMaker\Shared\Infrastructure\Validation\ConstraintViolationsTranslator;
 
 /**
