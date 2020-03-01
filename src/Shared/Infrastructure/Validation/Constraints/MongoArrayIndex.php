@@ -14,11 +14,11 @@ namespace Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class MongoArrayIndexExists
+ * Class MongoArrayIndex
  * @package Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class MongoArrayIndexExists extends Constraint
+final class MongoArrayIndex extends Constraint
 {
     /**
      * @var string

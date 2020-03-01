@@ -4,7 +4,7 @@ Taranto\ListMaker\ItemList\Application\Command\CreateList:
         - CreateList
         - Strict
     constraints:
-        - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoArrayIndexExists:
+        - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoArrayIndex:
               collection: boards
               matchId: id
               idAccessor: boardId
@@ -69,7 +69,7 @@ Taranto\ListMaker\ItemList\Application\Command\ReorderList:
         - ReorderList
         - Strict
     constraints:
-        - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoArrayIndexExists:
+        - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoArrayIndex:
               collection: boards
               matchId: lists.id
               idAccessor: aggregateId

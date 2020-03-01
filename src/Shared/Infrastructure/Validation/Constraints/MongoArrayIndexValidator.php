@@ -17,11 +17,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider;
 
 /**
- * Class MongoArrayIndexExistsValidator
+ * Class MongoArrayIndexValidator
  * @package Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class MongoArrayIndexExistsValidator extends ConstraintValidator
+final class MongoArrayIndexValidator extends ConstraintValidator
 {
     /**
      * @var MongoCollectionProvider
@@ -43,11 +43,15 @@ final class MongoArrayIndexExistsValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof MongoArrayIndexExists) {
-            throw new UnexpectedTypeException($constraint, MongoArrayIndexExists::class);
+        if (!$constraint instanceof MongoArrayIndex) {
+            throw new UnexpectedTypeException($constraint, MongoArrayIndex::class);
         }
 
         $index = call_user_func([$value, $constraint->indexAccessor])->toInt();
+        if ($index === 0) {
+            return;
+        }
+
         if ($index < 0) {
             $this->context->buildViolation($constraint->message)->atPath($constraint->indexAccessor)->addViolation();
             return;
