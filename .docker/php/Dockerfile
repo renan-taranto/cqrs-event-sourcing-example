@@ -1,14 +1,15 @@
-FROM php:7.3-fpm-alpine
+FROM php:7.3-fpm-alpine as web_api
 
-RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/main' >> /etc/apk/repositories
-RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/community' >> /etc/apk/repositories
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/main' >> /etc/apk/repositories && \
+    echo 'http://dl-cdn.alpinelinux.org/alpine/v3.6/community' >> /etc/apk/repositories
 
 RUN apk add --update \
     shadow \
     php7-apcu \
     php7-intl \
     libzip-dev \
-    mongodb-tools
+    mongodb-tools \
+    rabbitmq-c-dev
 
 RUN set -xe && \
     apk add --no-cache --virtual .build-deps \
@@ -22,6 +23,8 @@ RUN set -xe && \
         pdo_mysql && \
     pecl install mongodb && \
     docker-php-ext-enable mongodb && \
+    pecl install amqp-1.9.4 && \
+    docker-php-ext-enable amqp && \
     pecl install xdebug-beta && \
     docker-php-ext-enable xdebug && \
     apk del .build-deps
@@ -46,3 +49,16 @@ RUN usermod -u 1000 www-data && \
 USER www-data
 
 WORKDIR /var/www/app
+
+
+FROM web_api as events_consumer
+
+USER root
+
+RUN apk add --no-cache supervisor && \
+    mkdir /etc/supervisor /var/log/supervisor
+
+COPY events_consumer.conf /etc/supervisor/events_consumer.conf
+COPY supervisord.conf /etc/supervisor/supervisord.conf
+
+ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/supervisord.conf"]

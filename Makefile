@@ -1,9 +1,9 @@
 DOCKER_COMPOSE = docker-compose
-EXEC_PHP = $(DOCKER_COMPOSE) exec php
+EXEC_WEB_API = $(DOCKER_COMPOSE) exec web_api
 EXEC_MYSQL = $(DOCKER_COMPOSE) exec mysql
 EXEC_MONGO = $(DOCKER_COMPOSE) exec mongo
-COMPOSER = $(EXEC_PHP) composer
-SYMFONY = $(EXEC_PHP) bin/console
+COMPOSER = $(EXEC_WEB_API) composer
+SYMFONY = $(EXEC_WEB_API) bin/console
 COVERAGE_PATH = .docker/php/code-coverage
 
 ##
@@ -41,22 +41,22 @@ load-mongo-fixtures: ## transforms the json files located at /tests/etc/_data/fi
 	$(EXEC_MONGO) sh load-fixtures.sh
 
 test-unit: ## runs unit tests
-	$(EXEC_PHP) php vendor/bin/codecept run unit
+	$(EXEC_WEB_API) php vendor/bin/codecept run unit
 
 test-integration: ## runs integration tests
-	$(EXEC_PHP) php vendor/bin/codecept run integration
+	$(EXEC_WEB_API) php vendor/bin/codecept run integration
 
 test-functional: ## runs functional tests
-	$(EXEC_PHP) php vendor/bin/codecept run functional
+	$(EXEC_WEB_API) php vendor/bin/codecept run functional
 
 test-api: ## runs api tests
-	$(EXEC_PHP) php vendor/bin/codecept run api
+	$(EXEC_WEB_API) php vendor/bin/codecept run api
 
 test-all: ## runs all tests
-	$(EXEC_PHP) php vendor/bin/codecept run unit,integration,functional,api
+	$(EXEC_WEB_API) php vendor/bin/codecept run unit,integration,functional,api
 
 test-coverage: ## runs all tests and creates a code coverage report
-	$(EXEC_PHP) php vendor/bin/codecept run unit,integration,functional,api --coverage-html
+	$(EXEC_WEB_API) php vendor/bin/codecept run unit,integration,functional,api --coverage-html
 
 .DEFAULT_GOAL := help
 help:

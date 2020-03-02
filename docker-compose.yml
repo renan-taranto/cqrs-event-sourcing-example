@@ -20,18 +20,37 @@ services:
         volumes:
             - ./.docker/mongo/data:/data/db:rw
             - ./tests/etc/_data/mongo:/testing-data:rw
-    php:
-        build: ./.docker/php
+    web_api:
+        build:
+            context: ./.docker/php
+            target: web_api
         volumes:
             - ./:/var/www/app:cached
-        links:
+        depends_on:
             - mysql
             - mongo
+            - rabbit
+    events_consumer:
+        build:
+            context: ./.docker/php
+            target: events_consumer
+        volumes:
+            - ./:/var/www/app:cached
+        depends_on:
+            - web_api
     nginx:
         build: ./.docker/nginx
         ports:
             - "80:80"
-        links:
-            - php
         volumes:
             - ./:/var/www/app:cached
+        depends_on:
+            - web_api
+    rabbit:
+        image: rabbitmq:3.8-management
+        hostname: rabbitmq
+        ports:
+            - "15672:15672"
+        environment:
+            - RABBITMQ_DEFAULT_USER=$RABBIT_USER
+            - RABBITMQ_DEFAULT_PASS=$RABBIT_PASSWORD

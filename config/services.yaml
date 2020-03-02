@@ -54,7 +54,7 @@ services:
         resource: '%kernel.project_dir%/src/**/Projection/*Projector.php'
         tags: [{ name: messenger.message_handler, bus: event.bus }]
 
-    #Event Store
+    # Event Store
     Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore:
         arguments:
             $eventStore: '@Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\MySqlEventStore'
