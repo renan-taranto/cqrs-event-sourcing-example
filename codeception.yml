@@ -6,12 +6,6 @@ paths:
     support: tests/etc/_support
     envs: tests/etc/_envs
 actor_suffix: Tester
-modules:
-    - MongoDB:
-        dsn: mongodb://mongo:27017/appdb
-        dump_type: mongodump
-        cleanup: true
-        populate: true
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
