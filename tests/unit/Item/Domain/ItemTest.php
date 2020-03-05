@@ -142,16 +142,19 @@ class ItemTest extends AggregateRootTestCase
     /**
      * @test
      */
-    public function reordering_records_no_events_when_new_position_equals_old_one(): void
+    public function reordering_records_no_events_when_archived(): void
     {
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
-            ->given([ItemAdded::occur(
-                $this->itemId,
-                ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-            )])
+            ->given([
+                ItemAdded::occur(
+                    $this->itemId,
+                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
+                ),
+                ItemArchived::occur($this->itemId)
+            ])
             ->when(function (Item $item) {
-                $item->reorder(Position::fromInt($this->position));
+                $item->reorder(Position::fromInt(2));
             })
             ->then([]);
     }

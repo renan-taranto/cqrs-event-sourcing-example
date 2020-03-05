@@ -4,12 +4,7 @@ Taranto\ListMaker\ItemList\Application\Command\CreateList:
         - CreateList
         - Strict
     constraints:
-        - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoArrayIndex:
-              collection: boards
-              matchId: id
-              idAccessor: boardId
-              indexAccessor: position
-              arrayPath: $lists
+        - Taranto\ListMaker\ItemList\Infrastructure\Validation\CreateListPosition:
               groups: [Strict]
     properties:
         aggregateId:
@@ -69,12 +64,7 @@ Taranto\ListMaker\ItemList\Application\Command\ReorderList:
         - ReorderList
         - Strict
     constraints:
-        - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoArrayIndex:
-              collection: boards
-              matchId: lists.id
-              idAccessor: aggregateId
-              indexAccessor: toPosition
-              arrayPath: $lists
+        - Taranto\ListMaker\ItemList\Infrastructure\Validation\ReorderListPosition:
               groups: [Strict]
     properties:
         aggregateId:

@@ -101,6 +101,25 @@ class ItemListTest extends AggregateRootTestCase
     /**
      * @test
      */
+    public function changing_title_records_no_events_when_new_title_equals_old_one(): void
+    {
+        $this
+            ->withAggregateId(ListId::fromString($this->listId))
+            ->given([
+                ListCreated::occur(
+                    $this->listId,
+                    ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
+                ),
+            ])
+            ->when(function (ItemList $list) {
+                $list->changeTitle(Title::fromString($this->title));
+            })
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_be_archived(): void
     {
         $this
@@ -113,6 +132,26 @@ class ItemListTest extends AggregateRootTestCase
                 $list->archive();
             })
             ->then([ListArchived::occur($this->listId)]);
+    }
+
+    /**
+     * @test
+     */
+    public function archiving_records_no_events_when_already_archived(): void
+    {
+        $this
+            ->withAggregateId(ListId::fromString($this->listId))
+            ->given([
+                ListCreated::occur(
+                    $this->listId,
+                    ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
+                ),
+                ListArchived::occur($this->listId)
+            ])
+            ->when(function (ItemList $list) {
+                $list->archive();
+            })
+            ->then([]);
     }
 
     /**
@@ -135,6 +174,26 @@ class ItemListTest extends AggregateRootTestCase
             ->then([ListRestored::occur($this->listId)]);
     }
 
+
+    /**
+     * @test
+     */
+    public function restoring_records_no_event_when_not_archived(): void
+    {
+        $this
+            ->withAggregateId(ListId::fromString($this->listId))
+            ->given([
+                ListCreated::occur(
+                    $this->listId,
+                    ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
+                )
+            ])
+            ->when(function (ItemList $list) {
+                $list->restore();
+            })
+            ->then([]);
+    }
+
     /**
      * @test
      */
@@ -151,6 +210,27 @@ class ItemListTest extends AggregateRootTestCase
                 $list->reorder($toPosition);
             })
             ->then([ListReordered::occur($this->listId, ['toPosition' => $toPosition->toInt()])]);
+    }
+
+
+    /**
+     * @test
+     */
+    public function reordering_records_no_event_when_archived(): void
+    {
+        $this
+            ->withAggregateId(ListId::fromString($this->listId))
+            ->given([
+                ListCreated::occur(
+                    $this->listId,
+                    ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
+                ),
+                ListArchived::occur($this->listId)
+            ])
+            ->when(function (ItemList $list) {
+                $list->reorder(Position::fromInt(2));
+            })
+            ->then([]);
     }
 
     /**

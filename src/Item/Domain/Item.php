@@ -107,7 +107,7 @@ final class Item extends AggregateRoot
      */
     public function reorder(Position $toPosition): void
     {
-        if ($toPosition->equals($this->position)) {
+        if ($this->archived) {
             return;
         }
 

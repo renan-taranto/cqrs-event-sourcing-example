@@ -128,10 +128,7 @@ final class ItemList extends AggregateRoot
      */
     public function reorder(Position $toPosition): void
     {
-        if (
-            ($this->position !== null && $this->position->equals($toPosition))
-            || $this->archived
-        ) {
+        if ($this->archived) {
             return;
         }
 

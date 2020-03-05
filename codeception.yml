@@ -18,3 +18,4 @@ coverage:
         - src/*
     exclude:
         - src/Shared/Ui/Cli/CreateEventStream.php
+        - src/Shared/Infrastructure/Kernel.php
