@@ -72,14 +72,7 @@ final class MongoItemProjection implements ItemProjection
      */
     public function archiveItem(ItemId $itemId): void
     {
-        $item = $this->boardCollection->aggregate(
-            [
-                ['$unwind' => '$lists'],
-                ['$unwind' => '$lists.items'],
-                ['$match' => ['lists.items.id' => (string) $itemId]],
-                ['$project' => ['lists.items' => true, '_id' => false]]
-            ]
-        )->toArray()[0]['lists']['items'];
+        $item = $this->itemById((string) $itemId);
 
         $this->boardCollection->updateOne(
             ['lists.items' => ['$elemMatch' => $item]],
@@ -95,14 +88,7 @@ final class MongoItemProjection implements ItemProjection
      */
     public function restoreItem(ItemId $itemId): void
     {
-        $item = $this->boardCollection->aggregate(
-            [
-                ['$unwind' => '$lists'],
-                ['$unwind' => '$lists.archivedItems'],
-                ['$match' => ['lists.archivedItems.id' => (string) $itemId]],
-                ['$project' => ['lists.archivedItems' => true, '_id' => false]]
-            ]
-        )->toArray()[0]['lists']['archivedItems'];
+        $item = $this->archivedItemById((string) $itemId);
 
         $this->boardCollection->updateOne(
             ['lists.archivedItems' => ['$elemMatch' => $item]],
@@ -132,19 +118,8 @@ final class MongoItemProjection implements ItemProjection
      */
     public function reorderItem(ItemId $itemId, Position $toPosition): void
     {
-        $boardId = $this->boardCollection->findOne(
-            ['lists.items.id' => (string) $itemId],
-            ['projection' => ['_id' => false, 'id' => true]]
-        )['id'];
-
-        $item = $this->boardCollection->aggregate(
-            [
-                ['$unwind' => '$lists'],
-                ['$unwind' => '$lists.items'],
-                ['$match' => ['lists.items.id' => (string) $itemId]],
-                ['$project' => ['lists.items' => true, '_id' => false]]
-            ]
-        )->toArray()[0]['lists']['items'];
+        $listId = $this->listIdByItemId((string) $itemId);
+        $item = $this->itemById((string) $itemId);
 
         $this->boardCollection->updateOne(
             ['lists.items' => ['$elemMatch' => $item]],
@@ -152,8 +127,53 @@ final class MongoItemProjection implements ItemProjection
         );
 
         $this->boardCollection->updateOne(
-            ['id' => $boardId, 'lists.items' => ['$exists' => true]],
+            ['lists.id' => $listId],
             ['$push' => ['lists.$.items' => ['$each' => [$item], '$position' => $toPosition->toInt()]]]
         );
+    }
+
+    /**
+     * @param string $id
+     * @return array
+     */
+    private function itemById(string $id): array
+    {
+        return $this->boardCollection->aggregate(
+            [
+                ['$unwind' => '$lists'],
+                ['$unwind' => '$lists.items'],
+                ['$match' => ['lists.items.id' => $id]],
+                ['$project' => ['lists.items' => true, '_id' => false]]
+            ]
+        )->toArray()[0]['lists']['items'];
+    }
+
+    /**
+     * @param string $id
+     * @return array
+     */
+    private function archivedItemById(string $id): array
+    {
+        return $this->boardCollection->aggregate(
+            [
+                ['$unwind' => '$lists'],
+                ['$unwind' => '$lists.archivedItems'],
+                ['$match' => ['lists.archivedItems.id' => $id]],
+                ['$project' => ['lists.archivedItems' => true, '_id' => false]]
+            ]
+        )->toArray()[0]['lists']['archivedItems'];
+    }
+
+    /**
+     * @param string $itemId
+     * @return string
+     */
+    private function listIdByItemId(string $itemId): string
+    {
+        return $this->boardCollection->aggregate([
+            ['$unwind' => '$lists'],
+            ['$match' => ['lists.items.id' => (string) $itemId]],
+            ['$project' => ['lists.id' => true, '_id' => false]]
+        ])->toArray()[0]['lists']['id'];
     }
 }

@@ -33,8 +33,6 @@ class MongoItemProjectionTest extends Unit
 
     private const LIST_INDEX = 0;
 
-    private const ITEM_INDEX = 0;
-
     /**
      * @var IntegrationTester
      */
