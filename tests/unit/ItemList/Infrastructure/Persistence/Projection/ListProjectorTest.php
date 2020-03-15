@@ -16,6 +16,7 @@ use Hamcrest\Core\IsEqual;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\Event\ListArchived;
 use Taranto\ListMaker\ItemList\Domain\Event\ListCreated;
+use Taranto\ListMaker\ItemList\Domain\Event\ListMoved;
 use Taranto\ListMaker\ItemList\Domain\Event\ListReordered;
 use Taranto\ListMaker\ItemList\Domain\Event\ListRestored;
 use Taranto\ListMaker\ItemList\Domain\Event\ListTitleChanged;
@@ -65,6 +66,11 @@ class ListProjectorTest extends Unit
      */
     private $listReordered;
 
+    /**
+     * @var ListMoved
+     */
+    private $listMoved;
+
     protected function _before()
     {
         $this->projection = \Mockery::spy(ListProjection::class);
@@ -77,6 +83,7 @@ class ListProjectorTest extends Unit
         $this->listArchived = ListArchived::occur($listId);
         $this->listRestored = ListRestored::occur($listId);
         $this->listReordered = ListReordered::occur($listId, ['toPosition' => 2]);
+        $this->listMoved = ListMoved::occur($listId, ['position' => 4, 'boardId' => $boardId]);
     }
 
     /**
@@ -137,6 +144,20 @@ class ListProjectorTest extends Unit
             ->with(
                 isEqual::equalTo($this->listReordered->aggregateId()),
                 isEqual::equalTo($this->listReordered->toPosition())
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_the_ListMoved_event(): void
+    {
+        ($this->projector)($this->listMoved);
+        $this->projection->shouldHaveReceived('moveList')
+            ->with(
+                isEqual::equalTo($this->listMoved->aggregateId()),
+                isEqual::equalTo($this->listMoved->position()),
+                isEqual::equalTo($this->listMoved->boardId())
             );
     }
 }

@@ -130,4 +130,43 @@ class MongoListProjectionTest extends Unit
         $updatedList = $this->boardFinder->openBoards()[0]['lists'][0];
         expect($updatedList['title'])->equals($newTitle);
     }
+
+    /**
+     * @test
+     */
+    public function it_moves_the_list_in_the_same_board(): void
+    {
+        $board = $this->boardFinder->openBoards()[0];
+        $listToBeReordered = $board['lists'][2];
+        $position = Position::fromInt(1);
+
+        $this->listProjection->moveList(
+            ListId::fromString($listToBeReordered['id']),
+            $position,
+            BoardId::fromString($board['id'])
+        );
+
+        $updatedBoard = $this->boardFinder->openBoards()[0];
+        expect($updatedBoard['lists'][$position->toInt()])->equals($listToBeReordered);
+    }
+
+    /**
+     * @test
+     */
+    public function it_moves_the_list_to_another_board(): void
+    {
+        $originBoard = $this->boardFinder->openBoards()[0];
+        $listToBeReordered = $originBoard['lists'][2];
+        $position = Position::fromInt(0);
+        $destinationBoard = $this->boardFinder->openBoards()[1];
+
+        $this->listProjection->moveList(
+            ListId::fromString($listToBeReordered['id']),
+            $position,
+            BoardId::fromString($destinationBoard['id'])
+        );
+
+        $updatedDestinationBoard = $this->boardFinder->openBoards()[1];
+        expect($updatedDestinationBoard['lists'][$position->toInt()])->equals($listToBeReordered);
+    }
 }

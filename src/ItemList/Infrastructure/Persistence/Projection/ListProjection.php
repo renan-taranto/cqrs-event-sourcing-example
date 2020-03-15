@@ -52,4 +52,11 @@ interface ListProjection
      * @param Position $toPosition
      */
     public function reorderList(ListId $listId, Position $toPosition): void;
+
+    /**
+     * @param ListId $listId
+     * @param Position $position
+     * @param BoardId $boardId
+     */
+    public function moveList(ListId $listId, Position $position, BoardId $boardId): void;
 }

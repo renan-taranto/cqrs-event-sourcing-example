@@ -13,6 +13,7 @@ namespace Taranto\ListMaker\ItemList\Infrastructure\Persistence\Projection;
 
 use Taranto\ListMaker\ItemList\Domain\Event\ListArchived;
 use Taranto\ListMaker\ItemList\Domain\Event\ListCreated;
+use Taranto\ListMaker\ItemList\Domain\Event\ListMoved;
 use Taranto\ListMaker\ItemList\Domain\Event\ListReordered;
 use Taranto\ListMaker\ItemList\Domain\Event\ListRestored;
 use Taranto\ListMaker\ItemList\Domain\Event\ListTitleChanged;
@@ -77,5 +78,13 @@ final class ListProjector extends Projector
     protected function projectListReordered(ListReordered $event): void
     {
         $this->projection->reorderList($event->aggregateId(), $event->toPosition());
+    }
+
+    /**
+     * @param ListMoved $event
+     */
+    protected function projectListMoved(ListMoved $event): void
+    {
+        $this->projection->moveList($event->aggregateId(), $event->position(), $event->boardId());
     }
 }

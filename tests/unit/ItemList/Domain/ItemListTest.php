@@ -14,6 +14,7 @@ namespace Taranto\ListMaker\Tests\ItemList\Domain;
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\Event\ListArchived;
 use Taranto\ListMaker\ItemList\Domain\Event\ListCreated;
+use Taranto\ListMaker\ItemList\Domain\Event\ListMoved;
 use Taranto\ListMaker\ItemList\Domain\Event\ListReordered;
 use Taranto\ListMaker\ItemList\Domain\Event\ListRestored;
 use Taranto\ListMaker\ItemList\Domain\Event\ListTitleChanged;
@@ -229,6 +230,49 @@ class ItemListTest extends AggregateRootTestCase
             ])
             ->when(function (ItemList $list) {
                 $list->reorder(Position::fromInt(2));
+            })
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_moved(): void
+    {
+        $position = Position::fromInt(3);
+        $boardId = BoardId::generate();
+
+        $this
+            ->withAggregateId(ListId::fromString($this->listId))
+            ->given([ListCreated::occur(
+                $this->listId,
+                ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
+            )])
+            ->when(function (ItemList $list) use ($position, $boardId) {
+                $list->move($position, $boardId);
+            })
+            ->then([ListMoved::occur(
+                $this->listId,
+                ['position' => $position->toInt(), 'boardId' => (string) $boardId]
+            )]);
+    }
+
+    /**
+     * @test
+     */
+    public function moving_records_no_events_when_archived(): void
+    {
+        $this
+            ->withAggregateId(ListId::fromString($this->listId))
+            ->given([
+                ListCreated::occur(
+                $this->listId,
+                ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
+                ),
+                ListArchived::occur($this->listId)
+            ])
+            ->when(function (ItemList $list) {
+                $list->move(Position::fromInt(2), BoardId::generate());
             })
             ->then([]);
     }

@@ -80,3 +80,30 @@ Taranto\ListMaker\ItemList\Application\Command\ReorderList:
                           - NotBlank: ~
                           - Type: integer
                           - GreaterThanOrEqual: 0
+
+Taranto\ListMaker\ItemList\Application\Command\MoveList:
+    group_sequence:
+        - MoveList
+        - Strict
+    constraints:
+        - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListPosition:
+              groups: [Strict]
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists:
+                  returnsNotFoundResponse: true
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListIsNotArchived:
+                  message: 'Unable to move an archived list.'
+        payload:
+            - Collection:
+                  fields:
+                      position:
+                          - NotBlank: ~
+                          - Type: integer
+                          - GreaterThanOrEqual: 0
+                      boardId:
+                          - NotBlank: ~
+                          - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
+                                collection: boards
+                                message: 'Board not found.'

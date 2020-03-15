@@ -96,6 +96,14 @@ command::reorder-list:
         _format: json
         command_class: Taranto\ListMaker\ItemList\Application\Command\ReorderList
 
+command::move-list:
+    path: /lists/{id}/move
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\ItemList\Application\Command\MoveList
+
 # Item
 command::add-item:
     path: /items
