@@ -15,7 +15,6 @@ use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\Event\ListArchived;
 use Taranto\ListMaker\ItemList\Domain\Event\ListCreated;
 use Taranto\ListMaker\ItemList\Domain\Event\ListMoved;
-use Taranto\ListMaker\ItemList\Domain\Event\ListReordered;
 use Taranto\ListMaker\ItemList\Domain\Event\ListRestored;
 use Taranto\ListMaker\ItemList\Domain\Event\ListTitleChanged;
 use Taranto\ListMaker\ItemList\Domain\ItemList;
@@ -191,45 +190,6 @@ class ItemListTest extends AggregateRootTestCase
             ])
             ->when(function (ItemList $list) {
                 $list->restore();
-            })
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_be_reordered(): void
-    {
-        $toPosition = Position::fromInt(3);
-        $this
-            ->withAggregateId(ListId::fromString($this->listId))
-            ->given([ListCreated::occur(
-                $this->listId,
-                ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-            )])
-            ->when(function (ItemList $list) use ($toPosition) {
-                $list->reorder($toPosition);
-            })
-            ->then([ListReordered::occur($this->listId, ['toPosition' => $toPosition->toInt()])]);
-    }
-
-
-    /**
-     * @test
-     */
-    public function reordering_records_no_event_when_archived(): void
-    {
-        $this
-            ->withAggregateId(ListId::fromString($this->listId))
-            ->given([
-                ListCreated::occur(
-                    $this->listId,
-                    ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-                ),
-                ListArchived::occur($this->listId)
-            ])
-            ->when(function (ItemList $list) {
-                $list->reorder(Position::fromInt(2));
             })
             ->then([]);
     }

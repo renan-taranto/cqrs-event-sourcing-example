@@ -127,7 +127,7 @@ class CreateListCest
         $I->sendPost('/lists',[
             'id' => 'c505ef6a-1232-49ba-9c7c-ddfa5f8b5170',
             'title' => 'Backlog',
-            'position' => 3,
+            'position' => 4,
             'boardId' => 'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392'
         ]);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);

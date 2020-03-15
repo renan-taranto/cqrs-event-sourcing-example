@@ -82,7 +82,6 @@ class ListProjectorTest extends Unit
         $this->listTitleChanged = ListTitleChanged::occur($listId, ['title' => 'Doing']);
         $this->listArchived = ListArchived::occur($listId);
         $this->listRestored = ListRestored::occur($listId);
-        $this->listReordered = ListReordered::occur($listId, ['toPosition' => 2]);
         $this->listMoved = ListMoved::occur($listId, ['position' => 4, 'boardId' => $boardId]);
     }
 
@@ -132,19 +131,6 @@ class ListProjectorTest extends Unit
         ($this->projector)($this->listRestored);
         $this->projection->shouldHaveReceived('restoreList')
             ->with(isEqual::equalTo($this->listRestored->aggregateId()));
-    }
-
-    /**
-     * @test
-     */
-    public function it_projects_the_ListReordered_event(): void
-    {
-        ($this->projector)($this->listReordered);
-        $this->projection->shouldHaveReceived('reorderList')
-            ->with(
-                isEqual::equalTo($this->listReordered->aggregateId()),
-                isEqual::equalTo($this->listReordered->toPosition())
-            );
     }
 
     /**

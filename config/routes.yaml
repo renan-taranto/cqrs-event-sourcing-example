@@ -88,14 +88,6 @@ command::restore-list:
         _format: json
         command_class: Taranto\ListMaker\ItemList\Application\Command\RestoreList
 
-command::reorder-list:
-    path: /lists/{id}/reorder
-    methods: POST
-    defaults:
-        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
-        _format: json
-        command_class: Taranto\ListMaker\ItemList\Application\Command\ReorderList
-
 command::move-list:
     path: /lists/{id}/move
     methods: POST

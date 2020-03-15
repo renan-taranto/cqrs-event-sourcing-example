@@ -4,7 +4,7 @@ Taranto\ListMaker\ItemList\Application\Command\CreateList:
         - CreateList
         - Strict
     constraints:
-        - Taranto\ListMaker\ItemList\Infrastructure\Validation\CreateListPosition:
+        - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListPosition:
               groups: [Strict]
     properties:
         aggregateId:
@@ -58,28 +58,6 @@ Taranto\ListMaker\ItemList\Application\Command\RestoreList:
             - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists:
                   returnsNotFoundResponse: true
             - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListIsArchived: ~
-
-Taranto\ListMaker\ItemList\Application\Command\ReorderList:
-    group_sequence:
-        - ReorderList
-        - Strict
-    constraints:
-        - Taranto\ListMaker\ItemList\Infrastructure\Validation\ReorderListPosition:
-              groups: [Strict]
-    properties:
-        aggregateId:
-            - NotBlank: ~
-            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists:
-                  returnsNotFoundResponse: true
-            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListIsNotArchived:
-                  message: 'Unable to reorder an archived list.'
-        payload:
-            - Collection:
-                  fields:
-                      toPosition:
-                          - NotBlank: ~
-                          - Type: integer
-                          - GreaterThanOrEqual: 0
 
 Taranto\ListMaker\ItemList\Application\Command\MoveList:
     group_sequence:

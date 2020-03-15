@@ -109,33 +109,6 @@ final class MongoListProjection implements ListProjection
 
     /**
      * @param ListId $listId
-     * @param Position $toPosition
-     */
-    public function reorderList(ListId $listId, Position $toPosition): void
-    {
-        $boardId = $this->boardCollection->findOne(
-            ['lists.id' => (string) $listId],
-            ['projection' => ['_id' => false, 'id' => true]]
-        )['id'];
-
-        $list = $this->boardCollection->findOne(
-            ['lists.id' => (string) $listId],
-            ['projection' => ['lists.$' => true, '_id' => false]]
-        )['lists'][0];
-
-        $this->boardCollection->updateOne(
-            ['lists.id' => (string) $listId],
-            ['$pull' => ['lists' => ['id' => (string) $listId]]]
-        );
-
-        $this->boardCollection->updateOne(
-            ['id' => $boardId],
-            ['$push' => ['lists' => ['$each' => [$list], '$position' => $toPosition->toInt()]]]
-        );
-    }
-
-    /**
-     * @param ListId $listId
      * @param Position $position
      * @param BoardId $boardId
      */

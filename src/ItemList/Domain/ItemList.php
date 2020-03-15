@@ -119,21 +119,6 @@ final class ItemList extends AggregateRoot
     }
 
     /**
-     * @param Position $toPosition
-     */
-    public function reorder(Position $toPosition): void
-    {
-        if ($this->archived) {
-            return;
-        }
-
-        $this->recordThat(ListReordered::occur(
-            (string) $this->aggregateId,
-            ['toPosition' => $toPosition->toInt()]
-        ));
-    }
-
-    /**
      * @param Position $position
      * @param BoardId $boardId
      */

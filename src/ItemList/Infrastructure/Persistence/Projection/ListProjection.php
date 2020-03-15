@@ -49,12 +49,6 @@ interface ListProjection
 
     /**
      * @param ListId $listId
-     * @param Position $toPosition
-     */
-    public function reorderList(ListId $listId, Position $toPosition): void;
-
-    /**
-     * @param ListId $listId
      * @param Position $position
      * @param BoardId $boardId
      */
