@@ -45,11 +45,6 @@ final class Item extends AggregateRoot
     private $archived;
 
     /**
-     * @var Position
-     */
-    private $position;
-
-    /**
      * @param ItemId $itemId
      * @param Title $title
      * @param Position $position
@@ -75,7 +70,6 @@ final class Item extends AggregateRoot
     {
         $this->aggregateId = $event->aggregateId();
         $this->title = $event->title();
-        $this->position = $event->position();
         $this->archived = false;
     }
 
@@ -115,14 +109,6 @@ final class Item extends AggregateRoot
             (string) $this->aggregateId(),
             ['toPosition' => $toPosition->toInt()]
         ));
-    }
-
-    /**
-     * @param ItemReordered $event
-     */
-    protected function whenItemReordered(ItemReordered $event): void
-    {
-        $this->position = $event->toPosition();
     }
 
     /**
