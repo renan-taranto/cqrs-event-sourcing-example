@@ -123,7 +123,7 @@ class AddItemCest
         $I->sendPOST('/items', [
             'id' => '2eec1c8c-8ea8-44e2-9df0-4dfb774e514c',
             'title' => 'Feature: Items',
-            'position' => 3,
+            'position' => 4,
             'listId' => '197c76a8-dcd9-473e-afd8-3ea6556484f3'
         ]);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);

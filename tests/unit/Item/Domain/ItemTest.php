@@ -125,44 +125,6 @@ class ItemTest extends AggregateRootTestCase
     /**
      * @test
      */
-    public function it_can_be_reordered(): void
-    {
-        $toPosition = 2;
-        $this
-            ->withAggregateId(ItemId::fromString($this->itemId))
-            ->given([ItemAdded::occur(
-                $this->itemId,
-                ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-            )])
-            ->when(function (Item $item) use ($toPosition) {
-                $item->reorder(Position::fromInt($toPosition));
-            })
-            ->then([ItemReordered::occur($this->itemId, ['toPosition' => $toPosition])]);
-    }
-
-    /**
-     * @test
-     */
-    public function reordering_records_no_events_when_archived(): void
-    {
-        $this
-            ->withAggregateId(ItemId::fromString($this->itemId))
-            ->given([
-                ItemAdded::occur(
-                    $this->itemId,
-                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-                ),
-                ItemArchived::occur($this->itemId)
-            ])
-            ->when(function (Item $item) {
-                $item->reorder(Position::fromInt(2));
-            })
-            ->then([]);
-    }
-
-    /**
-     * @test
-     */
     public function title_can_be_changed(): void
     {
         $changedTitle = 'In order to change the title...';

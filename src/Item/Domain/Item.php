@@ -98,21 +98,6 @@ final class Item extends AggregateRoot
     }
 
     /**
-     * @param Position $toPosition
-     */
-    public function reorder(Position $toPosition): void
-    {
-        if ($this->archived) {
-            return;
-        }
-
-        $this->recordThat(ItemReordered::occur(
-            (string) $this->aggregateId(),
-            ['toPosition' => $toPosition->toInt()]
-        ));
-    }
-
-    /**
      * @param Title $title
      */
     public function changeTitle(Title $title): void

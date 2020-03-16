@@ -57,12 +57,6 @@ interface ItemProjection
 
     /**
      * @param ItemId $itemId
-     * @param Position $toPosition
-     */
-    public function reorderItem(ItemId $itemId, Position $toPosition): void;
-
-    /**
-     * @param ItemId $itemId
      * @param Position $position
      * @param ListId $listId
      */

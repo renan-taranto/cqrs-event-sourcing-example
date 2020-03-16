@@ -93,7 +93,6 @@ class ItemProjectorTest extends Unit
             $itemId,
             ['description' => 'In order to...']
         );
-        $this->itemReordered = ItemReordered::occur($itemId, ['toPosition' => 2]);
         $this->itemRestored = ItemRestored::occur($itemId);
         $this->itemTitleChanged = ItemTitleChanged::occur($itemId, ['title' => 'As an API user...']);
         $this->itemMoved = ItemMoved::occur($itemId, ['position' => 3, 'listId' => $listId]);
@@ -134,19 +133,6 @@ class ItemProjectorTest extends Unit
             ->with(
                 isEqual::equalTo($this->itemDescriptionChanged->aggregateId()),
                 isEqual::equalTo($this->itemDescriptionChanged->description())
-            );
-    }
-
-    /**
-     * @test
-     */
-    public function it_projects_the_ItemReordered_event(): void
-    {
-        ($this->projector)($this->itemReordered);
-        $this->projection->shouldHaveReceived('reorderItem')
-            ->with(
-                isEqual::equalTo($this->itemReordered->aggregateId()),
-                isEqual::equalTo($this->itemReordered->toPosition())
             );
     }
 

@@ -14,6 +14,7 @@ namespace Taranto\ListMaker\Item\Infrastructure\Validation;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Taranto\ListMaker\Item\Application\Command\AddItem;
 use Taranto\ListMaker\Item\Application\Command\MoveItem;
 use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider;
 
@@ -49,8 +50,8 @@ final class ItemPositionValidator extends ConstraintValidator
         if (!$constraint instanceof ItemPosition) {
             throw new UnexpectedTypeException($constraint, ItemPosition::class);
         }
-        if (!$value instanceof MoveItem) {
-            throw new \InvalidArgumentException('$value must be an instance of the MoveItem command.');
+        if (!$value instanceof AddItem && !$value instanceof MoveItem) {
+            throw new \InvalidArgumentException('$value must be an instance of AddItem or MoveItem commands.');
         }
 
         $position = $value->position()->toInt();

@@ -4,7 +4,7 @@ Taranto\ListMaker\Item\Application\Command\AddItem:
         - AddItem
         - Strict
     constraints:
-        - Taranto\ListMaker\Item\Infrastructure\Validation\AddItemPosition:
+        - Taranto\ListMaker\Item\Infrastructure\Validation\ItemPosition:
               groups: [Strict]
     properties:
         aggregateId:
@@ -70,28 +70,6 @@ Taranto\ListMaker\Item\Application\Command\ChangeItemDescription:
                           - NotBlank: ~
                           - Length:
                                 max: 16000
-
-Taranto\ListMaker\Item\Application\Command\ReorderItem:
-    group_sequence:
-        - ReorderItem
-        - Strict
-    constraints:
-        - Taranto\ListMaker\Item\Infrastructure\Validation\ReorderItemPosition:
-              groups: [Strict]
-    properties:
-        aggregateId:
-            - NotBlank: ~
-            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemExists:
-                  returnsNotFoundResponse: true
-            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemIsNotArchived:
-                  message: 'Unable to reorder an archived item.'
-        payload:
-            - Collection:
-                  fields:
-                      toPosition:
-                          - NotBlank: ~
-                          - Type: integer
-                          - GreaterThanOrEqual: 0
 
 Taranto\ListMaker\Item\Application\Command\MoveItem:
     group_sequence:

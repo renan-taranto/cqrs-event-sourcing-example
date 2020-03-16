@@ -17,7 +17,6 @@ Taranto\ListMaker\Shared\Domain\Message\DomainEvent:
             item-added: 'Taranto\ListMaker\Item\Domain\Event\ItemAdded'
             item-archived: 'Taranto\ListMaker\Item\Domain\Event\ItemArchived'
             item-description-changed: 'Taranto\ListMaker\Item\Domain\Event\ItemDescriptionChanged'
-            item-reordered: 'Taranto\ListMaker\Item\Domain\Event\ItemReordered'
             item-restored: 'Taranto\ListMaker\Item\Domain\Event\ItemRestored'
             item-title-changed: 'Taranto\ListMaker\Item\Domain\Event\ItemTitleChanged'
             item-moved: 'Taranto\ListMaker\Item\Domain\Event\ItemMoved'

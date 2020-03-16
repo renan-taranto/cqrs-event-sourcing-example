@@ -114,26 +114,6 @@ final class MongoItemProjection implements ItemProjection
 
     /**
      * @param ItemId $itemId
-     * @param Position $toPosition
-     */
-    public function reorderItem(ItemId $itemId, Position $toPosition): void
-    {
-        $listId = $this->listIdByItemId((string) $itemId);
-        $item = $this->itemById((string) $itemId);
-
-        $this->boardCollection->updateOne(
-            ['lists.items' => ['$elemMatch' => $item]],
-            ['$pull' => ['lists.$.items' => ['id' => (string) $itemId]]]
-        );
-
-        $this->boardCollection->updateOne(
-            ['lists.id' => $listId],
-            ['$push' => ['lists.$.items' => ['$each' => [$item], '$position' => $toPosition->toInt()]]]
-        );
-    }
-
-    /**
-     * @param ItemId $itemId
      * @param Position $position
      * @param ListId $listId
      */

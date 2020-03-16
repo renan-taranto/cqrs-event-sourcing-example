@@ -108,23 +108,6 @@ class MongoItemProjectionTest extends Unit
     /**
      * @test
      */
-    public function it_reorders_an_item(): void
-    {
-        $item = $this->findItem(0, 0, 0);
-        $toPosition = 1;
-
-        $this->itemProjection->reorderItem(
-            ItemId::fromString($item['id']),
-            Position::fromInt($toPosition)
-        );
-
-        $reorderedItem = $this->findItem(0, 0, $toPosition);
-        expect($reorderedItem)->equals($item);
-    }
-
-    /**
-     * @test
-     */
     public function it_restores_an_item(): void
     {
         $itemToBeRestored = $this->findList(0, 0)['archivedItems'][0];
