@@ -92,3 +92,28 @@ Taranto\ListMaker\Item\Application\Command\ReorderItem:
                           - NotBlank: ~
                           - Type: integer
                           - GreaterThanOrEqual: 0
+
+Taranto\ListMaker\Item\Application\Command\MoveItem:
+    group_sequence:
+        - MoveItem
+        - Strict
+    constraints:
+        - Taranto\ListMaker\Item\Infrastructure\Validation\ItemPosition:
+              groups: [Strict]
+    properties:
+        aggregateId:
+            - NotBlank: ~
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemExists:
+                  returnsNotFoundResponse: true
+            - Taranto\ListMaker\Item\Infrastructure\Validation\ItemIsNotArchived:
+                  message: 'Unable to move an archived item.'
+        payload:
+            - Collection:
+                  fields:
+                      position:
+                          - NotBlank: ~
+                          - Type: integer
+                          - GreaterThanOrEqual: 0
+                      listId:
+                          - NotBlank: ~
+                          - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists: ~

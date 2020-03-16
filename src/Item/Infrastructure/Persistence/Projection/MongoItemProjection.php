@@ -133,6 +133,26 @@ final class MongoItemProjection implements ItemProjection
     }
 
     /**
+     * @param ItemId $itemId
+     * @param Position $position
+     * @param ListId $listId
+     */
+    public function moveItem(ItemId $itemId, Position $position, ListId $listId): void
+    {
+        $item = $this->itemById((string) $itemId);
+
+        $this->boardCollection->updateOne(
+            ['lists.items' => ['$elemMatch' => $item]],
+            ['$pull' => ['lists.$.items' => ['id' => (string) $itemId]]]
+        );
+
+        $this->boardCollection->updateOne(
+            ['lists.id' => (string) $listId],
+            ['$push' => ['lists.$.items' => ['$each' => [$item], '$position' => $position->toInt()]]]
+        );
+    }
+
+    /**
      * @param string $id
      * @return array
      */

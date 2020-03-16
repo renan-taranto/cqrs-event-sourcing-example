@@ -29,10 +29,6 @@ use Taranto\ListMaker\Tests\IntegrationTester;
  */
 class MongoItemProjectionTest extends Unit
 {
-    private const BOARD_INDEX = 0;
-
-    private const LIST_INDEX = 0;
-
     /**
      * @var IntegrationTester
      */
@@ -62,7 +58,7 @@ class MongoItemProjectionTest extends Unit
         $itemId = ItemId::generate();
         $title = 'Feature: Items';
         $position = 0;
-        $listId = $this->findList()['id'];
+        $listId = $this->findList(0, 0)['id'];
 
         $this->itemProjection->addItem(
             $itemId,
@@ -71,7 +67,7 @@ class MongoItemProjectionTest extends Unit
             ListId::fromString($listId)
         );
 
-        $item = $this->findList()['items'][$position];
+        $item = $this->findItem(0, 0, $position);
         expect($item)->equals([
             'id' => (string) $itemId,
             'title' => $title,
@@ -84,11 +80,11 @@ class MongoItemProjectionTest extends Unit
      */
     public function it_archives_an_item(): void
     {
-        $item = $this->findList()['items'][0];
+        $item = $this->findItem(0, 0, 0);
 
         $this->itemProjection->archiveItem(ItemId::fromString($item['id']));
 
-        $archivedItem = end($this->findList()['archivedItems']);
+        $archivedItem = end($this->findList(0, 0)['archivedItems']);
         expect($archivedItem)->equals($item);
     }
 
@@ -97,7 +93,7 @@ class MongoItemProjectionTest extends Unit
      */
     public function it_changes_the_title_of_an_item(): void
     {
-        $item = $this->findList()['items'][0];
+        $item = $this->findItem(0, 0, 0);
         $newTitle = '[WIP] Feature: Items';
 
         $this->itemProjection->changeItemTitle(
@@ -105,7 +101,7 @@ class MongoItemProjectionTest extends Unit
             Title::fromString($newTitle)
         );
 
-        $updatedItem = $this->findList()['items'][0];
+        $updatedItem = $this->findItem(0, 0, 0);
         expect($updatedItem['title'])->equals($newTitle);
     }
 
@@ -114,7 +110,7 @@ class MongoItemProjectionTest extends Unit
      */
     public function it_reorders_an_item(): void
     {
-        $item = $this->findList()['items'][0];
+        $item = $this->findItem(0, 0, 0);
         $toPosition = 1;
 
         $this->itemProjection->reorderItem(
@@ -122,7 +118,7 @@ class MongoItemProjectionTest extends Unit
             Position::fromInt($toPosition)
         );
 
-        $reorderedItem = $this->findList()['items'][$toPosition];
+        $reorderedItem = $this->findItem(0, 0, $toPosition);
         expect($reorderedItem)->equals($item);
     }
 
@@ -131,11 +127,11 @@ class MongoItemProjectionTest extends Unit
      */
     public function it_restores_an_item(): void
     {
-        $itemToBeRestored = $this->findList()['archivedItems'][0];
+        $itemToBeRestored = $this->findList(0, 0)['archivedItems'][0];
 
         $this->itemProjection->restoreItem(ItemId::fromString($itemToBeRestored['id']));
 
-        $restoredItem = end($this->findList()['items']);
+        $restoredItem = end($this->findList(0, 0)['items']);
         expect($restoredItem)->equals($itemToBeRestored);
     }
 
@@ -144,7 +140,7 @@ class MongoItemProjectionTest extends Unit
      */
     public function it_changes_the_description_of_an_item(): void
     {
-        $item = $this->findList()['items'][0];
+        $item = $this->findItem(0, 0 , 0);
         $newDescription = 'As an API user...';
 
         $this->itemProjection->changeItemDescription(
@@ -152,15 +148,66 @@ class MongoItemProjectionTest extends Unit
             Description::fromString($newDescription)
         );
 
-        $updatedItem = $this->findList()['items'][0];
+        $updatedItem = $this->findItem(0, 0 , 0);
         expect($updatedItem['description'])->equals($newDescription);
     }
 
     /**
+     * @test
+     */
+    public function it_moves_the_item_in_the_same_list(): void
+    {
+        $item = $this->findItem(0, 0 , 2);
+        $position = 1;
+        $listId = $this->findList(0, 0)['id'];
+
+        $this->itemProjection->moveItem(
+            ItemId::fromString($item['id']),
+            Position::fromInt($position),
+            ListId::fromString($listId)
+        );
+
+        $updatedItem = $this->findItem(0, 0 , $position);
+        expect($updatedItem)->equals($item);
+    }
+
+    /**
+     * @test
+     */
+    public function it_moves_the_item_to_another_list(): void
+    {
+        $item = $this->findItem(0, 0 , 2);
+        $position = 0;
+        $listId = $this->findList(0, 1)['id'];
+
+        $this->itemProjection->moveItem(
+            ItemId::fromString($item['id']),
+            Position::fromInt($position),
+            ListId::fromString($listId)
+        );
+
+        $updatedItem = $this->findItem(0, 1 , $position);
+        expect($updatedItem)->equals($item);
+    }
+
+    /**
+     * @param int $boardIndex
+     * @param int $listIndex
      * @return array
      */
-    private function findList(): array
+    private function findList(int $boardIndex, int $listIndex): array
     {
-        return $this->boardFinder->openBoards()[self::BOARD_INDEX]['lists'][self::LIST_INDEX];
+        return $this->boardFinder->openBoards()[$boardIndex]['lists'][$listIndex];
+    }
+
+    /**
+     * @param int $boardIndex
+     * @param int $listIndex
+     * @param int $itemIndex
+     * @return array
+     */
+    private function findItem(int $boardIndex, int $listIndex, int $itemIndex): array
+    {
+        return $this->boardFinder->openBoards()[$boardIndex]['lists'][$listIndex]['items'][$itemIndex];
     }
 }

@@ -15,6 +15,7 @@ use Taranto\ListMaker\Item\Domain\Description;
 use Taranto\ListMaker\Item\Domain\Event\ItemAdded;
 use Taranto\ListMaker\Item\Domain\Event\ItemArchived;
 use Taranto\ListMaker\Item\Domain\Event\ItemDescriptionChanged;
+use Taranto\ListMaker\Item\Domain\Event\ItemMoved;
 use Taranto\ListMaker\Item\Domain\Event\ItemReordered;
 use Taranto\ListMaker\Item\Domain\Event\ItemRestored;
 use Taranto\ListMaker\Item\Domain\Event\ItemTitleChanged;
@@ -272,6 +273,49 @@ class ItemTest extends AggregateRootTestCase
             ->then([]);
     }
 
+    /**
+     * @test
+     */
+    public function it_can_be_moved(): void
+    {
+        $position = Position::fromInt(2);
+        $listId = ListId::generate();
+
+        $this
+            ->withAggregateId(ItemId::fromString($this->itemId))
+            ->given([
+                ItemAdded::occur(
+                    $this->itemId,
+                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
+                )
+            ])
+            ->when(function (Item $item) use ($position, $listId) {
+                $item->move($position, $listId);
+            })
+            ->then([
+                ItemMoved::occur($this->itemId, ['position' => $position->toInt(), 'listId' => (string) $listId])
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function moving_records_no_events_when_archived(): void
+    {
+        $this
+            ->withAggregateId(ItemId::fromString($this->itemId))
+            ->given([
+                ItemAdded::occur(
+                    $this->itemId,
+                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
+                ),
+                ItemArchived::occur((string) $this->itemId)
+            ])
+            ->when(function (Item $item) {
+                $item->move(Position::fromInt(3), ListId::generate());
+            })
+            ->then([]);
+    }
     protected function getAggregateRootClass(): string
     {
         return Item::class;

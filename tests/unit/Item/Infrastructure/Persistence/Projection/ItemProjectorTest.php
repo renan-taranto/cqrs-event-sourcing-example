@@ -15,6 +15,7 @@ use Codeception\Test\Unit;
 use Taranto\ListMaker\Item\Domain\Event\ItemAdded;
 use Taranto\ListMaker\Item\Domain\Event\ItemArchived;
 use Taranto\ListMaker\Item\Domain\Event\ItemDescriptionChanged;
+use Taranto\ListMaker\Item\Domain\Event\ItemMoved;
 use Taranto\ListMaker\Item\Domain\Event\ItemReordered;
 use Taranto\ListMaker\Item\Domain\Event\ItemRestored;
 use Taranto\ListMaker\Item\Domain\Event\ItemTitleChanged;
@@ -71,6 +72,11 @@ class ItemProjectorTest extends Unit
      */
     private $itemTitleChanged;
 
+    /**
+     * @var ItemMoved
+     */
+    private $itemMoved;
+
     protected function _before()
     {
         $this->projection = \Mockery::spy(ItemProjection::class);
@@ -90,6 +96,7 @@ class ItemProjectorTest extends Unit
         $this->itemReordered = ItemReordered::occur($itemId, ['toPosition' => 2]);
         $this->itemRestored = ItemRestored::occur($itemId);
         $this->itemTitleChanged = ItemTitleChanged::occur($itemId, ['title' => 'As an API user...']);
+        $this->itemMoved = ItemMoved::occur($itemId, ['position' => 3, 'listId' => $listId]);
     }
 
     /**
@@ -165,5 +172,18 @@ class ItemProjectorTest extends Unit
                 isEqual::equalTo($this->itemTitleChanged->title())
             );
     }
-}
 
+    /**
+     * @test
+     */
+    public function it_projects_the_ItemMoved_event(): void
+    {
+        ($this->projector)($this->itemMoved);
+        $this->projection->shouldHaveReceived('moveItem')
+            ->with(
+                isEqual::equalTo($this->itemMoved->aggregateId()),
+                isEqual::equalTo($this->itemMoved->position()),
+                isEqual::equalTo($this->itemMoved->listId())
+            );
+    }
+}

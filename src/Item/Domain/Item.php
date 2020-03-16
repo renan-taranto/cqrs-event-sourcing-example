@@ -14,6 +14,7 @@ namespace Taranto\ListMaker\Item\Domain;
 use Taranto\ListMaker\Item\Domain\Event\ItemAdded;
 use Taranto\ListMaker\Item\Domain\Event\ItemArchived;
 use Taranto\ListMaker\Item\Domain\Event\ItemDescriptionChanged;
+use Taranto\ListMaker\Item\Domain\Event\ItemMoved;
 use Taranto\ListMaker\Item\Domain\Event\ItemReordered;
 use Taranto\ListMaker\Item\Domain\Event\ItemRestored;
 use Taranto\ListMaker\Item\Domain\Event\ItemTitleChanged;
@@ -155,6 +156,22 @@ final class Item extends AggregateRoot
         }
 
         $this->recordThat(ItemRestored::occur((string) $this->aggregateId));
+    }
+
+    /**
+     * @param Position $position
+     * @param ListId $listId
+     */
+    public function move(Position $position, ListId $listId): void
+    {
+        if ($this->archived) {
+            return;
+        }
+
+        $this->recordThat(ItemMoved::occur(
+            (string) $this->aggregateId,
+            ['position' => $position->toInt(), 'listId' => (string) $listId]
+        ));
     }
 
     protected function whenItemRestored(): void
