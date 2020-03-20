@@ -53,6 +53,6 @@ final class CommandController
         $command = $this->commandFactory->fromHttpRequest($request);
         $this->commandBus->dispatch($command);
 
-        return Response::create(null, Response::HTTP_ACCEPTED);
+        return Response::create(null, Response::HTTP_ACCEPTED, ['Content-Type' => null]);
     }
 }

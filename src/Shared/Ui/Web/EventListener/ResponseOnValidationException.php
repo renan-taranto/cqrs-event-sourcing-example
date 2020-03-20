@@ -55,7 +55,7 @@ final class ResponseOnValidationException
                 property_exists(get_class($constraint), 'returnsNotFoundResponse') &&
                 $constraint->returnsNotFoundResponse
             ) {
-                $response = new Response(null, Response::HTTP_NOT_FOUND);
+                $response = new Response(null, Response::HTTP_NOT_FOUND, ['Content-Type' => null]);
                 $event->setResponse($response);
                 return;
             }
