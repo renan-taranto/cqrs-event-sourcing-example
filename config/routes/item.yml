@@ -1,0 +1,47 @@
+command::add-item:
+    path: /
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\AddItem
+
+command::change-item-title:
+    path: /{id}/change-title
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\ChangeItemTitle
+
+command::archive-item:
+    path: /{id}/archive
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\ArchiveItem
+
+command::restore-item:
+    path: /{id}/restore
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\RestoreItem
+
+command::change-item-description:
+    path: /{id}/change-description
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\ChangeItemDescription
+
+command::move-item:
+    path: /{id}/move
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Item\Application\Command\MoveItem

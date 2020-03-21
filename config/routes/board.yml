@@ -1,0 +1,55 @@
+command::create-board:
+    path: /
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Board\Application\Command\CreateBoard
+
+command::change-board-title:
+    path: /{id}/change-title
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle
+
+command::close-board:
+    path: /{id}/close
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Board\Application\Command\CloseBoard
+
+command::reopen-board:
+    path: /{id}/reopen
+    methods: POST
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\CommandController
+        _format: json
+        command_class: Taranto\ListMaker\Board\Application\Command\ReopenBoard
+
+query::closed-boards:
+    path: /closed
+    methods: GET
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
+        _format: json
+        query_class: Taranto\ListMaker\Board\Application\Query\ClosedBoards
+
+query::open-boards:
+    path: /
+    methods: GET
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
+        _format: json
+        query_class: Taranto\ListMaker\Board\Application\Query\OpenBoards
+
+query::board-by-id:
+    path: /{boardId}
+    methods: GET
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
+        _format: json
+        query_class: Taranto\ListMaker\Board\Application\Query\BoardById
