@@ -1,0 +1,958 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "List Maker",
+    "description": "List-making Web API featuring CQRS and Event Sourcing.",
+    "contact": {
+      "name": "Renan Taranto",
+      "email": "renantaranto@gmail.com",
+      "url": "https://github.com/renan-taranto"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1"
+    }
+  ],
+  "paths": {
+    "/boards/{id}": {
+      "get": {
+        "summary": "Returns a Board",
+        "operationId": "findBoard",
+        "tags": ["Board"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetBoard"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/boards": {
+      "get": {
+        "summary": "Returns all Boards",
+        "operationId": "findAllBoards",
+        "tags": ["Board"],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/GetBoards"
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a Board",
+        "operationId": "createBoard",
+        "tags": ["Board"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateBoard"
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "400": {
+            "$ref": "#/components/responses/CreateBoardError"
+          }
+        }
+      }
+    },
+    "/boards/{id}/change-title": {
+      "post": {
+        "summary": "Changes the Board title",
+        "operationId": "changeBoardTitle",
+        "tags": ["Board"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ChangeTitle"
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "400": {
+            "$ref": "#/components/responses/ChangeTitleError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/boards/{id}/close": {
+      "post": {
+        "summary": "Closes the Board",
+        "operationId": "closeBoard",
+        "tags": ["Board"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/boards/{id}/reopen": {
+      "post": {
+        "summary": "Reopens the Board",
+        "operationId": "reopenBoard",
+        "tags": ["Board"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/lists": {
+      "post": {
+        "summary": "Creates a List",
+        "operationId": "createList",
+        "tags": ["List"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateList"
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "400": {
+            "$ref": "#/components/responses/CreateListError"
+          }
+        }
+      }
+    },
+    "/lists/{id}/change-title": {
+      "post": {
+        "summary": "Changes the List title",
+        "operationId": "changeListTitle",
+        "tags": ["List"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ChangeTitle"
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "400": {
+            "$ref": "#/components/responses/ChangeTitleError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/lists/{id}/archive": {
+      "post": {
+        "summary": "Archives the List",
+        "operationId": "archiveList",
+        "tags": ["List"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/lists/{id}/restore": {
+      "post": {
+        "summary": "Restores the List",
+        "operationId": "restoreList",
+        "tags": ["List"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/lists/{id}/move": {
+      "post": {
+        "summary": "Moves the List",
+        "operationId": "moveList",
+        "tags": ["List"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/MoveList"
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "400": {
+            "$ref": "#/components/responses/MoveListError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/items": {
+      "post": {
+        "summary": "Creates an Item",
+        "operationId": "createItem",
+        "tags": ["Item"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateItem"
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "400": {
+            "$ref": "#/components/responses/CreateItemError"
+          }
+        }
+      }
+    },
+    "/items/{id}/change-title": {
+      "post": {
+        "summary": "Changes the Item title",
+        "operationId": "changeItemTitle",
+        "tags": ["Item"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ChangeTitle"
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "400": {
+            "$ref": "#/components/responses/ChangeTitleError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/items/{id}/archive": {
+      "post": {
+        "summary": "Archives the Item",
+        "operationId": "archiveItem",
+        "tags": ["Item"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/items/{id}/restore": {
+      "post": {
+        "summary": "Restores the Item",
+        "operationId": "restoreItem",
+        "tags": ["Item"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/items/{id}/change-description": {
+      "post": {
+        "summary": "Changes the Item description",
+        "operationId": "changeItemDescription",
+        "tags": ["Item"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/ChangeDescription"
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "400": {
+            "$ref": "#/components/responses/ChangeDescriptionError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/items/{id}/move": {
+      "post": {
+        "summary": "Moves the Item",
+        "operationId": "moveItem",
+        "tags": ["Item"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Id"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/MoveItem"
+        },
+        "responses": {
+          "202": {
+            "$ref": "#/components/responses/Accepted"
+          },
+          "400": {
+            "$ref": "#/components/responses/MoveItemError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Board": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "25767956-57c6-41ad-bce7-00a677ae812d"
+          },
+          "title": {
+            "type": "string",
+            "example": "Sprint 21"
+          },
+          "open": {
+            "type": "boolean",
+            "example": true
+          },
+          "lists": {
+            "type": "array",
+            "items": {
+              "$ref": "#components/schemas/List"
+            }
+          },
+          "archivedLists": {
+            "type": "array",
+            "items": {
+              "$ref": "#components/schemas/ArchivedList"
+            }
+          }
+        }
+      },
+      "CreateBoard": {
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "25767956-57c6-41ad-bce7-00a677ae812d"
+          },
+          "title": {
+            "type": "string",
+            "example": "Sprint 21"
+          }
+        }
+      },
+      "CreateBoardError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "This id is already in use."
+              },
+              "title": {
+                "type": "string",
+                "example": "This value should not be blank."
+              }
+            }
+          }
+        }
+      },
+      "List": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "1c56b749-3540-4381-987f-fb2beddedd45"
+          },
+          "title": {
+            "type": "string",
+            "example": "To Do"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#components/schemas/Item"
+            }
+          },
+          "archivedItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#components/schemas/ArchivedItem"
+            }
+          }
+        }
+      },
+      "ArchivedList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "0a377829-fe71-4b36-bf5d-5761009f340e"
+          },
+          "title": {
+            "type": "string",
+            "example": "Deprecated"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#components/schemas/Item"
+            }
+          },
+          "archivedItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#components/schemas/ArchivedItem"
+            }
+          }
+        }
+      },
+      "CreateList": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "boardId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "1c56b749-3540-4381-987f-fb2beddedd45"
+          },
+          "title": {
+            "type": "string",
+            "example": "To Do"
+          },
+          "boardId": {
+            "type": "string",
+            "example": "25767956-57c6-41ad-bce7-00a677ae812d"
+          },
+          "position": {
+            "type": "integer",
+            "description": "The List position inside the Board",
+            "example": 0
+          }
+        }
+      },
+      "CreateListError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "This id is already in use."
+              },
+              "title": {
+                "type": "string",
+                "example": "This value should not be blank."
+              },
+              "boardId": {
+                "type": "string",
+                "example": "This field is missing."
+              }
+            }
+          }
+        }
+      },
+      "MoveList": {
+        "type": "object",
+        "required": [
+          "position",
+          "boardId"
+        ],
+        "properties": {
+          "boardId": {
+            "type": "string",
+            "example": "25767956-57c6-41ad-bce7-00a677ae812d"
+          },
+          "position": {
+            "type": "integer",
+            "description": "The List position inside the Board",
+            "example": 0
+          }
+        }
+      },
+      "MoveListError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "properties": {
+              "boardId": {
+                "type": "string",
+                "example": "This field is missing."
+              },
+              "position": {
+                "type": "integer",
+                "example": "Invalid position."
+              }
+            }
+          }
+        }
+      },
+      "Item": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "9189eb9a-08e8-408e-9283-3142d718d4cb"
+          },
+          "title": {
+            "type": "string",
+            "example": "[Feature] Move Item"
+          },
+          "description": {
+            "type": "string",
+            "example": "In order to change the item position..."
+          }
+        }
+      },
+      "ArchivedItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "a155b86b-ae0b-42f9-b428-38e4df38cdf2"
+          },
+          "title": {
+            "type": "string",
+            "example": "[Feature] Delete Item"
+          },
+          "description": {
+            "type": "string",
+            "example": "In order to delete an item..."
+          }
+        }
+      },
+      "CreateItem": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "position",
+          "listId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "9189eb9a-08e8-408e-9283-3142d718d4cb"
+          },
+          "title": {
+            "type": "string",
+            "example": "[Feature] Move Item"
+          },
+          "position": {
+            "type": "integer",
+            "description": "The Item position inside the List",
+            "example": 0
+          },
+          "listId": {
+            "type": "string",
+            "example": "1c56b749-3540-4381-987f-fb2beddedd45"
+          }
+        }
+      },
+      "CreateItemError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "This id is already in use."
+              },
+              "title": {
+                "type": "string",
+                "example": "This value should not be blank."
+              },
+              "listId": {
+                "type": "string",
+                "example": "This field is missing."
+              }
+            }
+          }
+        }
+      },
+      "MoveItem": {
+        "type": "object",
+        "required": [
+          "position",
+          "listId"
+        ],
+        "properties": {
+          "position": {
+            "type": "integer",
+            "description": "The Item position inside the List",
+            "example": 0
+          },
+          "listId": {
+            "type": "string",
+            "example": "1c56b749-3540-4381-987f-fb2beddedd45"
+          }
+        }
+      },
+      "MoveItemError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "properties": {
+              "position": {
+                "type": "integer",
+                "example": "Invalid position."
+              },
+              "listId": {
+                "type": "string",
+                "example": "This field is missing."
+              }
+            }
+          }
+        }
+      },
+      "ChangeTitle": {
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Lorem ipsum"
+          }
+        }
+      },
+      "ChangeDescription": {
+        "type": "object",
+        "required": [
+          "description"
+        ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "example": "Lorem ipsum"
+          }
+        }
+      },
+      "ChangeTitleError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "example": "This value should not be blank."
+              }
+            }
+          }
+        }
+      },
+      "ChangeDescriptionError": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "example": "This value should not be blank."
+              }
+            }
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "CreateBoard": {
+        "description": "Data for the new Board",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateBoard"
+            }
+          }
+        }
+      },
+      "CreateList": {
+        "description": "Data for the new List",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateList"
+            }
+          }
+        }
+      },
+      "MoveList": {
+        "description": "Data for moving the List",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MoveList"
+            }
+          }
+        }
+      },
+      "CreateItem": {
+        "description": "Data for the new Item",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateItem"
+            }
+          }
+        }
+      },
+      "MoveItem": {
+        "description": "Data for moving the Item",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MoveItem"
+            }
+          }
+        }
+      },
+      "ChangeTitle": {
+        "description": "Data for the updated title",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ChangeTitle"
+            }
+          }
+        }
+      },
+      "ChangeDescription": {
+        "description": "Data for the updated description",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ChangeDescription"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "Id": {
+        "in": "path",
+        "name": "id",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Resource id"
+      }
+    },
+    "responses": {
+      "Accepted": {
+        "description": "Accepted"
+      },
+      "NotFound": {
+        "description": "Resource not found"
+      },
+      "GetBoards": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Board"
+              }
+            }
+          }
+        }
+      },
+      "GetBoard": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Board"
+            }
+          }
+        }
+      },
+      "CreateBoardError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateBoardError"
+            }
+          }
+        }
+      },
+      "CreateListError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateListError"
+            }
+          }
+        }
+      },
+      "MoveListError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MoveListError"
+            }
+          }
+        }
+      },
+      "CreateItemError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateItemError"
+            }
+          }
+        }
+      },
+      "MoveItemError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/MoveItemError"
+            }
+          }
+        }
+      },
+      "ChangeTitleError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ChangeTitleError"
+            }
+          }
+        }
+      },
+      "ChangeDescriptionError": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ChangeDescriptionError"
+            }
+          }
+        }
+      }
+    }
+  }
+}
