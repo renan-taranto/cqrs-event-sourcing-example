@@ -30,21 +30,13 @@ command::reopen-board:
         _format: json
         command_class: Taranto\ListMaker\Board\Application\Command\ReopenBoard
 
-query::closed-boards:
-    path: /closed
-    methods: GET
-    defaults:
-        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
-        _format: json
-        query_class: Taranto\ListMaker\Board\Application\Query\ClosedBoards
-
-query::open-boards:
+query::boards-overview:
     path: /
     methods: GET
     defaults:
         _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\QueryController
         _format: json
-        query_class: Taranto\ListMaker\Board\Application\Query\OpenBoards
+        query_class: Taranto\ListMaker\Board\Application\Query\BoardsOverview
 
 query::board-by-id:
     path: /{boardId}

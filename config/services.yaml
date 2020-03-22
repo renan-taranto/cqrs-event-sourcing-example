@@ -13,6 +13,7 @@ services:
         bind:
             $eventStore: '@Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore'
             $boardCollection: '@mongo.collection.boards'
+            $boardsOverviewCollection: '@mongo.collection.boards_overview'
             $mongoUrl: '%env(MONGO_URL)%'
             $mongoDatabase: '%env(MONGO_DATABASE)%'
 
@@ -65,3 +66,9 @@ services:
         class: Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider
         factory: ['@Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider', 'getCollection']
         arguments: ['boards']
+
+    # Mongo Collections
+    mongo.collection.boards_overview:
+        class: Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider
+        factory: ['@Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider', 'getCollection']
+        arguments: ['boards_overview']

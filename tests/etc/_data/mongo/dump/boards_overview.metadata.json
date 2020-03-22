@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"fixtures.boards_overview"}],"uuid":"6485f061e8d546b6b0aaef12f0625a17"}

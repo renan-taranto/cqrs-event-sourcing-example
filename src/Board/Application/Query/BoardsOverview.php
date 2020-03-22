@@ -14,10 +14,21 @@ namespace Taranto\ListMaker\Board\Application\Query;
 use Taranto\ListMaker\Shared\Domain\Message\Query;
 
 /**
- * Class OpenBoards
+ * Class BoardsOverview
  * @package Taranto\ListMaker\Board\Application\Query
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class OpenBoards extends Query
+final class BoardsOverview extends Query
 {
+    /**
+     * @return bool|null
+     */
+    public function open(): ?bool
+    {
+        if (!isset($this->payload['open'])) {
+            return null;
+        }
+
+        return filter_var($this->payload['open'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    }
 }

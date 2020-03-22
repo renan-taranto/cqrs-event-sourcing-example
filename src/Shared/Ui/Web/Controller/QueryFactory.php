@@ -60,11 +60,32 @@ final class QueryFactory
      */
     private function getQueryPayload(Request $request): array
     {
-        $payload = $request->attributes->all()[self::ROUTE_PARAMS_ATTRIBUTE];
-        unset($payload[self::QUERY_CLASS_ATTRIBUTE]);
-        unset($payload[self::METHOD_ATTRIBUTE]);
-        unset($payload[self::FORMAT_ATTRIBUTE]);
+        return array_merge(
+            $this->getPathParams($request),
+            $this->getQueryParams($request)
+        );
+    }
 
-        return $payload;
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function getPathParams(Request $request): array
+    {
+        $pathParams = $request->attributes->all()[self::ROUTE_PARAMS_ATTRIBUTE];
+        unset($pathParams[self::QUERY_CLASS_ATTRIBUTE]);
+        unset($pathParams[self::METHOD_ATTRIBUTE]);
+        unset($pathParams[self::FORMAT_ATTRIBUTE]);
+
+        return $pathParams;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function getQueryParams(Request $request): array
+    {
+        return $request->query->all();
     }
 }
