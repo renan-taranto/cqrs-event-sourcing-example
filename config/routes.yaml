@@ -12,3 +12,10 @@ item:
     prefix: /items
     resource: routes/item.yml
     trailing_slash_on_root: false
+
+entry-point:
+    path: /
+    methods: GET
+    defaults:
+        _controller: Taranto\ListMaker\Shared\Ui\Web\Controller\EntryPointController
+        _format: json
