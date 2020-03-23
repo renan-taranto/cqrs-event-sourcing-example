@@ -42,9 +42,14 @@
     },
     "/boards": {
       "get": {
-        "summary": "Returns all Boards",
-        "operationId": "findAllBoards",
+        "summary": "Returns an overview of all Boards",
+        "operationId": "boardsOverview",
         "tags": ["Board"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Open"
+          }
+        ],
         "responses": {
           "200": {
             "$ref": "#/components/responses/GetBoards"
@@ -383,6 +388,24 @@
   },
   "components": {
     "schemas": {
+      "BoardOverview": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "UUID v4",
+            "example": "25767956-57c6-41ad-bce7-00a677ae812d"
+          },
+          "title": {
+            "type": "string",
+            "example": "Sprint 21"
+          },
+          "open": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
       "Board": {
         "type": "object",
         "properties": {
@@ -851,6 +874,14 @@
         },
         "required": true,
         "description": "Resource id"
+      },
+      "Open": {
+        "in": "query",
+        "name": "open",
+        "schema": {
+          "type": "boolean"
+        },
+        "description": "Allows to filter the results by open or closed Boards"
       }
     },
     "responses": {
@@ -867,7 +898,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/components/schemas/Board"
+                "$ref": "#/components/schemas/BoardOverview"
               }
             }
           }
