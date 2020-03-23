@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Board\Application\Query;
 
-use Taranto\ListMaker\Board\Application\Query\Finder\BoardsOverviewFinder;
+use Taranto\ListMaker\Board\Application\Query\Finder\BoardOverviewFinder;
 
 /**
  * Class BoardsOverviewHandler
@@ -21,15 +21,15 @@ use Taranto\ListMaker\Board\Application\Query\Finder\BoardsOverviewFinder;
 final class BoardsOverviewHandler
 {
     /**
-     * @var BoardsOverviewFinder
+     * @var BoardOverviewFinder
      */
     private $boardOverviewFinder;
 
     /**
      * BoardsOverviewHandler constructor.
-     * @param BoardsOverviewFinder $boardOverviewFinder
+     * @param BoardOverviewFinder $boardOverviewFinder
      */
-    public function __construct(BoardsOverviewFinder $boardOverviewFinder)
+    public function __construct(BoardOverviewFinder $boardOverviewFinder)
     {
         $this->boardOverviewFinder = $boardOverviewFinder;
     }

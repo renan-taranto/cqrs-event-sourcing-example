@@ -14,7 +14,7 @@ namespace Taranto\ListMaker\Tests\unit\Board\Application\Query;
 use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Application\Query\BoardsOverview;
 use Taranto\ListMaker\Board\Application\Query\BoardsOverviewHandler;
-use Taranto\ListMaker\Board\Application\Query\Finder\BoardsOverviewFinder;
+use Taranto\ListMaker\Board\Application\Query\Finder\BoardOverviewFinder;
 
 /**
  * Class BoardsOverviewHandlerTest
@@ -24,7 +24,7 @@ use Taranto\ListMaker\Board\Application\Query\Finder\BoardsOverviewFinder;
 class BoardsOverviewHandlerTest extends Unit
 {
     /**
-     * @var BoardsOverviewFinder
+     * @var BoardOverviewFinder
      */
     private $boardOverviewFinder;
 
@@ -35,7 +35,7 @@ class BoardsOverviewHandlerTest extends Unit
 
     protected function _before(): void
     {
-        $this->boardOverviewFinder = \Mockery::mock(BoardsOverviewFinder::class);
+        $this->boardOverviewFinder = \Mockery::mock(BoardOverviewFinder::class);
         $this->boardsOverviewHandler = new BoardsOverviewHandler($this->boardOverviewFinder);
     }
 

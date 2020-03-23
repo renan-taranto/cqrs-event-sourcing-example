@@ -12,14 +12,14 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Board\Infrastructure\Persistence\Projection;
 
 use MongoDB\Collection;
-use Taranto\ListMaker\Board\Application\Query\Finder\BoardsOverviewFinder as BoardsOverviewFinderInterface;
+use Taranto\ListMaker\Board\Application\Query\Finder\BoardOverviewFinder as BoardOverviewFinderInterface;
 
 /**
  * Class BoardsOverviewFinder
  * @package Taranto\ListMaker\Board\Infrastructure\Persistence\Projection
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class BoardsOverviewFinder implements BoardsOverviewFinderInterface
+final class BoardOverviewFinder implements BoardOverviewFinderInterface
 {
     /**
      * @var Collection

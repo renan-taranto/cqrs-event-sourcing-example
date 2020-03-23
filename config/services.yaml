@@ -12,7 +12,7 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
             $eventStore: '@Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore\MessageDispatcherEventStore'
-            $boardCollection: '@mongo.collection.boards'
+            $boardsCollection: '@mongo.collection.boards'
             $boardsOverviewCollection: '@mongo.collection.boards_overview'
             $mongoUrl: '%env(MONGO_URL)%'
             $mongoDatabase: '%env(MONGO_DATABASE)%'

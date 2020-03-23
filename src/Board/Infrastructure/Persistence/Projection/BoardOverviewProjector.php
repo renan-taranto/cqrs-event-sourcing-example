@@ -19,11 +19,11 @@ use Taranto\ListMaker\Board\Domain\Event\BoardTitleChanged;
 use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\Projector;
 
 /**
- * Class BoardsOverviewProjector
+ * Class BoardOverviewProjector
  * @package Taranto\ListMaker\Board\Infrastructure\Persistence\Projection
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class BoardsOverviewProjector extends Projector
+final class BoardOverviewProjector extends Projector
 {
     /**
      * @var Collection

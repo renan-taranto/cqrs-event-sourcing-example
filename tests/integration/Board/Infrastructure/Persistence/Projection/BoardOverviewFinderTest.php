@@ -12,15 +12,15 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Tests\Integration\Board\Infrastructure\Persistence\Projection;
 
 use Codeception\Test\Unit;
-use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\BoardsOverviewFinder;
+use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\BoardOverviewFinder;
 use Taranto\ListMaker\Tests\IntegrationTester;
 
 /**
- * Class BoardsOverviewFinderTest
+ * Class BoardOverviewFinderTest
  * @package Taranto\ListMaker\Tests\Integration\Board\Infrastructure\Persistence\Projection
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-class BoardsOverviewFinderTest extends Unit
+class BoardOverviewFinderTest extends Unit
 {
     /**
      * @var IntegrationTester
@@ -28,13 +28,13 @@ class BoardsOverviewFinderTest extends Unit
     protected $tester;
 
     /**
-     * @var BoardsOverviewFinder
+     * @var BoardOverviewFinder
      */
     private $boardOverviewFinder;
 
     protected function _before(): void
     {
-        $this->boardOverviewFinder = $this->tester->grabService('test.service_container')->get(BoardsOverviewFinder::class);
+        $this->boardOverviewFinder = $this->tester->grabService('test.service_container')->get(BoardOverviewFinder::class);
     }
 
     /**

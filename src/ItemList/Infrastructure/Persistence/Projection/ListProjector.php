@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\ItemList\Infrastructure\Persistence\Projection;
 
+use MongoDB\Collection;
 use Taranto\ListMaker\ItemList\Domain\Event\ListArchived;
 use Taranto\ListMaker\ItemList\Domain\Event\ListCreated;
 use Taranto\ListMaker\ItemList\Domain\Event\ListMoved;
@@ -26,17 +27,17 @@ use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\Projector;
 final class ListProjector extends Projector
 {
     /**
-     * @var ListProjection
+     * @var Collection
      */
-    private $projection;
+    private $boardsCollection;
 
     /**
      * ListProjector constructor.
-     * @param ListProjection $projection
+     * @param Collection $boardsCollection
      */
-    public function __construct(ListProjection $projection)
+    public function __construct(Collection $boardsCollection)
     {
-        $this->projection = $projection;
+        $this->boardsCollection = $boardsCollection;
     }
 
     /**
@@ -44,7 +45,16 @@ final class ListProjector extends Projector
      */
     protected function projectListCreated(ListCreated $event): void
     {
-        $this->projection->createList($event->aggregateId(), $event->title(), $event->position(), $event->boardId());
+        $list = [
+            'id' => (string) $event->aggregateId(),
+            'title' => (string) $event->title(),
+            'items' => [],
+            'archivedItems' => []
+        ];
+        $this->boardsCollection->updateOne(
+            ['id' => (string) $event->boardId()],
+            ['$push' => ['lists' => ['$each' => [$list], '$position' => $event->position()->toInt()]]]
+        );
     }
 
     /**
@@ -52,7 +62,14 @@ final class ListProjector extends Projector
      */
     protected function projectListTitleChanged(ListTitleChanged $event): void
     {
-        $this->projection->changeListTitle($event->aggregateId(), $event->title());
+        $this->boardsCollection->updateOne(
+            ['lists.id' => (string) $event->aggregateId()],
+            ['$set' => ['lists.$.title' => (string) $event->title()]]
+        );
+        $this->boardsCollection->updateOne(
+            ['archivedLists.id' => (string) $event->aggregateId()],
+            ['$set' => ['archivedLists.$.title' => (string) $event->title()]]
+        );
     }
 
     /**
@@ -60,7 +77,15 @@ final class ListProjector extends Projector
      */
     protected function projectListArchived(ListArchived $event): void
     {
-        $this->projection->archiveList($event->aggregateId());
+        $list = $this->listById((string) $event->aggregateId());
+
+        $this->boardsCollection->updateOne(
+            ['lists' => ['$elemMatch' => $list]],
+            [
+                '$pull' => ['lists' => ['id' => (string) $event->aggregateId()]],
+                '$addToSet' => ['archivedLists' => $list]
+            ]
+        );
     }
 
     /**
@@ -68,7 +93,15 @@ final class ListProjector extends Projector
      */
     protected function projectListRestored(ListRestored $event): void
     {
-        $this->projection->restoreList($event->aggregateId());
+        $list = $this->archivedListById((string) $event->aggregateId());
+
+        $this->boardsCollection->updateOne(
+            ['archivedLists' => ['$elemMatch' => $list]],
+            [
+                '$pull' => ['archivedLists' => ['id' => (string) $event->aggregateId()]],
+                '$addToSet' => ['lists' => $list]
+            ]
+        );
     }
 
     /**
@@ -76,6 +109,41 @@ final class ListProjector extends Projector
      */
     protected function projectListMoved(ListMoved $event): void
     {
-        $this->projection->moveList($event->aggregateId(), $event->position(), $event->boardId());
+        $list = $this->listById((string) $event->aggregateId());
+
+        $this->boardsCollection->updateOne(
+            ['lists.id' => (string) $event->aggregateId()],
+            ['$pull' => ['lists' => ['id' => (string) $event->aggregateId()]]]
+        );
+
+        $this->boardsCollection->updateOne(
+            ['id' => (string) $event->boardId()],
+            ['$push' => ['lists' => ['$each' => [$list], '$position' => $event->position()->toInt()]]]
+        );
     }
+
+    /**
+     * @param string $listId
+     * @return array
+     */
+    private function listById(string $listId): array
+    {
+        return $this->boardsCollection->findOne(
+            ['lists.id' => $listId],
+            ['projection' => ['lists.$' => true, '_id' => false]]
+        )['lists'][0];
+    }
+
+    /**
+     * @param string $listId
+     * @return array
+     */
+    private function archivedListById(string $listId): array
+    {
+        return $this->boardsCollection->findOne(
+            ['archivedLists.id' => $listId],
+            ['projection' => ['archivedLists.$' => true, '_id' => false]]
+        )['archivedLists'][0];
+    }
+
 }

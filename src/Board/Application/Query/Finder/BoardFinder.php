@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Board\Domain;
+namespace Taranto\ListMaker\Board\Application\Query\Finder;
 
 /**
  * Interface BoardFinder

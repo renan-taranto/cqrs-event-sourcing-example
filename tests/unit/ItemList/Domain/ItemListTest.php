@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\ItemList\Domain;
+namespace Taranto\ListMaker\Tests\Unit\ItemList\Domain;
 
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\Event\ListArchived;
@@ -25,7 +25,7 @@ use Taranto\ListMaker\Tests\AggregateRootTestCase;
 
 /**
  * Class ItemListTest
- * @package Taranto\ListMaker\Tests\ItemList\Domain
+ * @package Taranto\ListMaker\Tests\Unit\ItemList\Domain
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 class ItemListTest extends AggregateRootTestCase

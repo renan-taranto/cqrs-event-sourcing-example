@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Board\Application\Query;
 
-use Taranto\ListMaker\Board\Domain\BoardFinder;
+use Taranto\ListMaker\Board\Application\Query\Finder\BoardFinder;
 
 /**
  * Class BoardByIdHandler

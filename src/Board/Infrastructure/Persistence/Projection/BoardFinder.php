@@ -12,27 +12,27 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Board\Infrastructure\Persistence\Projection;
 
 use MongoDB\Collection;
-use Taranto\ListMaker\Board\Domain\BoardFinder;
+use Taranto\ListMaker\Board\Application\Query\Finder\BoardFinder as BoardFinderInterface;
 
 /**
- * Class MongoBoardFinder
+ * Class BoardFinder
  * @package Taranto\ListMaker\Board\Infrastructure\Persistence\Projection
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class MongoBoardFinder implements BoardFinder
+final class BoardFinder implements BoardFinderInterface
 {
     /**
      * @var Collection
      */
-    private $boardCollection;
+    private $boardsCollection;
 
     /**
      * BoardFinder constructor.
-     * @param Collection $boardCollection
+     * @param Collection $boardsCollection
      */
-    public function __construct(Collection $boardCollection)
+    public function __construct(Collection $boardsCollection)
     {
-        $this->boardCollection = $boardCollection;
+        $this->boardsCollection = $boardsCollection;
     }
 
     /**
@@ -40,7 +40,7 @@ final class MongoBoardFinder implements BoardFinder
      */
     public function openBoards(): array
     {
-        return $this->boardCollection->find(['open' => true], ['projection' => ['_id' => false]])->toArray();
+        return $this->boardsCollection->find(['open' => true], ['projection' => ['_id' => false]])->toArray();
     }
 
     /**
@@ -48,7 +48,7 @@ final class MongoBoardFinder implements BoardFinder
      */
     public function closedBoards(): array
     {
-        return $this->boardCollection->find(['open' => false], ['projection' => ['_id' => false]])->toArray();
+        return $this->boardsCollection->find(['open' => false], ['projection' => ['_id' => false]])->toArray();
     }
 
     /**
@@ -57,7 +57,7 @@ final class MongoBoardFinder implements BoardFinder
      */
     public function byId(string $boardId): ?array
     {
-        return $this->boardCollection->findOne(
+        return $this->boardsCollection->findOne(
             ['id' => $boardId],
             ['projection' => ['_id' => false]]
         );

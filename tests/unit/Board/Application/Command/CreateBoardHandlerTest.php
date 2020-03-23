@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\Board\Application\Command;
+namespace Taranto\ListMaker\Tests\Unit\Board\Application\Command;
 
 use Codeception\Test\Unit;
 use Hamcrest\Core\IsEqual;
@@ -22,7 +22,7 @@ use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**
  * Class CreateBoardHandlerTest
- * @package Taranto\ListMaker\Tests\Board\Application\Command
+ * @package Taranto\ListMaker\Tests\Unit\Board\Application\Command
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 class CreateBoardHandlerTest extends Unit

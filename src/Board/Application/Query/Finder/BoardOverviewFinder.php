@@ -16,7 +16,7 @@ namespace Taranto\ListMaker\Board\Application\Query\Finder;
  * @package Taranto\ListMaker\Board\Application\Query\Finder
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-interface BoardsOverviewFinder
+interface BoardOverviewFinder
 {
     /**
      * @param string $boardId

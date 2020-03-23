@@ -12,16 +12,15 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Tests\Integration\Board\Infrastructure\Persistence\Projection;
 
 use Codeception\Test\Unit;
-use Taranto\ListMaker\Board\Domain\BoardFinder;
-use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\MongoBoardFinder;
+use Taranto\ListMaker\Board\Application\Query\Finder\BoardFinder;
 use Taranto\ListMaker\Tests\IntegrationTester;
 
 /**
- * Class MongoBoardFinderTest
+ * Class BoardFinderTest
  * @package Taranto\ListMaker\Tests\Integration\Board\Infrastructure\Persistence\Projection
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-class MongoBoardFinderTest extends Unit
+class BoardFinderTest extends Unit
 {
     /**
      * @var IntegrationTester
@@ -35,7 +34,7 @@ class MongoBoardFinderTest extends Unit
 
     protected function _before(): void
     {
-        $this->boardFinder = $this->tester->grabService('test.service_container')->get(MongoBoardFinder::class);
+        $this->boardFinder = $this->tester->grabService('test.service_container')->get(BoardFinder::class);
     }
 
     /**

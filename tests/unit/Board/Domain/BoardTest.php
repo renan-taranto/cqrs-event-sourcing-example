@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Taranto\ListMaker\Tests\Board\Domain;
+namespace Taranto\ListMaker\Tests\Unit\Board\Domain;
 
 use Taranto\ListMaker\Board\Domain\Board;
 use Taranto\ListMaker\Board\Domain\BoardId;
@@ -22,7 +22,7 @@ use Taranto\ListMaker\Tests\AggregateRootTestCase;
 
 /**
  * Class BoardTest
- * @package Taranto\ListMaker\Tests\Board\Domain
+ * @package Taranto\ListMaker\Tests\Unit\Board\Domain
  * @author Renan Taranto <renantaranto@gmail.com>
  */
 class BoardTest extends AggregateRootTestCase

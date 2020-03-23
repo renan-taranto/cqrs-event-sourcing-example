@@ -12,22 +12,19 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Tests\Integration\Board\Infrastructure\Persistence\Projection;
 
 use Codeception\Test\Unit;
-use Taranto\ListMaker\Board\Domain\BoardId;
-use Taranto\ListMaker\Board\Domain\Event\BoardClosed;
-use Taranto\ListMaker\Board\Domain\Event\BoardCreated;
-use Taranto\ListMaker\Board\Domain\Event\BoardReopened;
-use Taranto\ListMaker\Board\Domain\Event\BoardTitleChanged;
-use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\BoardsOverviewFinder;
-use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\BoardsOverviewProjector;
+use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\BoardOverviewFinder;
+use Taranto\ListMaker\Board\Infrastructure\Persistence\Projection\BoardOverviewProjector;
 use Taranto\ListMaker\Tests\IntegrationTester;
 
 /**
- * Class BoardsOverviewProjectorTest
+ * Class BoardOverviewProjectorTest
  * @package Taranto\ListMaker\Tests\Integration\Board\Infrastructure\Persistence\Projection
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-class BoardsOverviewProjectorTest extends Unit
+class BoardOverviewProjectorTest extends Unit
 {
+    use BoardEventsProvider;
+
     private const BOARD_ID = 'b6e7cfd0-ae2b-44ee-9353-3e5d95e57392';
     private const CLOSED_BOARD_ID = 'd81805d3-a350-4ef0-81f0-9eb122b4c1ea';
 
@@ -37,19 +34,19 @@ class BoardsOverviewProjectorTest extends Unit
     protected $tester;
 
     /**
-     * @var BoardsOverviewProjector
+     * @var BoardOverviewProjector
      */
     private $projector;
 
     /**
-     * @var BoardsOverviewFinder
+     * @var BoardOverviewFinder
      */
     private $finder;
 
     protected function _before(): void
     {
-        $this->projector = $this->tester->grabService('test.service_container')->get(BoardsOverviewProjector::class);
-        $this->finder = $this->tester->grabService('test.service_container')->get(BoardsOverviewFinder::class);
+        $this->projector = $this->tester->grabService('test.service_container')->get(BoardOverviewProjector::class);
+        $this->finder = $this->tester->grabService('test.service_container')->get(BoardOverviewFinder::class);
     }
     /**
      * @test
@@ -106,47 +103,5 @@ class BoardsOverviewProjectorTest extends Unit
 
         $boardOverview = $this->finder->byBoardId(self::CLOSED_BOARD_ID);
         expect_that($boardOverview['open']);
-    }
-
-    /**
-     * @return BoardCreated
-     * @throws \Exception
-     */
-    private function boardCreatedEvent(): BoardCreated
-    {
-        return BoardCreated::occur(
-            (string) BoardId::generate(),
-            ['title' => 'To-Dos']
-        );
-    }
-
-    /**
-     * @param string $boardId
-     * @return BoardTitleChanged
-     */
-    private function boardTitleChangedEvent(string $boardId): BoardTitleChanged
-    {
-        return BoardTitleChanged::occur(
-            $boardId,
-            ['title' => 'Tasks to be done']
-        );
-    }
-
-    /**
-     * @param string $boardId
-     * @return BoardClosed
-     */
-    private function boardClosedEvent(string $boardId): BoardClosed
-    {
-        return BoardClosed::occur($boardId);
-    }
-
-    /**
-     * @param string $boardId
-     * @return BoardReopened
-     */
-    private function boardReopenedEvent(string $boardId): BoardReopened
-    {
-        return BoardReopened::occur($boardId);
     }
 }

@@ -14,7 +14,7 @@ namespace Taranto\ListMaker\Tests\Unit\Board\Application\Query;
 use Codeception\Test\Unit;
 use Taranto\ListMaker\Board\Application\Query\BoardById;
 use Taranto\ListMaker\Board\Application\Query\BoardByIdHandler;
-use Taranto\ListMaker\Board\Domain\BoardFinder;
+use Taranto\ListMaker\Board\Application\Query\Finder\BoardFinder;
 use Taranto\ListMaker\Board\Domain\BoardId;
 
 /**

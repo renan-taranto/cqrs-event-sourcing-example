@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Board\Infrastructure\Persistence\Projection;
 
+use MongoDB\Collection;
 use Taranto\ListMaker\Board\Domain\Event\BoardClosed;
 use Taranto\ListMaker\Board\Domain\Event\BoardCreated;
 use Taranto\ListMaker\Board\Domain\Event\BoardReopened;
@@ -25,17 +26,17 @@ use Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\Projector;
 final class BoardProjector extends Projector
 {
     /**
-     * @var BoardProjection
+     * @var Collection
      */
-    private $projection;
+    private $boardsCollection;
 
     /**
      * BoardProjector constructor.
-     * @param BoardProjection $projection
+     * @param Collection $boardsCollection
      */
-    public function __construct(BoardProjection $projection)
+    public function __construct(Collection $boardsCollection)
     {
-        $this->projection = $projection;
+        $this->boardsCollection = $boardsCollection;
     }
 
     /**
@@ -43,7 +44,13 @@ final class BoardProjector extends Projector
      */
     protected function projectBoardCreated(BoardCreated $event): void
     {
-        $this->projection->createBoard($event->aggregateId(), $event->title());
+        $this->boardsCollection->insertOne([
+            'id' => (string) $event->aggregateId(),
+            'title' => (string) $event->title(),
+            'open' => true,
+            'lists' => [],
+            'archivedLists' => []
+        ]);
     }
 
     /**
@@ -51,7 +58,10 @@ final class BoardProjector extends Projector
      */
     protected function projectBoardTitleChanged(BoardTitleChanged $event): void
     {
-        $this->projection->changeBoardTitle($event->aggregateId(), $event->title());
+        $this->boardsCollection->updateOne(
+            ['id' => (string) $event->aggregateId()],
+            ['$set' => ['title' => (string) $event->title()]]
+        );
     }
 
     /**
@@ -59,7 +69,10 @@ final class BoardProjector extends Projector
      */
     protected function projectBoardClosed(BoardClosed $event): void
     {
-        $this->projection->closeBoard($event->aggregateId());
+        $this->boardsCollection->updateOne(
+            ['id' => (string) $event->aggregateId()],
+            ['$set' => ['open' => false]]
+        );
     }
 
     /**
@@ -67,6 +80,9 @@ final class BoardProjector extends Projector
      */
     protected function projectBoardReopened(BoardReopened $event): void
     {
-        $this->projection->reopenBoard($event->aggregateId());
+        $this->boardsCollection->updateOne(
+            ['id' => (string) $event->aggregateId()],
+            ['$set' => ['open' => true]]
+        );
     }
 }

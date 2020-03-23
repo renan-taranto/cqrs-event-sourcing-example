@@ -42,7 +42,10 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Taranto\\ListMaker\\Tests\\": "tests/"
+            "Taranto\\ListMaker\\Tests\\": "tests/",
+            "Taranto\\ListMaker\\Tests\\Unit\\": "tests/unit/",
+            "Taranto\\ListMaker\\Tests\\Integration\\": "tests/integration/",
+            "Taranto\\ListMaker\\Tests\\Functional\\": "tests/functional/"
         }
     },
     "replace": {
