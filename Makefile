@@ -6,6 +6,13 @@ COMPOSER = $(EXEC_WEB_API) composer
 SYMFONY = $(EXEC_WEB_API) bin/console
 COVERAGE_PATH = .docker/php/code-coverage
 
+.PHONY: install start logs vendor require clear-cache test-unit test-integration test-functional test-api test-all test-coverage load-mongo-fixtures
+
+##
+##Setup
+install: ## starts the application and installs dependencies
+install: start vendor
+
 ##
 ##Docker
 start: ## starts the application
@@ -28,18 +35,7 @@ clear-cache: ## clears the Symfony cache
 	$(SYMFONY) cache:clear --env=$(ENV)
 
 ##
-##Event Stream
-event-stream: ## creates the event stream
-	$(SYMFONY) event-stream:create
-
-##
 ##Testing
-create-test-db: ## creates the testing database
-	$(EXEC_MYSQL) mysql -u root -p12345678 -e 'create database `appdb-test`; GRANT ALL PRIVILEGES ON `appdb-test`.* TO `dbuser`@`%`'
-
-load-mongo-fixtures: ## transforms the json files located at /tests/etc/_data/fixtures into dump files to be used while testing
-	$(EXEC_MONGO) sh load-fixtures.sh
-
 test-unit: ## runs unit tests
 	$(EXEC_WEB_API) php vendor/bin/codecept run unit
 
@@ -57,6 +53,9 @@ test-all: ## runs all tests
 
 test-coverage: ## runs all tests and creates a code coverage report
 	$(EXEC_WEB_API) php vendor/bin/codecept run unit,integration,functional,api --coverage-html
+
+load-mongo-fixtures: ## transforms the json files located at /tests/etc/_data/fixtures into dump files to be used while testing
+	$(EXEC_MONGO) sh load-fixtures.sh
 
 .DEFAULT_GOAL := help
 help:

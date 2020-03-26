@@ -23,8 +23,6 @@ use Taranto\ListMaker\Shared\Domain\Message\DomainEvents;
  */
 interface EventStore
 {
-    public function createEventStream(): void;
-
     /**
      * @param IdentifiesAggregate $aggregateId
      * @param DomainEvents $events

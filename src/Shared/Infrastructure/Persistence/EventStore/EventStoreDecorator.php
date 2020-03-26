@@ -37,11 +37,6 @@ abstract class EventStoreDecorator implements EventStore
         $this->eventStore = $eventStore;
     }
 
-    public function createEventStream(): void
-    {
-        $this->eventStore->createEventStream();
-    }
-
     /**
      * @param IdentifiesAggregate $aggregateId
      * @param DomainEvents $events
