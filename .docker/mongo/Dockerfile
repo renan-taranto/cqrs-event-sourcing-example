@@ -1,4 +1,4 @@
-FROM mongo:latest
+FROM mongo:4.2
 
 ADD create-indexes.js /docker-entrypoint-initdb.d/
 
