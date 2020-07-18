@@ -72,10 +72,7 @@ class MoveItemHandlerTest extends Unit
         $this->itemId = ItemId::generate();
         $this->position = Position::fromInt(7);
         $this->listId = ListId::generate();
-        $this->command = MoveItem::request(
-            (string) $this->itemId,
-            ['position' => $this->position->toInt(), 'listId' => (string) $this->listId]
-        );
+        $this->command = new MoveItem((string) $this->itemId, $this->position->toInt(), (string) $this->listId);
 
         $this->item = \Mockery::spy(Item::class);
     }

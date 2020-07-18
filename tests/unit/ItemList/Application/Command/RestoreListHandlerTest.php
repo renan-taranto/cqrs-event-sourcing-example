@@ -58,7 +58,7 @@ class RestoreListHandlerTest extends Unit
         $this->handler = new RestoreListHandler($this->listRepository);
 
         $this->listId = ListId::generate();
-        $this->command = RestoreList::request((string) $this->listId);
+        $this->command = new RestoreList((string) $this->listId);
 
         $this->list = \Mockery::spy(ItemList::class);
     }

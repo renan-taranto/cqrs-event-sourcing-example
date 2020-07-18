@@ -11,20 +11,32 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Board\Application\Query;
 
-use Taranto\ListMaker\Shared\Domain\Message\Query;
-
 /**
  * Class BoardById
  * @package Taranto\ListMaker\Board\Application\Query
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class BoardById extends Query
+final class BoardById
 {
+    /**
+     * @var string|null
+     */
+    private $boardId;
+
+    /**
+     * BoardById constructor.
+     * @param string|null $boardId
+     */
+    public function __construct(string $boardId = null)
+    {
+        $this->boardId = $boardId;
+    }
+
     /**
      * @return string
      */
     public function boardId(): string
     {
-        return $this->payload['boardId'];
+        return $this->boardId;
     }
 }

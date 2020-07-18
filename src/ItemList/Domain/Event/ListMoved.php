@@ -27,6 +27,29 @@ final class ListMoved extends DomainEvent
     private const EVENT_TYPE = 'list-moved';
 
     /**
+     * @var int
+     */
+    private $position;
+
+    /**
+     * @var string
+     */
+    private $boardId;
+
+    /**
+     * ListMoved constructor.
+     * @param string $aggregateId
+     * @param int $position
+     * @param string $boardId
+     */
+    public function __construct(string $aggregateId, int $position, string $boardId)
+    {
+        parent::__construct($aggregateId);
+        $this->position = $position;
+        $this->boardId = $boardId;
+    }
+
+    /**
      * @return ListId
      */
     public function aggregateId(): IdentifiesAggregate
@@ -39,7 +62,7 @@ final class ListMoved extends DomainEvent
      */
     public function position(): Position
     {
-        return Position::fromInt($this->payload['position']);
+        return Position::fromInt($this->position);
     }
 
     /**
@@ -47,7 +70,7 @@ final class ListMoved extends DomainEvent
      */
     public function boardId(): BoardId
     {
-        return BoardId::fromString($this->payload['boardId']);
+        return BoardId::fromString($this->boardId);
     }
 
     /**

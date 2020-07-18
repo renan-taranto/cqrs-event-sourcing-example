@@ -12,20 +12,16 @@ Taranto\ListMaker\Item\Application\Command\AddItem:
             - Uuid:
                   versions: [4]
             - Taranto\ListMaker\Item\Infrastructure\Validation\ItemDoesNotExist: ~
-        payload:
-            - Collection:
-                  fields:
-                      title:
-                          - NotBlank: ~
-                          - Length:
-                                max: 50
-                      position:
-                          - Optional:
-                                - Type: integer
-                                - GreaterThanOrEqual: 0
-                      listId:
-                          - NotBlank: ~
-                          - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists: ~
+        title:
+            - NotBlank: ~
+            - Length:
+                  max: 50
+        position:
+            - Type: integer
+            - GreaterThanOrEqual: 0
+        listId:
+            - NotBlank: ~
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists: ~
 
 Taranto\ListMaker\Item\Application\Command\ArchiveItem:
     properties:
@@ -49,13 +45,10 @@ Taranto\ListMaker\Item\Application\Command\ChangeItemTitle:
             - NotBlank: ~
             - Taranto\ListMaker\Item\Infrastructure\Validation\ItemExists:
                   returnsNotFoundResponse: true
-        payload:
-            - Collection:
-                  fields:
-                      title:
-                          - NotBlank: ~
-                          - Length:
-                                max: 50
+        title:
+            - NotBlank: ~
+            - Length:
+                  max: 50
 
 Taranto\ListMaker\Item\Application\Command\ChangeItemDescription:
     properties:
@@ -63,13 +56,10 @@ Taranto\ListMaker\Item\Application\Command\ChangeItemDescription:
             - NotBlank: ~
             - Taranto\ListMaker\Item\Infrastructure\Validation\ItemExists:
                   returnsNotFoundResponse: true
-        payload:
-            - Collection:
-                  fields:
-                      description:
-                          - NotBlank: ~
-                          - Length:
-                                max: 16000
+        description:
+            - NotBlank: ~
+            - Length:
+                  max: 16000
 
 Taranto\ListMaker\Item\Application\Command\MoveItem:
     group_sequence:
@@ -85,13 +75,10 @@ Taranto\ListMaker\Item\Application\Command\MoveItem:
                   returnsNotFoundResponse: true
             - Taranto\ListMaker\Item\Infrastructure\Validation\ItemIsNotArchived:
                   message: 'Unable to move an archived item.'
-        payload:
-            - Collection:
-                  fields:
-                      position:
-                          - NotBlank: ~
-                          - Type: integer
-                          - GreaterThanOrEqual: 0
-                      listId:
-                          - NotBlank: ~
-                          - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists: ~
+        position:
+            - NotBlank: ~
+            - Type: integer
+            - GreaterThanOrEqual: 0
+        listId:
+            - NotBlank: ~
+            - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists: ~

@@ -59,7 +59,7 @@ class CloseBoardHandlerTest extends Unit
 
         $this->board = \Mockery::spy(Board::class);
         $this->boardId = BoardId::generate();
-        $this->command = CloseBoard::request((string) $this->boardId);
+        $this->command = new CloseBoard((string) $this->boardId);
     }
 
     /**

@@ -58,7 +58,7 @@ class BoardTest extends AggregateRootTestCase
             ->when(function() {
                 return Board::create(BoardId::fromString($this->id), Title::fromString($this->title));
             })
-            ->then([BoardCreated::occur($this->id, ['title' => $this->title])]);
+            ->then([new BoardCreated($this->id, $this->title)]);
     }
 
     /**
@@ -68,11 +68,11 @@ class BoardTest extends AggregateRootTestCase
     {
         $this
             ->withAggregateId(BoardId::fromString($this->id))
-            ->given([BoardCreated::occur($this->id, ['title' => $this->title])])
+            ->given([new BoardCreated($this->id, $this->title)])
             ->when(function (Board $board) {
                 $board->changeTitle(Title::fromString($this->changedTitle));
             })
-            ->then([BoardTitleChanged::occur($this->id, ['title' => $this->changedTitle])]);
+            ->then([new BoardTitleChanged($this->id, $this->changedTitle)]);
     }
 
     /**
@@ -82,7 +82,7 @@ class BoardTest extends AggregateRootTestCase
     {
         $this
             ->withAggregateId(BoardId::fromString($this->id))
-            ->given([BoardCreated::occur($this->id, ['title' => $this->title])])
+            ->given([new BoardCreated($this->id, $this->title)])
             ->when(function (Board $board) {
                 $board->changeTitle(Title::fromString($this->title));
             })
@@ -96,11 +96,11 @@ class BoardTest extends AggregateRootTestCase
     {
         $this
             ->withAggregateId(BoardId::fromString($this->id))
-            ->given([BoardCreated::occur($this->id, ['title' => $this->title])])
+            ->given([new BoardCreated($this->id, $this->title)])
             ->when(function (Board $board) {
                 $board->close();
             })
-            ->then([BoardClosed::occur($this->id)]);
+            ->then([new BoardClosed($this->id)]);
     }
 
     /**
@@ -111,8 +111,8 @@ class BoardTest extends AggregateRootTestCase
         $this
             ->withAggregateId(BoardId::fromString($this->id))
             ->given([
-                BoardCreated::occur($this->id, ['title' => $this->title]),
-                BoardClosed::occur($this->id)
+                new BoardCreated($this->id, $this->title),
+                new BoardClosed($this->id)
             ])
             ->when(function (Board $board) {
                 $board->close();
@@ -128,13 +128,13 @@ class BoardTest extends AggregateRootTestCase
         $this
             ->withAggregateId(BoardId::fromString($this->id))
             ->given([
-                BoardCreated::occur($this->id, ['title' => $this->title]),
-                BoardClosed::occur($this->id)
+                new BoardCreated($this->id, $this->title),
+                new BoardClosed($this->id)
             ])
             ->when(function (Board $board) {
                 $board->reopen();
             })
-            ->then([BoardReopened::occur($this->id)]);
+            ->then([new BoardReopened($this->id)]);
     }
 
     /**
@@ -144,7 +144,7 @@ class BoardTest extends AggregateRootTestCase
     {
         $this
             ->withAggregateId(BoardId::fromString($this->id))
-            ->given([BoardCreated::occur($this->id, ['title' => $this->title])])
+            ->given([new BoardCreated($this->id, $this->title)])
             ->when(function (Board $board) {
                 $board->reopen();
             })

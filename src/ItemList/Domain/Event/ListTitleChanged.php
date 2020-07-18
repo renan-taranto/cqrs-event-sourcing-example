@@ -26,6 +26,22 @@ final class ListTitleChanged extends DomainEvent
     private const EVENT_TYPE = 'list-title-changed';
 
     /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * ListTitleChanged constructor.
+     * @param string $aggregateId
+     * @param string $title
+     */
+    public function __construct(string $aggregateId, string $title)
+    {
+        parent::__construct($aggregateId);
+        $this->title = $title;
+    }
+
+    /**
      * @return ListId
      */
     public function aggregateId(): IdentifiesAggregate
@@ -38,7 +54,7 @@ final class ListTitleChanged extends DomainEvent
      */
     public function title(): Title
     {
-        return Title::fromString($this->payload['title']);
+        return Title::fromString($this->title);
     }
 
     /**

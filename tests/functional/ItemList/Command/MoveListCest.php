@@ -43,7 +43,7 @@ class MoveListCest
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendPost('/lists/' . self::LIST_ID . '/move', []);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
-        $I->seeResponseContainsJson(['errors' => ['position' => 'This field is missing.', 'boardId' => 'This field is missing.']]);
+        $I->seeResponseContainsJson(['errors' => ['position' => 'This value should not be blank.', 'boardId' => 'This value should not be blank.']]);
     }
 
     public function it_returns_bad_request_when_position_is_invalid(FunctionalTester $I)

@@ -33,10 +33,7 @@ trait ItemEventsProvider
      */
     private function itemAddedEvent(string $itemId): ItemAdded
     {
-        return ItemAdded::occur(
-            (string) ItemId::generate(),
-            ['title' => 'Feature: Boards Overview', 'position' => 0, 'listId' => $itemId]
-        );
+        return new ItemAdded((string) ItemId::generate(), 'Feature: Boards Overview', 0, $itemId);
     }
 
     /**
@@ -45,7 +42,7 @@ trait ItemEventsProvider
      */
     private function itemArchivedEvent(string $itemId): ItemArchived
     {
-        return ItemArchived::occur($itemId);
+        return new ItemArchived($itemId);
     }
 
     /**
@@ -54,7 +51,7 @@ trait ItemEventsProvider
      */
     private function itemRestoredEvent(string $itemId): ItemRestored
     {
-        return ItemRestored::occur($itemId);
+        return new ItemRestored($itemId);
     }
 
     /**
@@ -63,10 +60,7 @@ trait ItemEventsProvider
      */
     private function itemTitleChanged(string $itemId): ItemTitleChanged
     {
-        return ItemTitleChanged::occur(
-            $itemId,
-            ['title' => 'Feature: Snapshots']
-        );
+        return new ItemTitleChanged($itemId, 'Feature: Snapshots');
     }
 
     /**
@@ -75,10 +69,7 @@ trait ItemEventsProvider
      */
     private function itemDescriptionChanged(string $itemId): ItemDescriptionChanged
     {
-        return ItemDescriptionChanged::occur(
-            $itemId,
-            ['description' => 'In order to create snapshots...']
-        );
+        return new ItemDescriptionChanged($itemId, 'In order to create snapshots...');
     }
 
     /**
@@ -89,9 +80,6 @@ trait ItemEventsProvider
      */
     private function itemMovedEvent(string $itemId, int $position, string $listId): ItemMoved
     {
-        return ItemMoved::occur(
-            $itemId,
-            ['position' => $position, 'listId' => $listId]
-        );
+        return new ItemMoved($itemId, $position, $listId);
     }
 }

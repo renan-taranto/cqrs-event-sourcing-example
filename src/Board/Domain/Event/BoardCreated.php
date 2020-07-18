@@ -26,6 +26,22 @@ final class BoardCreated extends DomainEvent
     private const EVENT_TYPE = 'board-created';
 
     /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * BoardCreated constructor.
+     * @param string $aggregateId
+     * @param string $title
+     */
+    public function __construct(string $aggregateId, string $title)
+    {
+        parent::__construct($aggregateId);
+        $this->title = $title;
+    }
+
+    /**
      * @return IdentifiesAggregate
      */
     public function aggregateId(): IdentifiesAggregate
@@ -38,7 +54,7 @@ final class BoardCreated extends DomainEvent
      */
     public function title(): Title
     {
-        return Title::fromString($this->payload['title']);
+        return Title::fromString($this->title);
     }
 
     /**

@@ -77,9 +77,11 @@ class CreateListHandlerTest extends Unit
         $title = Title::fromString('Backlog');
         $position = Position::fromInt(2);
         $this->boardId = BoardId::generate();
-        $this->command = CreateList::request(
+        $this->command = new CreateList(
             (string) $listId,
-            ['title' => (string) $title, 'position' => $position->toInt(), 'boardId' => (string) $this->boardId]
+            (string) $title,
+            $position->toInt(),
+            (string) $this->boardId
         );
 
         $this->board = \Mockery::mock(Board::class);

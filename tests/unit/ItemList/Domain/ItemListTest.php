@@ -72,12 +72,7 @@ class ItemListTest extends AggregateRootTestCase
                     BoardId::fromString($this->boardId)
                 );
             })
-            ->then([
-                ListCreated::occur(
-                    $this->listId,
-                    ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-                )
-            ]);
+            ->then([new ListCreated($this->listId, $this->title, $this->position, $this->boardId)]);
     }
 
     /**
@@ -88,14 +83,11 @@ class ItemListTest extends AggregateRootTestCase
         $changedTitle = 'To Do';
         $this
             ->withAggregateId(ListId::fromString($this->listId))
-            ->given([ListCreated::occur(
-                $this->listId,
-                ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-            )])
+            ->given([new ListCreated($this->listId, $this->title, $this->position, $this->boardId)])
             ->when(function (ItemList $list) use ($changedTitle) {
                 $list->changeTitle(Title::fromString($changedTitle));
             })
-            ->then([ListTitleChanged::occur($this->listId, ['title' => $changedTitle])]);
+            ->then([new ListTitleChanged($this->listId, $changedTitle)]);
     }
 
     /**
@@ -105,12 +97,7 @@ class ItemListTest extends AggregateRootTestCase
     {
         $this
             ->withAggregateId(ListId::fromString($this->listId))
-            ->given([
-                ListCreated::occur(
-                    $this->listId,
-                    ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-                ),
-            ])
+            ->given([new ListCreated($this->listId, $this->title, $this->position, $this->boardId)])
             ->when(function (ItemList $list) {
                 $list->changeTitle(Title::fromString($this->title));
             })
@@ -124,14 +111,11 @@ class ItemListTest extends AggregateRootTestCase
     {
         $this
             ->withAggregateId(ListId::fromString($this->listId))
-            ->given([ListCreated::occur(
-                $this->listId,
-                ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-            )])
+            ->given([new ListCreated($this->listId, $this->title, $this->position, $this->boardId)])
             ->when(function (ItemList $list) {
                 $list->archive();
             })
-            ->then([ListArchived::occur($this->listId)]);
+            ->then([new ListArchived($this->listId)]);
     }
 
     /**
@@ -142,11 +126,8 @@ class ItemListTest extends AggregateRootTestCase
         $this
             ->withAggregateId(ListId::fromString($this->listId))
             ->given([
-                ListCreated::occur(
-                    $this->listId,
-                    ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-                ),
-                ListArchived::occur($this->listId)
+                new ListCreated($this->listId, $this->title, $this->position, $this->boardId),
+                new ListArchived($this->listId)
             ])
             ->when(function (ItemList $list) {
                 $list->archive();
@@ -162,16 +143,13 @@ class ItemListTest extends AggregateRootTestCase
         $this
             ->withAggregateId(ListId::fromString($this->listId))
             ->given([
-                ListCreated::occur(
-                    $this->listId,
-                    ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-                ),
-                ListArchived::occur($this->listId)
+                new ListCreated($this->listId, $this->title, $this->position, $this->boardId),
+                new ListArchived($this->listId)
             ])
             ->when(function (ItemList $list) {
                 $list->restore();
             })
-            ->then([ListRestored::occur($this->listId)]);
+            ->then([new ListRestored($this->listId)]);
     }
 
 
@@ -182,12 +160,7 @@ class ItemListTest extends AggregateRootTestCase
     {
         $this
             ->withAggregateId(ListId::fromString($this->listId))
-            ->given([
-                ListCreated::occur(
-                    $this->listId,
-                    ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-                )
-            ])
+            ->given([new ListCreated($this->listId, $this->title, $this->position, $this->boardId)])
             ->when(function (ItemList $list) {
                 $list->restore();
             })
@@ -204,17 +177,11 @@ class ItemListTest extends AggregateRootTestCase
 
         $this
             ->withAggregateId(ListId::fromString($this->listId))
-            ->given([ListCreated::occur(
-                $this->listId,
-                ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-            )])
+            ->given([new ListCreated($this->listId, $this->title, $this->position, $this->boardId)])
             ->when(function (ItemList $list) use ($position, $boardId) {
                 $list->move($position, $boardId);
             })
-            ->then([ListMoved::occur(
-                $this->listId,
-                ['position' => $position->toInt(), 'boardId' => (string) $boardId]
-            )]);
+            ->then([new ListMoved($this->listId, $position->toInt(), (string) $boardId)]);
     }
 
     /**
@@ -225,11 +192,8 @@ class ItemListTest extends AggregateRootTestCase
         $this
             ->withAggregateId(ListId::fromString($this->listId))
             ->given([
-                ListCreated::occur(
-                $this->listId,
-                ['title' => $this->title, 'position' => $this->position, 'boardId' => $this->boardId]
-                ),
-                ListArchived::occur($this->listId)
+                new ListCreated($this->listId, $this->title, $this->position, $this->boardId),
+                new ListArchived($this->listId)
             ])
             ->when(function (ItemList $list) {
                 $list->move(Position::fromInt(2), BoardId::generate());

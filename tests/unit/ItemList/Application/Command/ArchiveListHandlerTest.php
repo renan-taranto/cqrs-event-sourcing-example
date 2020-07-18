@@ -58,7 +58,7 @@ class ArchiveListHandlerTest extends Unit
         $this->handler = new ArchiveListHandler($this->listRepository);
 
         $this->listId = ListId::generate();
-        $this->command = ArchiveList::request((string) $this->listId);
+        $this->command = new ArchiveList((string) $this->listId);
 
         $this->list = \Mockery::spy(ItemList::class);
     }

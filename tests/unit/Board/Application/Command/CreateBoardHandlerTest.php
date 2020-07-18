@@ -54,7 +54,7 @@ class CreateBoardHandlerTest extends Unit
 
         $boardId = BoardId::generate();
         $title = Title::fromString('To-Dos');
-        $this->command = CreateBoard::request((string) $boardId, ['title' => (string) $title]);
+        $this->command = new CreateBoard((string) $boardId, (string) $title);
         $this->board = Board::create($boardId, $title);
     }
 

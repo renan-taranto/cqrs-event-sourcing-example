@@ -75,12 +75,7 @@ class ItemTest extends AggregateRootTestCase
                     ListId::fromString($this->listId)
                 );
             })
-            ->then([
-                ItemAdded::occur(
-                    $this->itemId,
-                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-                )
-            ]);
+            ->then([new ItemAdded($this->itemId, $this->title, $this->position, $this->listId)]);
     }
 
     /**
@@ -91,14 +86,11 @@ class ItemTest extends AggregateRootTestCase
         $changedDescription = 'In order to add items...';
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
-            ->given([ItemAdded::occur(
-                $this->itemId,
-                ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-            )])
+            ->given([new ItemAdded($this->itemId, $this->title, $this->position, $this->listId)])
             ->when(function (Item $item) use ($changedDescription) {
                 $item->changeDescription(Description::fromString($changedDescription));
             })
-            ->then([ItemDescriptionChanged::occur($this->itemId, ['description' => $changedDescription])]);
+            ->then([new ItemDescriptionChanged($this->itemId, $changedDescription)]);
     }
 
     /**
@@ -110,11 +102,8 @@ class ItemTest extends AggregateRootTestCase
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
             ->given([
-                ItemAdded::occur(
-                    $this->itemId,
-                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-                ),
-                ItemDescriptionChanged::occur($this->itemId, ['description' => $description])
+                new ItemAdded($this->itemId, $this->title, $this->position, $this->listId),
+                new ItemDescriptionChanged($this->itemId, $description)
             ])
             ->when(function (Item $item) use ($description) {
                 $item->changeDescription(Description::fromString($description));
@@ -130,14 +119,11 @@ class ItemTest extends AggregateRootTestCase
         $changedTitle = 'In order to change the title...';
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
-            ->given([ItemAdded::occur(
-                $this->itemId,
-                ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-            )])
+            ->given([new ItemAdded($this->itemId, $this->title, $this->position, $this->listId)])
             ->when(function (Item $item) use ($changedTitle) {
                 $item->changeTitle(Title::fromString($changedTitle));
             })
-            ->then([ItemTitleChanged::occur($this->itemId, ['title' => $changedTitle])]);
+            ->then([new ItemTitleChanged($this->itemId, $changedTitle)]);
     }
 
     /**
@@ -147,12 +133,7 @@ class ItemTest extends AggregateRootTestCase
     {
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
-            ->given([
-                ItemAdded::occur(
-                    $this->itemId,
-                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-                )
-            ])
+            ->given([new ItemAdded($this->itemId, $this->title, $this->position, $this->listId)])
             ->when(function (Item $item) {
                 $item->changeTitle(Title::fromString($this->title));
             })
@@ -166,14 +147,11 @@ class ItemTest extends AggregateRootTestCase
     {
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
-            ->given([ItemAdded::occur(
-                $this->itemId,
-                ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-            )])
+            ->given([new ItemAdded($this->itemId, $this->title, $this->position, $this->listId)])
             ->when(function (Item $item) {
                 $item->archive();
             })
-            ->then([ItemArchived::occur($this->itemId)]);
+            ->then([new ItemArchived($this->itemId)]);
     }
 
     /**
@@ -184,11 +162,8 @@ class ItemTest extends AggregateRootTestCase
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
             ->given([
-                ItemAdded::occur(
-                    $this->itemId,
-                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-                ),
-                ItemArchived::occur($this->itemId)
+                new ItemAdded($this->itemId, $this->title, $this->position, $this->listId),
+                new ItemArchived($this->itemId)
             ])
             ->when(function (Item $item) {
                 $item->archive();
@@ -204,16 +179,13 @@ class ItemTest extends AggregateRootTestCase
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
             ->given([
-                ItemAdded::occur(
-                    $this->itemId,
-                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-                ),
-                ItemArchived::occur($this->itemId)
+                new ItemAdded($this->itemId, $this->title, $this->position, $this->listId),
+                new ItemArchived($this->itemId)
             ])
             ->when(function (Item $item) {
                 $item->restore();
             })
-            ->then([ItemRestored::occur($this->itemId)]);
+            ->then([new ItemRestored($this->itemId)]);
     }
 
     /**
@@ -223,12 +195,7 @@ class ItemTest extends AggregateRootTestCase
     {
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
-            ->given([
-                ItemAdded::occur(
-                    $this->itemId,
-                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-                )
-            ])
+            ->given([new ItemAdded($this->itemId, $this->title, $this->position, $this->listId)])
             ->when(function (Item $item) {
                 $item->restore();
             })
@@ -245,18 +212,11 @@ class ItemTest extends AggregateRootTestCase
 
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
-            ->given([
-                ItemAdded::occur(
-                    $this->itemId,
-                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-                )
-            ])
+            ->given([new ItemAdded($this->itemId, $this->title, $this->position, $this->listId)])
             ->when(function (Item $item) use ($position, $listId) {
                 $item->move($position, $listId);
             })
-            ->then([
-                ItemMoved::occur($this->itemId, ['position' => $position->toInt(), 'listId' => (string) $listId])
-            ]);
+            ->then([new ItemMoved($this->itemId, $position->toInt(), (string) $listId)]);
     }
 
     /**
@@ -267,17 +227,15 @@ class ItemTest extends AggregateRootTestCase
         $this
             ->withAggregateId(ItemId::fromString($this->itemId))
             ->given([
-                ItemAdded::occur(
-                    $this->itemId,
-                    ['title' => $this->title, 'position' => $this->position, 'listId' => $this->listId]
-                ),
-                ItemArchived::occur((string) $this->itemId)
+                new ItemAdded($this->itemId, $this->title, $this->position, $this->listId),
+                new ItemArchived((string) $this->itemId)
             ])
             ->when(function (Item $item) {
                 $item->move(Position::fromInt(3), ListId::generate());
             })
             ->then([]);
     }
+
     protected function getAggregateRootClass(): string
     {
         return Item::class;

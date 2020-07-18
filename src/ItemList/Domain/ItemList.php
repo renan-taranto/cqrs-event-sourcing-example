@@ -15,7 +15,6 @@ use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\Event\ListArchived;
 use Taranto\ListMaker\ItemList\Domain\Event\ListCreated;
 use Taranto\ListMaker\ItemList\Domain\Event\ListMoved;
-use Taranto\ListMaker\ItemList\Domain\Event\ListReordered;
 use Taranto\ListMaker\ItemList\Domain\Event\ListRestored;
 use Taranto\ListMaker\ItemList\Domain\Event\ListTitleChanged;
 use Taranto\ListMaker\Shared\Domain\Aggregate\AggregateRoot;
@@ -51,9 +50,11 @@ final class ItemList extends AggregateRoot
         $instance = new self();
 
         $instance->recordThat(
-            ListCreated::occur(
+            new ListCreated(
                 (string) $listId,
-                ['title' => (string) $title, 'position' => $position->toInt() , 'boardId' => (string) $boardId]
+                (string) $title,
+                $position->toInt(),
+                (string) $boardId
             )
         );
 
@@ -79,7 +80,7 @@ final class ItemList extends AggregateRoot
             return;
         }
 
-        $this->recordThat(ListTitleChanged::occur((string) $this->aggregateId, ['title' => (string) $title]));
+        $this->recordThat(new ListTitleChanged((string) $this->aggregateId, (string) $title));
     }
 
     /**
@@ -96,7 +97,7 @@ final class ItemList extends AggregateRoot
             return;
         }
 
-        $this->recordThat(ListArchived::occur((string) $this->aggregateId));
+        $this->recordThat(new ListArchived((string) $this->aggregateId));
     }
 
     protected function whenListArchived(): void
@@ -110,7 +111,7 @@ final class ItemList extends AggregateRoot
             return;
         }
 
-        $this->recordThat(ListRestored::occur((string) $this->aggregateId));
+        $this->recordThat(new ListRestored((string) $this->aggregateId));
     }
 
     protected function whenListRestored(): void
@@ -128,9 +129,10 @@ final class ItemList extends AggregateRoot
             return;
         }
 
-        $this->recordThat(ListMoved::occur(
+        $this->recordThat(new ListMoved(
             (string) $this->aggregateId,
-            ['position' => $position->toInt(), 'boardId' => (string) $boardId]
-        ));
+            $position->toInt(),
+            (string) $boardId)
+        );
     }
 }

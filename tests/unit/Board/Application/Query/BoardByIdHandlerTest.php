@@ -62,7 +62,7 @@ class BoardByIdHandlerTest extends Unit
             ->with($this->boardId)
             ->andReturn($this->boardData);
 
-        $boardData = ($this->handler)(new BoardById(['boardId' => $this->boardId]));
+        $boardData = ($this->handler)(new BoardById($this->boardId));
 
         expect($boardData)->equals($this->boardData);
     }
@@ -76,7 +76,7 @@ class BoardByIdHandlerTest extends Unit
             ->with($this->boardId)
             ->andReturn(null);
 
-        $boardData = ($this->handler)(new BoardById(['boardId' => $this->boardId]));
+        $boardData = ($this->handler)(new BoardById($this->boardId));
 
         expect($boardData)->null();
     }

@@ -51,8 +51,8 @@ class AddItemCest
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
         $I->seeResponseContainsJson(['errors' => [
             'id' => 'This value should not be blank.',
-            'title' => 'This field is missing.',
-            'listId' => 'This field is missing.'
+            'title' => 'This value should not be blank.',
+            'listId' => 'This value should not be blank.'
         ]]);
     }
 

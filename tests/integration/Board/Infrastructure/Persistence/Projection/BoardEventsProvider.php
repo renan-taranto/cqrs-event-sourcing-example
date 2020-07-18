@@ -30,10 +30,7 @@ trait BoardEventsProvider
      */
     private function boardCreatedEvent(): BoardCreated
     {
-        return BoardCreated::occur(
-            (string) BoardId::generate(),
-            ['title' => 'To-Dos']
-        );
+        return new BoardCreated((string) BoardId::generate(), 'To-Dos');
     }
 
     /**
@@ -42,10 +39,7 @@ trait BoardEventsProvider
      */
     private function boardTitleChangedEvent(string $boardId): BoardTitleChanged
     {
-        return BoardTitleChanged::occur(
-            $boardId,
-            ['title' => 'Tasks to be done']
-        );
+        return new BoardTitleChanged($boardId, 'Tasks to be done');
     }
 
     /**
@@ -54,7 +48,7 @@ trait BoardEventsProvider
      */
     private function boardClosedEvent(string $boardId): BoardClosed
     {
-        return BoardClosed::occur($boardId);
+        return new BoardClosed($boardId);
     }
 
     /**
@@ -63,6 +57,6 @@ trait BoardEventsProvider
      */
     private function boardReopenedEvent(string $boardId): BoardReopened
     {
-        return BoardReopened::occur($boardId);
+        return new BoardReopened($boardId);
     }
 }

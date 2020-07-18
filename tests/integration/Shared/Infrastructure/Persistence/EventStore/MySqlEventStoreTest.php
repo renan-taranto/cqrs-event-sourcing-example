@@ -66,9 +66,9 @@ class MySqlEventStoreTest extends Unit
 
         $this->aggregateId = BoardId::generate();
         $this->events = [
-            BoardCreated::occur((string) $this->aggregateId),
-            BoardTitleChanged::occur((string) $this->aggregateId, ['title' => 'Changed Title']),
-            BoardClosed::occur((string) $this->aggregateId)
+            new BoardCreated((string) $this->aggregateId, 'Initial Board Title'),
+            new BoardTitleChanged((string) $this->aggregateId, 'Changed Title'),
+            new BoardClosed((string) $this->aggregateId)
         ];
         $this->domainEvents = new DomainEvents($this->events);
         $this->aggregateVersion = AggregateVersion::fromVersion(0);

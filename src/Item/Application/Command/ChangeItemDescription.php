@@ -24,6 +24,22 @@ use Taranto\ListMaker\Shared\Domain\Message\Command;
 final class ChangeItemDescription extends Command
 {
     /**
+     * @var string|null
+     */
+    private $description;
+
+    /**
+     * ChangeItemDescription constructor.
+     * @param string|null $aggregateId
+     * @param string|null $description
+     */
+    public function __construct(string $aggregateId = null, string $description = null)
+    {
+        parent::__construct($aggregateId);
+        $this->description = $description;
+    }
+
+    /**
      * @return ItemId
      */
     public function aggregateId(): IdentifiesAggregate
@@ -36,6 +52,6 @@ final class ChangeItemDescription extends Command
      */
     public function description(): Description
     {
-        return Description::fromString($this->payload['description']);
+        return Description::fromString($this->description);
     }
 }

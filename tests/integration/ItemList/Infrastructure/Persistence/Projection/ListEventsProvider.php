@@ -32,14 +32,7 @@ trait ListEventsProvider
      */
     private function listCreatedEvent(string $boardId): ListCreated
     {
-        return ListCreated::occur(
-            (string) ListId::generate(),
-            [
-                'title' => 'Staging',
-                'position' => 1,
-                'boardId' => $boardId
-            ]
-        );
+        return new ListCreated((string) ListId::generate(), 'Staging', 1, $boardId);
     }
 
     /**
@@ -48,7 +41,7 @@ trait ListEventsProvider
      */
     private function listArchivedEvent(string $listId): ListArchived
     {
-        return ListArchived::occur($listId);
+        return new ListArchived($listId);
     }
 
     /**
@@ -57,7 +50,7 @@ trait ListEventsProvider
      */
     private function listRestoredEvent(string $listId): ListRestored
     {
-        return ListRestored::occur($listId);
+        return new ListRestored($listId);
     }
 
     /**
@@ -66,10 +59,7 @@ trait ListEventsProvider
      */
     private function listTitleChangedEvent(string $listId): ListTitleChanged
     {
-        return ListTitleChanged::occur(
-            $listId,
-            ['title' => 'Testing']
-        );
+        return new ListTitleChanged($listId, 'Testing');
     }
 
     /**
@@ -80,9 +70,6 @@ trait ListEventsProvider
      */
     private function listMovedEvent(string $listId, int $position, string $boardId): ListMoved
     {
-        return ListMoved::occur(
-            $listId,
-            ['position' => $position, 'boardId' => $boardId]
-        );
+        return new ListMoved($listId, $position, $boardId);
     }
 }

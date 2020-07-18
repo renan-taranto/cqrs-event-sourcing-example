@@ -43,10 +43,7 @@ final class Board extends AggregateRoot
     public static function create(BoardId $boardId, Title $title): self
     {
         $instance = new self();
-
-        $instance->recordThat(
-            BoardCreated::occur((string) $boardId, ['title' => (string) $title])
-        );
+        $instance->recordThat(new BoardCreated((string) $boardId, (string) $title));
 
         return $instance;
     }
@@ -71,7 +68,7 @@ final class Board extends AggregateRoot
         }
 
         $this->recordThat(
-            BoardTitleChanged::occur((string) $this->aggregateId, ['title' => (string) $title])
+            new BoardTitleChanged((string) $this->aggregateId, (string) $title)
         );
     }
 
@@ -89,7 +86,7 @@ final class Board extends AggregateRoot
            return;
        }
 
-       $this->recordThat(BoardClosed::occur((string) $this->aggregateId));
+       $this->recordThat(new BoardClosed((string) $this->aggregateId));
     }
 
     /**
@@ -106,7 +103,7 @@ final class Board extends AggregateRoot
             return;
         }
 
-        $this->recordThat(BoardReopened::occur((string) $this->aggregateId));
+        $this->recordThat(new BoardReopened((string) $this->aggregateId));
     }
 
     /**

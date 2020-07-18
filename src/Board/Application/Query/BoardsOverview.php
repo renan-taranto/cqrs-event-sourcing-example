@@ -11,24 +11,32 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Board\Application\Query;
 
-use Taranto\ListMaker\Shared\Domain\Message\Query;
-
 /**
  * Class BoardsOverview
  * @package Taranto\ListMaker\Board\Application\Query
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-final class BoardsOverview extends Query
+final class BoardsOverview
 {
+    /**
+     * @var bool|null
+     */
+    private $open;
+
+    /**
+     * BoardsOverview constructor.
+     * @param bool|null $open
+     */
+    public function __construct(bool $open = null)
+    {
+        $this->open = $open;
+    }
+
     /**
      * @return bool|null
      */
     public function open(): ?bool
     {
-        if (!isset($this->payload['open'])) {
-            return null;
-        }
-
-        return filter_var($this->payload['open'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        return $this->open;
     }
 }

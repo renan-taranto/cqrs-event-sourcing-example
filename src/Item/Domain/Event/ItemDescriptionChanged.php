@@ -26,6 +26,22 @@ final class ItemDescriptionChanged extends DomainEvent
     private const EVENT_TYPE = 'item-description-changed';
 
     /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * ItemDescriptionChanged constructor.
+     * @param string $aggregateId
+     * @param string $description
+     */
+    public function __construct(string $aggregateId, string $description)
+    {
+        parent::__construct($aggregateId);
+        $this->description = $description;
+    }
+
+    /**
      * @return ItemId
      */
     public function aggregateId(): IdentifiesAggregate
@@ -38,7 +54,7 @@ final class ItemDescriptionChanged extends DomainEvent
      */
     public function description(): Description
     {
-        return Description::fromString($this->payload['description']);
+        return Description::fromString($this->description);
     }
 
     /**
@@ -48,5 +64,4 @@ final class ItemDescriptionChanged extends DomainEvent
     {
         return self::EVENT_TYPE;
     }
-
 }

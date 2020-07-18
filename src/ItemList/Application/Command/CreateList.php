@@ -13,9 +13,9 @@ namespace Taranto\ListMaker\ItemList\Application\Command;
 
 use Taranto\ListMaker\Board\Domain\BoardId;
 use Taranto\ListMaker\ItemList\Domain\ListId;
-use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
 use Taranto\ListMaker\Shared\Domain\Message\Command;
+use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 
 /**
@@ -25,6 +25,40 @@ use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
  */
 final class CreateList extends Command
 {
+    /**
+     * @var string|null
+     */
+    private $title;
+
+    /**
+     * @var int|null
+     */
+    private $position;
+
+    /**
+     * @var string|null
+     */
+    private $boardId;
+
+    /**
+     * CreateList constructor.
+     * @param string|null $aggregateId
+     * @param string|null $title
+     * @param int|null $position
+     * @param string|null $boardId
+     */
+    public function __construct(
+        string $aggregateId = null,
+        string $title = null,
+        int $position = null,
+        string $boardId = null
+    ) {
+        parent::__construct($aggregateId);
+        $this->title = $title;
+        $this->position = $position;
+        $this->boardId = $boardId;
+    }
+
     /**
      * @return ListId
      */
@@ -38,7 +72,7 @@ final class CreateList extends Command
      */
     public function title(): Title
     {
-        return Title::fromString($this->payload['title']);
+        return Title::fromString($this->title);
     }
 
     /**
@@ -46,7 +80,7 @@ final class CreateList extends Command
      */
     public function position(): Position
     {
-        return Position::fromInt($this->payload['position'] ?? 0);
+        return Position::fromInt($this->position ?? 0);
     }
 
     /**
@@ -54,6 +88,6 @@ final class CreateList extends Command
      */
     public function boardId(): BoardId
     {
-        return BoardId::fromString($this->payload['boardId']);
+        return BoardId::fromString($this->boardId);
     }
 }

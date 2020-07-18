@@ -58,7 +58,7 @@ class ArchiveItemHandlerTest extends Unit
         $this->handler = new ArchiveItemHandler($this->itemRepository);
 
         $this->itemId = ItemId::generate();
-        $this->command = ArchiveItem::request((string) $this->itemId);
+        $this->command = new ArchiveItem((string) $this->itemId);
 
         $this->item = \Mockery::spy(Item::class);
     }

@@ -73,9 +73,10 @@ class MoveListHandlerTest extends Unit
         $this->listId = ListId::generate();
         $this->position = Position::fromInt(5);
         $this->boardId = BoardId::generate();
-        $this->command = MoveList::request(
+        $this->command = new MoveList(
             (string) $this->listId,
-            ['position' => $this->position->toInt(), 'boardId' => (string) $this->boardId]
+            $this->position->toInt(),
+            (string) $this->boardId
         );
 
         $this->list = \Mockery::spy(ItemList::class);

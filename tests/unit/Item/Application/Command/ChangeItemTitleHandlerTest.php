@@ -65,10 +65,7 @@ class ChangeItemTitleHandlerTest extends Unit
 
         $this->title = Title::fromString('Feature - Update Item');
         $this->itemId = ItemId::generate();
-        $this->command = ChangeItemTitle::request(
-            (string) $this->itemId,
-            ['title' => (string) $this->title]
-        );
+        $this->command = new ChangeItemTitle((string) $this->itemId, (string) $this->title);
 
         $this->item = \Mockery::spy(Item::class);
     }

@@ -15,7 +15,6 @@ use Taranto\ListMaker\Item\Domain\Event\ItemAdded;
 use Taranto\ListMaker\Item\Domain\Event\ItemArchived;
 use Taranto\ListMaker\Item\Domain\Event\ItemDescriptionChanged;
 use Taranto\ListMaker\Item\Domain\Event\ItemMoved;
-use Taranto\ListMaker\Item\Domain\Event\ItemReordered;
 use Taranto\ListMaker\Item\Domain\Event\ItemRestored;
 use Taranto\ListMaker\Item\Domain\Event\ItemTitleChanged;
 use Taranto\ListMaker\ItemList\Domain\ListId;
@@ -56,9 +55,11 @@ final class Item extends AggregateRoot
     {
         $instance = new self();
 
-        $instance->recordThat(ItemAdded::occur(
+        $instance->recordThat(new ItemAdded(
             (string) $itemId,
-            ['title' => (string) $title, 'position' => $position->toInt(), 'listId' => (string) $listId]
+            (string) $title,
+            $position->toInt(),
+            (string) $listId
         ));
 
         return $instance;
@@ -83,9 +84,9 @@ final class Item extends AggregateRoot
             return;
         }
 
-        $this->recordThat(ItemDescriptionChanged::occur(
+        $this->recordThat(new ItemDescriptionChanged(
             (string) $this->aggregateId,
-            ['description' => (string) $description]
+            (string) $description
         ));
     }
 
@@ -106,9 +107,9 @@ final class Item extends AggregateRoot
             return;
         }
 
-        $this->recordThat(ItemTitleChanged::occur(
+        $this->recordThat(new ItemTitleChanged(
             (string) $this->aggregateId,
-            ['title' => (string) $title]
+            (string) $title
         ));
     }
 
@@ -126,7 +127,7 @@ final class Item extends AggregateRoot
             return;
         }
 
-        $this->recordThat(ItemArchived::occur((string) $this->aggregateId));
+        $this->recordThat(new ItemArchived((string) $this->aggregateId));
     }
 
     protected function whenItemArchived(): void
@@ -140,7 +141,7 @@ final class Item extends AggregateRoot
             return;
         }
 
-        $this->recordThat(ItemRestored::occur((string) $this->aggregateId));
+        $this->recordThat(new ItemRestored((string) $this->aggregateId));
     }
 
     /**
@@ -153,9 +154,10 @@ final class Item extends AggregateRoot
             return;
         }
 
-        $this->recordThat(ItemMoved::occur(
+        $this->recordThat(new ItemMoved(
             (string) $this->aggregateId,
-            ['position' => $position->toInt(), 'listId' => (string) $listId]
+            $position->toInt(),
+            (string) $listId
         ));
     }
 

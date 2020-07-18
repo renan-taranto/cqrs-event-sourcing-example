@@ -58,7 +58,7 @@ class RestoreItemHandlerTest extends Unit
         $this->handler = new RestoreItemHandler($this->itemRepository);
 
         $this->itemId = ItemId::generate();
-        $this->command = RestoreItem::request((string) $this->itemId);
+        $this->command = new RestoreItem((string) $this->itemId);
 
         $this->item = \Mockery::spy(Item::class);
     }

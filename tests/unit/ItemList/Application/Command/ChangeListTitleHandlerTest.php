@@ -60,9 +60,9 @@ class ChangeListTitleHandlerTest extends Unit
 
         $this->listId = ListId::generate();
         $this->title = Title::fromString('Backlog');
-        $this->command = ChangeListTitle::request(
+        $this->command = new ChangeListTitle(
             (string) $this->listId,
-            ['title' => (string) $this->title]
+            (string) $this->title
         );
 
         $this->list = \Mockery::spy(ItemList::class);

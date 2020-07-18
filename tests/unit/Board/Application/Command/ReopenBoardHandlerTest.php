@@ -59,7 +59,7 @@ class ReopenBoardHandlerTest extends Unit
 
         $this->board = \Mockery::spy(Board::class);
         $this->boardId = BoardId::generate();
-        $this->command = ReopenBoard::request((string) $this->boardId);
+        $this->command = new ReopenBoard((string) $this->boardId);
     }
 
     /**

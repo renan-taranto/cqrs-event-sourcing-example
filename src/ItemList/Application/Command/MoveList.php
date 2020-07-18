@@ -25,6 +25,32 @@ use Taranto\ListMaker\Shared\Domain\ValueObject\Position;
 final class MoveList extends Command
 {
     /**
+     * @var int|null
+     */
+    private $position;
+
+    /**
+     * @var string|null
+     */
+    private $boardId;
+
+    /**
+     * MoveList constructor.
+     * @param string|null $aggregateId
+     * @param int|null $position
+     * @param string|null $boardId
+     */
+    public function __construct(
+        string $aggregateId = null,
+        int $position = null,
+        string $boardId = null
+    ) {
+        parent::__construct($aggregateId);
+        $this->position = $position;
+        $this->boardId = $boardId;
+    }
+
+    /**
      * @return ListId
      */
     public function aggregateId(): IdentifiesAggregate
@@ -37,7 +63,7 @@ final class MoveList extends Command
      */
     public function position(): Position
     {
-        return Position::fromInt($this->payload['position']);
+        return Position::fromInt($this->position);
     }
 
     /**
@@ -45,6 +71,6 @@ final class MoveList extends Command
      */
     public function boardId(): BoardId
     {
-        return BoardId::fromString($this->payload['boardId']);
+        return BoardId::fromString($this->boardId);
     }
 }

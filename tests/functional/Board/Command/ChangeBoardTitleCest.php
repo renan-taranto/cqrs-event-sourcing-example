@@ -37,7 +37,7 @@ class ChangeBoardTitleCest
         $I->haveHttpHeader('content-type', 'application/json');
         $I->sendPost('/boards/' . self::BOARD_ID . '/change-title', []);
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
-        $I->seeResponseContainsJson(['errors' => ['title' => 'This field is missing.']]);
+        $I->seeResponseContainsJson(['errors' => ['title' => 'This value should not be blank.']]);
     }
 
     public function it_returns_bad_request_when_title_is_blank(FunctionalTester $I)

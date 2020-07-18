@@ -20,32 +20,18 @@ use Taranto\ListMaker\Shared\Domain\Aggregate\IdentifiesAggregate;
  */
 abstract class Command
 {
-    use MessagePayload;
-
     /**
      * @var string
      */
     protected $aggregateId;
 
     /**
-     * @param string $aggregateId
-     * @param array $payload
-     * @return Command
-     */
-    public static function request(string $aggregateId, array $payload = []): self
-    {
-        return new static($aggregateId, $payload);
-    }
-
-    /**
      * Command constructor.
      * @param string $aggregateId
-     * @param array $payload
      */
-    protected function __construct(string $aggregateId, array $payload = [])
+    public function __construct(string $aggregateId)
     {
         $this->aggregateId = $aggregateId;
-        $this->payload = $payload;
     }
 
     /**

@@ -28,8 +28,42 @@ final class ListCreated extends DomainEvent
     private const EVENT_TYPE = 'list-created';
 
     /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * @var int
+     */
+    private $position;
+
+    /**
+     * @var string
+     */
+    private $boardId;
+    /**
      * @return ListId
      */
+
+    /**
+     * ListCreated constructor.
+     * @param string $aggregateId
+     * @param string $title
+     * @param int $position
+     * @param string $boardId
+     */
+    public function __construct(
+        string $aggregateId,
+        string $title,
+        int $position,
+        string $boardId
+    ) {
+        parent::__construct($aggregateId);
+        $this->title = $title;
+        $this->position = $position;
+        $this->boardId = $boardId;
+    }
+
     public function aggregateId(): IdentifiesAggregate
     {
         return ListId::fromString($this->aggregateId);
@@ -40,7 +74,7 @@ final class ListCreated extends DomainEvent
      */
     public function title(): Title
     {
-        return Title::fromString($this->payload['title']);
+        return Title::fromString($this->title);
     }
 
     /**
@@ -48,7 +82,7 @@ final class ListCreated extends DomainEvent
      */
     public function position(): Position
     {
-        return Position::fromInt($this->payload['position']);
+        return Position::fromInt($this->position);
     }
 
     /**
@@ -56,7 +90,7 @@ final class ListCreated extends DomainEvent
      */
     public function boardId(): BoardId
     {
-        return BoardId::fromString($this->payload['boardId']);
+        return BoardId::fromString($this->boardId);
     }
 
     /**

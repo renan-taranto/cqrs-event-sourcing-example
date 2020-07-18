@@ -77,9 +77,11 @@ class AddItemHandlerTest extends Unit
         $title = Title::fromString('Feature - Items');
         $position = Position::fromInt(2);
         $this->listId = ListId::generate();
-        $this->command = AddItem::request(
+        $this->command = new AddItem(
             (string) $itemId,
-            ['title' => (string) $title, 'position' => $position->toInt(), 'listId' => (string) $this->listId]
+            (string) $title,
+            $position->toInt(),
+            (string) $this->listId
         );
 
         $this->list = \Mockery::mock(ItemList::class);

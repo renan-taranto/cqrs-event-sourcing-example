@@ -24,6 +24,22 @@ use Taranto\ListMaker\Shared\Domain\ValueObject\Title;
 final class CreateBoard extends Command
 {
     /**
+     * @var string|null
+     */
+    private $title;
+
+    /**
+     * CreateBoard constructor.
+     * @param string|null $aggregateId
+     * @param string|null $title
+     */
+    public function __construct(string $aggregateId = null, string $title = null)
+    {
+        parent::__construct($aggregateId);
+        $this->title = $title;
+    }
+
+    /**
      * @return BoardId
      */
     public function aggregateId(): IdentifiesAggregate
@@ -36,6 +52,6 @@ final class CreateBoard extends Command
      */
     public function title(): Title
     {
-        return Title::fromString($this->payload['title']);
+        return Title::fromString($this->title);
     }
 }

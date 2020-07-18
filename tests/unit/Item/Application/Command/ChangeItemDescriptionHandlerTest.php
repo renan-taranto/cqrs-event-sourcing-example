@@ -65,10 +65,7 @@ class ChangeItemDescriptionHandlerTest extends Unit
 
         $this->description = Description::fromString('An updated item description...');
         $this->itemId = ItemId::generate();
-        $this->command = ChangeItemDescription::request(
-            (string) $this->itemId,
-            ['description' => (string) $this->description]
-        );
+        $this->command = new ChangeItemDescription((string) $this->itemId, (string) $this->description);
 
         $this->item = \Mockery::spy(Item::class);
     }

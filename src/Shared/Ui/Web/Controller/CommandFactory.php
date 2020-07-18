@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Shared\Ui\Web\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
 use Taranto\ListMaker\Shared\Domain\Message\Command;
 
 /**
@@ -21,8 +22,23 @@ use Taranto\ListMaker\Shared\Domain\Message\Command;
  */
 final class CommandFactory
 {
-    const AGGREGATE_ID_ATTRIBUTE = 'id';
-    const COMMAND_CLASS_ATTRIBUTE = 'command_class';
+    private const AGGREGATE_ID_PARAMETER = 'id';
+    private const AGGREGATE_ID_ATTRIBUTE = 'aggregateId';
+    private const COMMAND_CLASS_ATTRIBUTE = 'command_class';
+
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * CommandFactory constructor.
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
 
     /**
      * @param Request $request
@@ -31,33 +47,30 @@ final class CommandFactory
      */
     public function fromHttpRequest(Request $request): Command
     {
-        $commandClass = $this->getCommandClass($request);
-        return $commandClass::request(
-            $this->getAggregateId($request),
-            $this->getCommandPayload($request)
+        return $this->serializer->deserialize(
+            json_encode($this->getCommandData($request)),
+            $this->getCommandClass($request),
+            'json'
         );
     }
 
     /**
      * @param Request $request
-     * @return string
-     * @throws \Exception
+     * @return array
      */
-    private function getCommandClass(Request $request): string
+    private function getCommandData(Request $request): array
     {
-        $commandClass = $request->attributes->get(self::COMMAND_CLASS_ATTRIBUTE);
-        if ($commandClass === null) {
-            throw new \Exception('The "command_class" attribute was not found in the request.');
-        }
+        $commandData = $this->getRequestPayload($request);
+        $commandData[self::AGGREGATE_ID_ATTRIBUTE] = $this->getAggregateIdFromRequest($request);
 
-        return $commandClass;
+        return $commandData;
     }
 
     /**
      * @param Request $request
      * @return string
      */
-    private function getAggregateId(Request $request): string
+    private function getAggregateIdFromRequest(Request $request): string
     {
         $aggregateId = $this->getAggregateIdFromUri($request) ?: $this->getAggregateIdFromPayload($request);
         return $aggregateId ?: '';
@@ -69,7 +82,7 @@ final class CommandFactory
      */
     private function getAggregateIdFromUri(Request $request): ?string
     {
-        return $request->get(self::AGGREGATE_ID_ATTRIBUTE);
+        return $request->get(self::AGGREGATE_ID_PARAMETER);
     }
 
     /**
@@ -78,18 +91,7 @@ final class CommandFactory
      */
     private function getAggregateIdFromPayload(Request $request): ?string
     {
-        return $this->getRequestPayload($request)[self::AGGREGATE_ID_ATTRIBUTE] ?? null;
-    }
-
-    /**
-     * @param Request $request
-     * @return array
-     */
-    private function getCommandPayload(Request $request): array
-    {
-        $requestPayload = $this->getRequestPayload($request);
-        unset($requestPayload[self::AGGREGATE_ID_ATTRIBUTE]);
-        return $requestPayload;
+        return $this->getRequestPayload($request)[self::AGGREGATE_ID_PARAMETER] ?? null;
     }
 
     /**
@@ -99,5 +101,20 @@ final class CommandFactory
     private function getRequestPayload(Request $request): array
     {
         return \json_decode($request->getContent(), true) ?: [];
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     * @throws \Exception
+     */
+    private function getCommandClass(Request $request): string
+    {
+        $commandClass = $request->attributes->get(self::COMMAND_CLASS_ATTRIBUTE);
+        if ($commandClass === null) {
+            throw new \Exception('The "command_class" route attribute must be defined in order to create a command from the request.');
+        }
+
+        return $commandClass;
     }
 }

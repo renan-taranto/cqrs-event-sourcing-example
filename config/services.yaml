@@ -72,3 +72,6 @@ services:
         class: Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider
         factory: ['@Taranto\ListMaker\Shared\Infrastructure\Persistence\Projection\MongoCollectionProvider', 'getCollection']
         arguments: ['boards_overview']
+
+    # Serializer
+    Symfony\Component\Serializer\Normalizer\PropertyNormalizer: ~

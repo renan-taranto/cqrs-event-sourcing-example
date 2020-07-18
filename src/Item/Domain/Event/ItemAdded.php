@@ -28,6 +28,36 @@ final class ItemAdded extends DomainEvent
     private const EVENT_TYPE = 'item-added';
 
     /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * @var int
+     */
+    private $position;
+
+    /**
+     * @var string
+     */
+    private $listId;
+
+    /**
+     * ItemAdded constructor.
+     * @param string $aggregateId
+     * @param string $title
+     * @param int $position
+     * @param string $listId
+     */
+    public function __construct(string $aggregateId, string $title, int $position, string $listId)
+    {
+        parent::__construct($aggregateId);
+        $this->title = $title;
+        $this->position = $position;
+        $this->listId = $listId;
+    }
+
+    /**
      * @return ItemId
      */
     public function aggregateId(): IdentifiesAggregate
@@ -40,7 +70,7 @@ final class ItemAdded extends DomainEvent
      */
     public function title(): Title
     {
-        return Title::fromString($this->payload['title']);
+        return Title::fromString($this->title);
     }
 
     /**
@@ -48,7 +78,7 @@ final class ItemAdded extends DomainEvent
      */
     public function position(): Position
     {
-        return Position::fromInt($this->payload['position']);
+        return Position::fromInt($this->position);
     }
 
     /**
@@ -56,7 +86,7 @@ final class ItemAdded extends DomainEvent
      */
     public function listId(): ListId
     {
-        return ListId::fromString($this->payload['listId']);
+        return ListId::fromString($this->listId);
     }
 
     /**

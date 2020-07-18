@@ -7,13 +7,10 @@ Taranto\ListMaker\Board\Application\Command\CreateBoard:
                   versions: [4]
             - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentDoesNotExist:
                   collection: boards
-        payload:
-            - Collection:
-                  fields:
-                      title:
-                          - NotBlank: ~
-                          - Length:
-                                max: 50
+        title:
+            - NotBlank: ~
+            - Length:
+                  max: 50
 
 Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle:
     properties:
@@ -24,13 +21,10 @@ Taranto\ListMaker\Board\Application\Command\ChangeBoardTitle:
             - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
                   collection: boards
                   returnsNotFoundResponse: true
-        payload:
-            - Collection:
-                  fields:
-                      title:
-                          - NotBlank: ~
-                          - Length:
-                                max: 50
+        title:
+            - NotBlank: ~
+            - Length:
+                  max: 50
 
 Taranto\ListMaker\Board\Application\Command\CloseBoard:
     properties:
@@ -55,27 +49,10 @@ Taranto\ListMaker\Board\Application\Command\ReopenBoard:
 # Queries
 Taranto\ListMaker\Board\Application\Query\BoardById:
     properties:
-        payload:
-            - Collection:
-                  fields:
-                      boardId:
-                          - NotBlank: ~
-                          - Uuid:
-                                versions: [4]
-                          - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
-                                collection: boards
-                                returnsNotFoundResponse: true
-
-Taranto\ListMaker\Board\Application\Query\ClosedBoards:
-    properties:
-        payload:
-            - Count:
-                  min: 0
-                  max: 0
-
-Taranto\ListMaker\Board\Application\Query\OpenBoards:
-    properties:
-        payload:
-            - Count:
-                  min: 0
-                  max: 0
+        boardId:
+            - NotBlank: ~
+            - Uuid:
+                  versions: [4]
+            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
+                  collection: boards
+                  returnsNotFoundResponse: true

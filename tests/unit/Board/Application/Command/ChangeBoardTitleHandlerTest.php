@@ -66,7 +66,7 @@ class ChangeBoardTitleHandlerTest extends Unit
         $this->board = \Mockery::spy(Board::class);
         $this->title = Title::fromString('Tasks');
         $this->boardId = BoardId::generate();
-        $this->command = ChangeBoardTitle::request((string) $this->boardId, ['title' => (string) $this->title]);
+        $this->command = new ChangeBoardTitle((string) $this->boardId, (string) $this->title);
     }
 
     /**

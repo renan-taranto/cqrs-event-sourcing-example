@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Shared\Ui\Web\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Taranto\ListMaker\Shared\Domain\Message\Query;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class QueryFactory
@@ -27,16 +27,31 @@ final class QueryFactory
     const FORMAT_ATTRIBUTE = '_format';
 
     /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * QueryFactory constructor.
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
+    /**
      * @param Request $request
-     * @return Query
+     * @return object
      * @throws \Exception
      */
-    public function fromHttpRequest(Request $request): Query
+    public function fromHttpRequest(Request $request)
     {
-        $queryClass = $this->getQueryClass($request);
-        $queryParams = $this->getQueryPayload($request);
-
-        return new $queryClass($queryParams);
+        return $this->serializer->deserialize(
+            json_encode($this->getQueryData($request)),
+            $this->getQueryClass($request),
+            'json'
+        );
     }
 
     /**
@@ -48,7 +63,7 @@ final class QueryFactory
     {
         $queryClass = $request->attributes->get(self::QUERY_CLASS_ATTRIBUTE);
         if ($queryClass === null) {
-            throw new \Exception('The "query_class" attribute was not found in the request.');
+            throw new \Exception('The "query_class" route attribute must be defined in order to create a query from the request.');
         }
 
         return $queryClass;
@@ -58,7 +73,7 @@ final class QueryFactory
      * @param Request $request
      * @return array
      */
-    private function getQueryPayload(Request $request): array
+    private function getQueryData(Request $request): array
     {
         return array_merge(
             $this->getPathParams($request),

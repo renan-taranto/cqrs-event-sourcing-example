@@ -12,22 +12,18 @@ Taranto\ListMaker\ItemList\Application\Command\CreateList:
             - Uuid:
                   versions: [4]
             - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListDoesNotExist: ~
-        payload:
-            - Collection:
-                  fields:
-                      title:
-                          - NotBlank: ~
-                          - Length:
-                                max: 50
-                      position:
-                          - Optional:
-                              - Type: integer
-                              - GreaterThanOrEqual: 0
-                      boardId:
-                          - NotBlank: ~
-                          - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
-                                collection: boards
-                                message: 'Board not found.'
+        title:
+            - NotBlank: ~
+            - Length:
+                  max: 50
+        position:
+            - Type: integer
+            - GreaterThanOrEqual: 0
+        boardId:
+            - NotBlank: ~
+            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
+                  collection: boards
+                  message: 'Board not found.'
 
 Taranto\ListMaker\ItemList\Application\Command\ChangeListTitle:
     properties:
@@ -35,13 +31,10 @@ Taranto\ListMaker\ItemList\Application\Command\ChangeListTitle:
             - NotBlank: ~
             - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListExists:
                   returnsNotFoundResponse: true
-        payload:
-            - Collection:
-                  fields:
-                      title:
-                          - NotBlank: ~
-                          - Length:
-                                max: 50
+        title:
+            - NotBlank: ~
+            - Length:
+                  max: 50
 
 Taranto\ListMaker\ItemList\Application\Command\ArchiveList:
     properties:
@@ -73,15 +66,12 @@ Taranto\ListMaker\ItemList\Application\Command\MoveList:
                   returnsNotFoundResponse: true
             - Taranto\ListMaker\ItemList\Infrastructure\Validation\ListIsNotArchived:
                   message: 'Unable to move an archived list.'
-        payload:
-            - Collection:
-                  fields:
-                      position:
-                          - NotBlank: ~
-                          - Type: integer
-                          - GreaterThanOrEqual: 0
-                      boardId:
-                          - NotBlank: ~
-                          - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
-                                collection: boards
-                                message: 'Board not found.'
+        position:
+            - NotBlank: ~
+            - Type: integer
+            - GreaterThanOrEqual: 0
+        boardId:
+            - NotBlank: ~
+            - Taranto\ListMaker\Shared\Infrastructure\Validation\Constraints\MongoDocumentExists:
+                  collection: boards
+                  message: 'Board not found.'

@@ -31,7 +31,9 @@ final class CommandViolationsTranslator implements ConstraintViolationsTranslato
 
         /* @var $violation ConstraintViolationInterface */
         foreach ($violationList as $violation) {
-            $property = str_replace(['aggregateId', 'payload[', ']'], ['id', '', ''], $violation->getPropertyPath());
+            if (($property = $violation->getPropertyPath()) === 'aggregateId') {
+                $property = 'id';
+            }
             $errors[$property] = $violation->getMessage();
         }
 

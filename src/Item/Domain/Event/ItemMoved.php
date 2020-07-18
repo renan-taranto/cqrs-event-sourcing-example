@@ -27,6 +27,29 @@ final class ItemMoved extends DomainEvent
     private const EVENT_TYPE = 'item-moved';
 
     /**
+     * @var int
+     */
+    private $position;
+
+    /**
+     * @var string
+     */
+    private $listId;
+
+    /**
+     * ItemMoved constructor.
+     * @param string $aggregateId
+     * @param int $position
+     * @param string $listId
+     */
+    public function __construct(string $aggregateId, int $position, string $listId)
+    {
+        parent::__construct($aggregateId);
+        $this->position = $position;
+        $this->listId = $listId;
+    }
+
+    /**
      * @return ItemId
      */
     public function aggregateId(): IdentifiesAggregate
@@ -39,7 +62,7 @@ final class ItemMoved extends DomainEvent
      */
     public function position(): Position
     {
-        return Position::fromInt($this->payload['position']);
+        return Position::fromInt($this->position);
     }
 
     /**
@@ -47,7 +70,7 @@ final class ItemMoved extends DomainEvent
      */
     public function listId(): ListId
     {
-        return ListId::fromString($this->payload['listId']);
+        return ListId::fromString($this->listId);
     }
 
     /**

@@ -61,7 +61,7 @@ class BoardsOverviewHandlerTest extends Unit
         $this->boardOverviewFinder->shouldReceive('allOpenBoards')
             ->andReturn($openBoardsOverview);
 
-        $queryResult = ($this->boardsOverviewHandler)(new BoardsOverview(['open' => true]));
+        $queryResult = ($this->boardsOverviewHandler)(new BoardsOverview(true));
         expect($queryResult)->equals($openBoardsOverview);
     }
 
@@ -74,7 +74,7 @@ class BoardsOverviewHandlerTest extends Unit
         $this->boardOverviewFinder->shouldReceive('allClosedBoards')
             ->andReturn($closedBoardsOverview);
 
-        $queryResult = ($this->boardsOverviewHandler)(new BoardsOverview(['open' => false]));
+        $queryResult = ($this->boardsOverviewHandler)(new BoardsOverview(false));
         expect($queryResult)->equals($closedBoardsOverview);
     }
 

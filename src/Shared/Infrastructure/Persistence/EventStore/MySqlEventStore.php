@@ -13,6 +13,7 @@ namespace Taranto\ListMaker\Shared\Infrastructure\Persistence\EventStore;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Taranto\ListMaker\Shared\Domain\Aggregate\AggregateHistory;
 use Taranto\ListMaker\Shared\Domain\Aggregate\AggregateVersion;
@@ -104,13 +105,17 @@ final class MySqlEventStore implements EventStore
         $version = $currentVersion->copy();
         foreach ($events as $event) {
             $version = $version->next();
-
+            $payload = $this->serializer->serialize(
+                $event,
+                'json',
+                [AbstractNormalizer::IGNORED_ATTRIBUTES => ['aggregateId']]
+            );
             /** @var $event DomainEvent */
             $stmt->execute([
                 ':aggregate_id' => (string) $event->aggregateId(),
                 ':aggregate_version' => $version->version(),
                 ':event_type' => $event->eventType(),
-                ':payload' => json_encode($event->payload()),
+                ':payload' => $payload,
                 ':created_at' => (new \DateTimeImmutable())->format('Y-m-d H:i:s')
             ]);
         }
@@ -152,7 +157,11 @@ final class MySqlEventStore implements EventStore
      */
     private function deserializeEvent(array $eventStreamRow): DomainEvent
     {
-        $eventStreamRow['payload'] = json_decode($eventStreamRow['payload'], true);
-        return $this->serializer->deserialize(json_encode($eventStreamRow), DomainEvent::class, 'json');
+        $data = array_merge(
+            ['aggregateId' => $eventStreamRow['aggregate_id']],
+            json_decode($eventStreamRow['payload'], true),
+            ['event_type' => $eventStreamRow['event_type']]
+        );
+        return $this->serializer->deserialize(json_encode($data), DomainEvent::class, 'json');
     }
 }
