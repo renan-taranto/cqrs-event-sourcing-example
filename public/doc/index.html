@@ -37,14 +37,6 @@
     <script src="./swagger-ui-standalone-preset.js"> </script>
     <script>
     window.onload = function() {
-      function HideTopbarPlugin() {
-        return {
-          components: {
-            Topbar: function () { return null }
-          }
-        }
-      }
-
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
         url: "api.json",
@@ -55,8 +47,7 @@
           SwaggerUIStandalonePreset
         ],
         plugins: [
-          SwaggerUIBundle.plugins.DownloadUrl,
-          HideTopbarPlugin
+          SwaggerUIBundle.plugins.DownloadUrl
         ],
         layout: "StandaloneLayout"
       })
