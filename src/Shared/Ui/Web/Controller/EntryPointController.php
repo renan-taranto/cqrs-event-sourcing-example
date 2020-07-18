@@ -42,7 +42,7 @@ final class EntryPointController
     {
         return new JsonResponse([
             'name' => 'List Maker',
-            'description' => 'DDD, CQRS and Event Sourcing in PHP',
+            'description' => 'List-making Web API featuring CQRS and Event Sourcing.',
             'swagger-ui' => $this->urlHelper->getAbsoluteUrl('doc/'),
             'github' => 'https://github.com/renan-taranto/list-maker',
             'author' => 'Renan Taranto',
