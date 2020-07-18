@@ -45,7 +45,7 @@
     * [Quick Start](#quick-start)
   * [Testing](#testing)
 * [Application Design](#application-design)
-  * [File Structure](#hexagonal-architecture)
+  * [File Structure](#file-structure)
   * [Hexagonal Architecture](#hexagonal-architecture)
     * [User Interface](#user-interface-also-called-presentation)
       * [CommandController](#commandcontroller)
@@ -381,7 +381,9 @@ calls a `when` method like `whenBoardTitleChanged`:
     public function changeTitle(Title $title): void
     {
         // ...
-        $this->recordThat(BoardTitleChanged::occur((string) $this->aggregateId, ['title' => (string) $title]));
+        $this->recordThat(
+            new BoardTitleChanged((string) $this->aggregateId, (string) $title)
+        );
     }
 
     public function whenBoardTitleChanged(BoardTitleChanged $event): void
