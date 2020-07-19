@@ -23,6 +23,9 @@ services:
     web_api:
         build:
             context: ./.docker/php
+            args:
+                - uid=1000
+                - gid=1000
             target: web_api
         volumes:
             - ./:/var/www/app:cached

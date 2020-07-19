@@ -10,8 +10,11 @@ COVERAGE_PATH = .docker/php/code-coverage
 
 ##
 ##Setup
-install: ## starts the application and installs dependencies
-install: start vendor
+build:
+	$(DOCKER_COMPOSE) build --build-arg uid=$$(id -u) --build-arg gid=$$(id -g)
+
+install: ## builds, starts the application and installs dependencies
+install: build start vendor
 
 ##
 ##Docker

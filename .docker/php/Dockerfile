@@ -43,8 +43,10 @@ RUN set -xe && \
 
 COPY symfony.ini /usr/local/etc/php/conf.d/symfony.ini
 
-RUN usermod -u 1000 www-data && \
-    groupmod -g 1000 www-data
+ARG uid=1000
+ARG gid=1000
+RUN usermod -u $uid www-data && \
+    groupmod -g $gid www-data
 
 USER www-data
 
