@@ -7,4 +7,8 @@ install:
     - make install
 
 script:
-    - make test-all
+    - make test-clover
+
+after_success:
+    - docker-compose exec web_api composer require --dev php-coveralls/php-coveralls '^2.2'
+    - docker-compose exec -e TRAVIS="$TRAVIS" -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" web_api php vendor/bin/php-coveralls -v

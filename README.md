@@ -5,6 +5,8 @@
 <p align="center">
     <a href="https://codeclimate.com/github/renan-taranto/cqrs-event-sourcing-example/maintainability"><img src="https://api.codeclimate.com/v1/badges/e0d1e04c070a3c83dbe5/maintainability"/></a>
     <a href="https://travis-ci.org/renan-taranto/cqrs-event-sourcing-example"><img src="https://travis-ci.org/renan-taranto/cqrs-event-sourcing-example.svg?branch=master"></a>
+    <a href='https://coveralls.io/github/renan-taranto/cqrs-event-sourcing-example?branch=master'><img src='https://coveralls.io/repos/github/renan-taranto/cqrs-event-sourcing-example/badge.svg?branch=master' alt='Coverage Status' /></a>
+    <br>
     <a href="#" align="center"><img src="https://img.shields.io/badge/Symfony-4.4-black.svg?style=flat-square&logo=symfony" alt="Symfony 4.4 Badge"/></a>
     <a href="#" align="center"><img src="https://img.shields.io/badge/PHP-7.3-blue.svg?style=flat-square&logo=php" alt="PHP 7.3 Badge"/></a>
     <a href="#" align="center"><img src="https://img.shields.io/badge/RabbitMQ-3.8-orange.svg?style=flat-square&logo=rabbitmq" alt="RabbitMQ 3.8 Badge"/></a>

@@ -57,6 +57,9 @@ test-all: ## runs all tests
 test-coverage: ## runs all tests and creates a code coverage report
 	$(EXEC_WEB_API) php vendor/bin/codecept run unit,integration,functional,api --coverage-html
 
+test-clover: ## runs all tests and creates a clover xml report
+	$(EXEC_WEB_API) php vendor/bin/codecept run unit,integration,functional,api --coverage-xml build/logs/clover.xml
+
 load-mongo-fixtures: ## transforms the json files located at /tests/etc/_data/fixtures into dump files to be used while testing
 	$(EXEC_MONGO) sh load-fixtures.sh
 
