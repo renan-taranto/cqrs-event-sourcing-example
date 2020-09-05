@@ -146,6 +146,9 @@
     "myclabs/deep-copy": {
         "version": "1.9.1"
     },
+    "nikic/php-parser": {
+        "version": "v4.9.1"
+    },
     "phar-io/manifest": {
         "version": "1.0.3"
     },
@@ -182,9 +185,6 @@
     "phpunit/php-timer": {
         "version": "2.1.2"
     },
-    "phpunit/php-token-stream": {
-        "version": "3.1.0"
-    },
     "phpunit/phpunit": {
         "version": "4.7",
         "recipe": {
@@ -218,11 +218,20 @@
     "ramsey/uuid": {
         "version": "3.8.0"
     },
+    "sebastian/cli-parser": {
+        "version": "1.0.0"
+    },
+    "sebastian/code-unit": {
+        "version": "1.0.5"
+    },
     "sebastian/code-unit-reverse-lookup": {
         "version": "1.0.1"
     },
     "sebastian/comparator": {
         "version": "3.0.2"
+    },
+    "sebastian/complexity": {
+        "version": "2.0.0"
     },
     "sebastian/diff": {
         "version": "3.0.2"
@@ -235,6 +244,9 @@
     },
     "sebastian/global-state": {
         "version": "3.0.0"
+    },
+    "sebastian/lines-of-code": {
+        "version": "1.0.0"
     },
     "sebastian/object-enumerator": {
         "version": "3.0.3"
@@ -378,6 +390,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.11.0"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.18.1"
     },
     "symfony/property-access": {
         "version": "v4.3.3"
