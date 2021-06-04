@@ -8,6 +8,7 @@
         "ext-json": "*",
         "doctrine/doctrine-bundle": "^1.11",
         "mongodb/mongodb": "^1.4",
+        "nelmio/cors-bundle": "^2.1",
         "ramsey/uuid": "^3.8",
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",
