@@ -57,3 +57,16 @@ services:
         environment:
             - RABBITMQ_DEFAULT_USER=$RABBIT_USER
             - RABBITMQ_DEFAULT_PASS=$RABBIT_PASSWORD
+    mercure:
+        image: dunglas/mercure
+        environment:
+            - SERVER_NAME=:3000
+            - MERCURE_PUBLISHER_JWT_KEY=$MERCURE_JWT_SECRET
+            - MERCURE_SUBSCRIBER_JWT_KEY=$MERCURE_JWT_SECRET
+        # Comment the following line to disable the development mode
+        command: /usr/bin/caddy run -config /etc/caddy/Caddyfile.dev
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./.docker/mercure/caddy_data:/data
+            - ./.docker/mercure/caddy_config:/config

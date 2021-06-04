@@ -137,6 +137,9 @@
     "justinrainbow/json-schema": {
         "version": "5.2.9"
     },
+    "lcobucci/jwt": {
+        "version": "3.4.5"
+    },
     "mockery/mockery": {
         "version": "1.2.2"
     },
@@ -375,6 +378,21 @@
     },
     "symfony/inflector": {
         "version": "v4.3.3"
+    },
+    "symfony/mercure": {
+        "version": "v0.5.3"
+    },
+    "symfony/mercure-bundle": {
+        "version": "0.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "0.3",
+            "ref": "d1cdff3ae53bf6a5cbfb088c82f26032bdc14cc3"
+        },
+        "files": [
+            "config/packages/mercure.yaml"
+        ]
     },
     "symfony/messenger": {
         "version": "4.3",

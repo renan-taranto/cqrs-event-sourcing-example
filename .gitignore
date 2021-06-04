@@ -13,6 +13,7 @@
 ###> docker ###
 .docker/mysql/data
 .docker/mongo/data
+.docker/mercure
 ###< docker ###
 
 ###> IDE ###
