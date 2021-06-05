@@ -16,6 +16,7 @@ services:
             $boardsOverviewCollection: '@mongo.collection.boards_overview'
             $mongoUrl: '%env(MONGO_URL)%'
             $mongoDatabase: '%env(MONGO_DATABASE)%'
+            $boardsSseUrl: 'https://cqrs-event-sourcing-example.com/boards'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -53,6 +54,12 @@ services:
     projectors:
         namespace: Taranto\ListMaker\
         resource: '%kernel.project_dir%/src/**/Projection/*Projector.php'
+        tags: [{ name: messenger.message_handler, bus: event.bus }]
+
+    sse_publishers:
+        namespace: Taranto\ListMaker\
+        resource: '%kernel.project_dir%/src/**/SsePublisher/*Publisher.php'
+        exclude: '%kernel.project_dir%/src/Shared/*'
         tags: [{ name: messenger.message_handler, bus: event.bus }]
 
     # Event Store
