@@ -17,6 +17,7 @@ services:
             $mongoUrl: '%env(MONGO_URL)%'
             $mongoDatabase: '%env(MONGO_DATABASE)%'
             $boardsSseUrl: 'https://cqrs-event-sourcing-example.com/boards'
+            $listsSseUrl: 'https://cqrs-event-sourcing-example.com/lists'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
