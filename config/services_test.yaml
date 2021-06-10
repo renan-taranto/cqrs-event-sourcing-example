@@ -1,0 +1,3 @@
+services:
+    Taranto\ListMaker\Tests\MercureHubStub:
+        decorates: mercure.hub.default
