@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace Taranto\ListMaker\Tests\Unit\Item\Infrastructure\SsePublisher;
 
 use Codeception\Test\Unit;
+use Hamcrest\Core\IsEqual;
+use Taranto\ListMaker\Item\Application\Query\ItemFinder;
 use Taranto\ListMaker\Item\Domain\Event\ItemMoved;
 use Taranto\ListMaker\Item\Domain\ItemId;
 use Taranto\ListMaker\Item\Infrastructure\SsePublisher\ItemMovedPublisher;
@@ -33,6 +35,16 @@ class ItemMovedPublisherTest extends Unit
     private $ssePublisher;
 
     /**
+     * @var array
+     */
+    private $item;
+
+    /**
+     * @var ItemFinder
+     */
+    private $itemFinder;
+
+    /**
      * @var ItemMovedPublisher
      */
     private $itemMovedPublisher;
@@ -44,11 +56,23 @@ class ItemMovedPublisherTest extends Unit
 
     protected function _before()
     {
+        $this->item = [
+            'id' => (string) ItemId::generate(),
+            'title' => 'Feature: SSE',
+            'description' => 'In order to send...'
+        ];
+
+        $this->itemFinder = \Mockery::mock(ItemFinder::class);
         $this->ssePublisher = \Mockery::spy(SsePublisher::class);
-        $this->itemMovedPublisher = new ItemMovedPublisher($this->ssePublisher, self::URL);
+
+        $this->itemMovedPublisher = new ItemMovedPublisher(
+            $this->itemFinder,
+            $this->ssePublisher,
+            self::URL
+        );
 
         $this->itemMovedEvent = new ItemMoved(
-            (string) ItemId::generate(),
+            $this->item['id'],
             2,
             (string) ListId::generate()
         );
@@ -59,12 +83,18 @@ class ItemMovedPublisherTest extends Unit
      */
     public function it_publishes_the_item_moved_event(): void
     {
+        $this->itemFinder->shouldReceive('byId')
+            ->with(isEqual::equalTo($this->item['id']))
+            ->andReturn($this->item);
+
         ($this->itemMovedPublisher)($this->itemMovedEvent);
 
         $this->ssePublisher->shouldHaveReceived('publish')->with(self::URL, json_encode([
             'eventType' => $this->itemMovedEvent->eventType(),
             'payload' => [
-                'id' => (string) $this->itemMovedEvent->aggregateId(),
+                'id' => $this->item['id'],
+                'title' => $this->item['title'],
+                'description' => $this->item['description'],
                 'position' => $this->itemMovedEvent->position()->toInt(),
                 'listId' => (string) $this->itemMovedEvent->listId()
             ]

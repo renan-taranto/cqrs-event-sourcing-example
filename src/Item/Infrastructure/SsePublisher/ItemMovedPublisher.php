@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Taranto\ListMaker\Item\Infrastructure\SsePublisher;
 
+use Taranto\ListMaker\Item\Application\Query\ItemFinder;
 use Taranto\ListMaker\Item\Domain\Event\ItemMoved;
 use Taranto\ListMaker\Shared\Infrastructure\SsePublisher\SsePublisher;
 
@@ -21,6 +22,11 @@ use Taranto\ListMaker\Shared\Infrastructure\SsePublisher\SsePublisher;
  */
 class ItemMovedPublisher
 {
+    /**
+     * @var ItemFinder
+     */
+    private $itemFinder;
+
     /**
      * @var SsePublisher
      */
@@ -33,11 +39,13 @@ class ItemMovedPublisher
 
     /**
      * ItemMovedPublisher constructor.
+     * @param ItemFinder $itemFinder
      * @param SsePublisher $ssePublisher
      * @param string $itemsSseUrl
      */
-    public function __construct(SsePublisher $ssePublisher, string $itemsSseUrl)
+    public function __construct(ItemFinder $itemFinder, SsePublisher $ssePublisher, string $itemsSseUrl)
     {
+        $this->itemFinder = $itemFinder;
         $this->ssePublisher = $ssePublisher;
         $this->itemsSseUrl = $itemsSseUrl;
     }
@@ -47,10 +55,14 @@ class ItemMovedPublisher
      */
     public function __invoke(ItemMoved $itemMoved): void
     {
+        $item = $this->itemFinder->byId((string) $itemMoved->aggregateId());
+
         $this->ssePublisher->publish($this->itemsSseUrl, json_encode([
             'eventType' => $itemMoved->eventType(),
             'payload' => [
                 'id' => (string) $itemMoved->aggregateId(),
+                'title' => $item['title'],
+                'description' => $item['description'],
                 'position' => $itemMoved->position()->toInt(),
                 'listId' => (string) $itemMoved->listId()
             ]
