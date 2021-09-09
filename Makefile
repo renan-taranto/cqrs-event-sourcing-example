@@ -4,7 +4,6 @@ EXEC_MYSQL = $(DOCKER_COMPOSE) exec mysql
 EXEC_MONGO = $(DOCKER_COMPOSE) exec mongo
 COMPOSER = $(EXEC_WEB_API) composer
 SYMFONY = $(EXEC_WEB_API) bin/console
-COVERAGE_PATH = .docker/php/code-coverage
 
 .PHONY: install start logs vendor require clear-cache test-unit test-integration test-functional test-api test-all test-coverage load-mongo-fixtures
 
